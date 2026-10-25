@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#faf5ff">
+<title>Standard Normal Curve | Statistics Lab</title>
+<style>
+:root{font-family:Lato,"Segoe UI",Arial,sans-serif;color:#172033;background:#fff;font-synthesis:none}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;padding:16px}
+main{max-width:880px;margin:auto}
+.top{padding:15px 18px;border-left:5px solid #ad14d7;border-radius:10px;background:#f3f4f6}
+h1{margin:0 0 5px;color:#581c87;font-size:clamp(1.2rem,2.5vw,1.48rem);line-height:1.2}
+p{margin:0;line-height:1.5}
+.subtitle{color:#475569;font-size:.94rem}
+.topline{display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;margin:16px 0 10px}
+.standard{font-size:.82rem;color:#64748b}
+.chart-card{border:1px solid #e9d5ff;border-radius:12px;padding:4px 8px 5px;background:white}
+#curve{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+#curve [data-handle]{cursor:ew-resize;touch-action:none;outline:none}
+#curve [data-handle]:focus-visible .handle-ring{stroke:#0284c7;stroke-width:5}
+#curve.magnetized .handle-ring{stroke:#f59eeb;stroke-width:5;filter:drop-shadow(0 0 5px #c084fc)}
+.chart-percent{fill:#581c87;font-weight:800;font-size:30px;font-variant-numeric:tabular-nums;pointer-events:none}
+.axis-number{fill:#475569;font-size:17px;pointer-events:none}
+.cutoff-label{fill:#581c87;font-size:17px;font-weight:700;pointer-events:none}
+.controls{margin-top:13px;border:1px solid #e9d5ff;border-radius:10px;background:#faf5ff;padding:13px 15px}
+.controlrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.controltitle{font-weight:700;color:#581c87;font-size:.99rem}
+.controlhint{color:#475569;font-size:.85rem;margin-top:2px}
+.buttons{display:flex;gap:8px}
+button{font:inherit;background:white;border:1px solid #a78bfa;border-radius:8px;min-height:44px;min-width:104px;padding:8px 12px;cursor:pointer;color:#581c87;font-weight:700;touch-action:manipulation}
+button:hover{background:#ede9fe}
+button:focus-visible{outline:3px solid #0284c7;outline-offset:2px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.screen-reader-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:560px){body{padding:8px}.top{padding:13px}.topline{margin:12px 0 9px}.chart-card{padding:2px}.controls{padding:11px}.controlrow{align-items:stretch}.buttons{width:100%}.buttons button{flex:1;min-width:0}.standard{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+<h1>Standard Normal Curve</h1>
+<p class="subtitle">Drag either purple boundary to explore the area under the Standard Normal curve. Both boundaries move together.</p>
+</header>
+<div class="topline"><p class="standard">Standard Normal: mean = 0, SD = 1</p></div>
+<section class="chart-card" aria-label="Interactive standard Normal distribution">
+<svg id="curve" viewBox="0 0 760 334" role="group" aria-label="Standard Normal bell curve with two draggable, symmetric cutoff handles">
+<defs><clipPath id="bellClip"><path id="bellShape" d="" /></clipPath></defs>
+<path id="tailFill" fill="#e4e7ed" fill-opacity=".85"></path>
+<rect id="middleRect" y="23" height="239" fill="#b49af5" fill-opacity=".65" clip-path="url(#bellClip)"></rect>
+<path id="curveStroke" fill="none" stroke="#6d28d9" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"></path>
+<line x1="28" y1="262" x2="732" y2="262" stroke="#64748b" stroke-width="1.6"></line>
+<g id="axisTicks"></g>
+<g id="leftMarker"></g><g id="rightMarker"></g>
+<text id="middleLabel" x="380" y="149" text-anchor="middle" class="chart-percent">50.0%</text>
+<text x="380" y="321" text-anchor="middle" fill="#64748b" font-size="14">z-score</text>
+</svg>
+</section>
+<section class="controls" aria-label="Fine adjustment controls">
+<div class="controlrow">
+<div><p class="controltitle">Fine adjustment</p><p class="controlhint">0.1 percentage point at a time</p></div>
+<div class="buttons"><button type="button" id="decrease" aria-label="Decrease middle area by 0.1 percentage point">− 0.1%</button><button type="button" id="increase" aria-label="Increase middle area by 0.1 percentage point">+ 0.1%</button></div>
+</div>
+</section>
+<div id="status" class="screen-reader-only" role="status" aria-live="polite">Drag the boundary handles to adjust the shaded area.</div>
+</main>
+<script>
+(()=>{'use strict';
+const snaps=[{area:80,radius:1.0},{area:85,radius:1.0},{area:90,radius:1.5},{area:95,radius:1.5},{area:98,radius:0.7},{area:99,radius:0.7}]; // magnetic catch ranges measured in percentage points
+const MIN_AREA=10.0, MAX_AREA=99.9, CENTER_X=380, BASE_Y=262, LEFT=28, RIGHT=732, RANGE=3.6;
+const scale=(RIGHT-LEFT)/(2*RANGE);
+const el=id=>document.getElementById(id);
+const svg=el('curve');
+const xFor=z=>CENTER_X+z*scale;
+const yFor=z=>BASE_Y-198*Math.exp(-z*z/2);
+const constrain=(n,low,high)=>Math.max(low,Math.min(high,n));
+// Acklam inverse Normal approximation, refined by a CDF-based Newton step.
+function invNorm(p){
+  if(p<=0)return -Infinity;if(p>=1)return Infinity;
+  const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239];
+  const b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572];
+  const c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
+  const d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
+  let x,q,r;
+  if(p<0.02425){q=Math.sqrt(-2*Math.log(p));x=(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  else if(p>1-0.02425){q=Math.sqrt(-2*Math.log(1-p));x=-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  else{q=p-0.5;r=q*q;x=(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+  return x;
+}
+// Abramowitz-Stegun approximation: sufficiently accurate for displayed tenths of a percent.
+function erf(x){const s=x<0?-1:1,t=1/(1+0.3275911*Math.abs(x));return s*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x));}
+const normCDF=z=>0.5*(1+erf(z/Math.SQRT2));
+const areaForZ=z=>100*(2*normCDF(z)-1);
+const zForArea=area=>invNorm((1+area/100)/2);
+let currentArea=50, currentZ=zForArea(50), dragging=false;
+const NS='http://www.w3.org/2000/svg';
+function node(name,attrs={}){const n=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs)){n.setAttribute(k,String(v));}return n;}
+function curvePath(){let p='';for(let i=0;i<=400;i++){const v=-RANGE+(2*RANGE*i/400);p+=(i?'L':'M')+xFor(v).toFixed(3)+','+yFor(v).toFixed(3);}return p;}
+const path=curvePath();
+el('curveStroke').setAttribute('d',path);
+el('bellShape').setAttribute('d',`M${LEFT},${BASE_Y} `+path.replace(/^M/,'L')+` L${RIGHT},${BASE_Y} Z`);
+el('tailFill').setAttribute('d',`M${LEFT},${BASE_Y} `+path.replace(/^M/,'L')+` L${RIGHT},${BASE_Y} Z`);
+for(let i=-3;i<=3;i++){el('axisTicks').appendChild(node('line',{x1:xFor(i),x2:xFor(i),y1:BASE_Y,y2:270,stroke:'#64748b'}));const t=node('text',{x:xFor(i),y:290,'text-anchor':'middle',class:'axis-number'});t.textContent=i;el('axisTicks').appendChild(t);}
+function marker(sign){const z=sign*currentZ,x=xFor(z);const g=node('g',{'data-handle':sign===-1?'left':'right',tabindex:'0',role:'slider','aria-label':sign===-1?'Left cutoff: drag horizontally; both boundaries move together':'Right cutoff: drag horizontally; both boundaries move together','aria-valuemin':'0.15','aria-valuemax':'3.48','aria-valuenow':currentZ.toFixed(3),'aria-valuetext':`${currentArea.toFixed(1)} percent shaded in middle`});
+  const line=node('line',{x1:x,x2:x,y1:yFor(z),y2:BASE_Y,stroke:'#6d28d9','stroke-width':2.1,'stroke-dasharray':'5 5','pointer-events':'none'});
+  g.appendChild(line);
+  g.appendChild(node('circle',{cx:x,cy:BASE_Y,r:24,fill:'transparent',class:'hit-zone'}));
+  g.appendChild(node('circle',{cx:x,cy:BASE_Y,r:11,fill:'#7c3aed',stroke:'#fff','stroke-width':2.2,class:'handle-ring','pointer-events':'none'}));
+  const icon=node('path',{d:`M${x-4} ${BASE_Y} h8 m-6 -3 l-3 3 3 3 m4 -6 l3 3 -3 3`,fill:'none',stroke:'#fff','stroke-width':1.25,'stroke-linecap':'round','pointer-events':'none'});g.appendChild(icon);
+  const text=node('text',{x:x,y:312,'text-anchor':'middle',class:'cutoff-label'});text.textContent=(sign<0?'−':'+')+currentZ.toFixed(3);g.appendChild(text);
+  g.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();const change=event.key==='ArrowRight'?1:-1;fineAdjust(change*(sign===1?1:-1));const replacement=el(sign===-1?'leftMarker':'rightMarker').querySelector('[data-handle]');if(replacement)replacement.focus({preventScroll:true});}});
+  return g;
+}
+function setArea(area,{updateStatus=true}={}){
+  currentArea=constrain(area,MIN_AREA,MAX_AREA);currentZ=zForArea(currentArea);redraw(updateStatus);
+}
+function setZ(z,{updateStatus=false}={}){
+  currentZ=constrain(z,zForArea(MIN_AREA),zForArea(MAX_AREA));currentArea=areaForZ(currentZ);redraw(updateStatus);
+}
+function fineAdjust(direction){svg.classList.remove('magnetized');const rounded=Math.round(currentArea*10)/10;const next=Math.round((rounded+direction*0.1)*10)/10;setArea(next);}
+function nearestMagnet(z){
+  const area=areaForZ(z);
+  let chosen=null;
+  for(const stop of snaps){
+    const distance=Math.abs(stop.area-area);
+    if(distance<=stop.radius && (!chosen || distance<chosen.distance))chosen={area:stop.area,distance};
+  }
+  return chosen;
+}
+function showMagnet(area){
+  svg.classList.add('magnetized');
+  setArea(area,{updateStatus:false});
+}
+function dragAt(z){
+  const magnet=nearestMagnet(z);
+  if(magnet){showMagnet(magnet.area);return;}
+  svg.classList.remove('magnetized');
+  setZ(z,{updateStatus:false});
+}
+function finishAt(z){
+  const magnet=nearestMagnet(z);
+  svg.classList.remove('magnetized');
+  if(magnet)setArea(magnet.area);
+  else setZ(z,{updateStatus:true});
+}
+function redraw(updateStatus){
+  const pct=currentArea;
+  el('middleRect').setAttribute('x',xFor(-currentZ));
+  el('middleRect').setAttribute('width',2*currentZ*scale);
+  // During pointer drag, replaceChildren is safe; pointer capture is on the SVG, not the handles.
+  el('leftMarker').replaceChildren(marker(-1));el('rightMarker').replaceChildren(marker(1));
+  el('middleLabel').textContent=pct.toFixed(1)+'%';
+  el('decrease').disabled=pct<=(MIN_AREA+0.001);
+  el('increase').disabled=pct>=(MAX_AREA-0.06);
+  if(updateStatus)el('status').textContent=pct.toFixed(1)+'% shaded between z = −'+currentZ.toFixed(3)+' and +'+currentZ.toFixed(3)+'.';
+}
+function pointerToZ(e){const r=svg.getBoundingClientRect();const x=(e.clientX-r.left)*760/r.width;return Math.abs((x-CENTER_X)/scale);}
+svg.addEventListener('pointerdown',event=>{
+  if(!event.target.closest('[data-handle]'))return;
+  event.preventDefault();dragging=true;
+  try{svg.setPointerCapture(event.pointerId);}catch(err){}
+  dragAt(pointerToZ(event));
+});
+svg.addEventListener('pointermove',event=>{if(!dragging)return;event.preventDefault();dragAt(pointerToZ(event));});
+function finishDrag(event){if(!dragging)return;dragging=false;try{if(svg.hasPointerCapture(event.pointerId))svg.releasePointerCapture(event.pointerId);}catch(err){}finishAt(pointerToZ(event));}
+svg.addEventListener('pointerup',finishDrag);svg.addEventListener('pointercancel',finishDrag);svg.addEventListener('lostpointercapture',()=>{if(dragging){dragging=false;svg.classList.remove('magnetized');redraw(true);}});
+el('decrease').addEventListener('click',()=>fineAdjust(-1));
+el('increase').addEventListener('click',()=>fineAdjust(1));
+setArea(50);
+})();
+</script>
+</body>
+</html>
