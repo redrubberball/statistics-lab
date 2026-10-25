@@ -1,201 +1,174 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#faf5ff">
-<meta name="description" content="Explore Student's t distribution by entering sample size and dragging symmetric confidence interval boundaries.">
-<title>Student's t-Distribution | Statistics Lab</title>
-<style>
-:root{font-family:Lato,"Segoe UI",Arial,sans-serif;color:#172033;background:#fff;font-synthesis:none}
-*{box-sizing:border-box}
-html{color-scheme:light}
-body{margin:0;padding:16px}
-main{max-width:880px;margin:auto}
-.top{padding:15px 18px;border-left:5px solid #ad14d7;border-radius:10px;background:#f3f4f6}
-h1{margin:0 0 5px;color:#581c87;font-size:clamp(1.2rem,2.5vw,1.48rem);line-height:1.2}
-p{margin:0;line-height:1.5}
-.subtitle{color:#475569;font-size:.94rem}
-.topline{display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;margin:15px 0 11px}
-.sample-control{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.sample-control label{font-size:.96rem;font-weight:700;color:#581c87}
-.sample-control input{font:inherit;font-weight:700;width:96px;height:44px;padding:7px 10px;border:1px solid #a78bfa;border-radius:8px;color:#172033;background:#fff}
-.sample-control input:focus-visible{outline:3px solid #0284c7;outline-offset:2px}
-.df-tag{color:#475569;font-size:.93rem;background:#f3f4f6;border-radius:7px;padding:8px 11px;white-space:nowrap}
-.standard{font-size:.81rem;color:#64748b;text-align:right}
-.error{font-size:.84rem;color:#b91c1c;margin:-4px 0 9px;min-height:0}
-.chart-card{border:1px solid #e9d5ff;border-radius:12px;padding:4px 8px 5px;background:#fff}
-#curve{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none;touch-action:pan-y}
-#curve [data-handle]{cursor:ew-resize;touch-action:none;outline:none}
-#curve [data-handle]:focus-visible .handle-ring{stroke:#0284c7;stroke-width:5}
-#curve.magnetized .handle-ring{stroke:#f59eeb;stroke-width:5;filter:drop-shadow(0 0 5px #c084fc)}
-.chart-percent{fill:#581c87;font-weight:800;font-size:30px;font-variant-numeric:tabular-nums;pointer-events:none}
-.axis-number{fill:#475569;font-size:17px;pointer-events:none}
-.cutoff-label{fill:#581c87;font-size:17px;font-weight:700;pointer-events:none}
-.controls{margin-top:13px;border:1px solid #e9d5ff;border-radius:10px;background:#faf5ff;padding:13px 15px}
-.controlrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.controltitle{font-weight:700;color:#581c87;font-size:.99rem}
-.controlhint{color:#475569;font-size:.85rem;margin-top:2px}
-.buttons{display:flex;gap:8px}
-button{font:inherit;background:#fff;border:1px solid #a78bfa;border-radius:8px;min-height:44px;min-width:104px;padding:8px 12px;cursor:pointer;color:#581c87;font-weight:700;touch-action:manipulation}
-button:hover{background:#ede9fe}
-button:focus-visible{outline:3px solid #0284c7;outline-offset:2px}
-button:disabled{opacity:.4;cursor:not-allowed}
-.hint{margin:10px 2px 1px;font-size:.85rem;line-height:1.5;color:#475569}
-.screen-reader-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:560px){body{padding:8px}.top{padding:13px}.topline{margin:12px 0 9px;align-items:flex-start}.standard{width:100%;text-align:left}.chart-card{padding:2px}.controls{padding:11px}.controlrow{align-items:stretch}.buttons{width:100%}.buttons button{flex:1;min-width:0}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#15171c">
+  <meta name="description" content="A collection of interactive statistics tools.">
+  <title>Statistics Tools</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #15171c;
+      --surface: #232630;
+      --surface-hover: #2b2e3a;
+      --text: #f5f5f7;
+      --muted: #a2a6b3;
+      --line: #30343e;
+      --purple: #c4b5fd;
+      --pink: #f472b6;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid #e9d5ff; outline-offset: 5px; }
+    .container { width: min(860px, calc(100% - 48px)); margin: 0 auto; }
+    .site-header { border-bottom: 1px solid var(--line); }
+    .navigation { height: 78px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 570; text-decoration: none; letter-spacing: -.025em; }
+    .brand-star { color: var(--pink); font-size: 25px; line-height: 1; font-weight: 400; }
+    .nav-link { color: #b9bdc8; font-size: 13px; text-decoration: none; transition: color 180ms ease; }
+    .nav-link:hover { color: #fff; }
+    .hero { display: flex; padding: 91px 0 87px; gap: 28px; align-items: stretch; }
+    .hero-rail { width: 20px; flex: none; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .hero-rail-line { width: 2px; min-height: 108px; flex: 1; background: #a78bfa; }
+    .hero-rail-number { color: #8d90a0; font-size: 10px; letter-spacing: .08em; }
+    .hero-copy { padding-top: 2px; }
+    .eyebrow { margin: 0 0 19px; color: #a8aab6; font-size: 11px; letter-spacing: .15em; font-weight: 570; text-transform: uppercase; }
+    h1 { font-size: clamp(39px, 7vw, 68px); font-weight: 420; line-height: 1.08; letter-spacing: -.064em; margin: 0; }
+    h1 .period { color: #c4b5fd; }
+    .spectrum { display: flex; align-items: center; gap: 10px; padding-top: 33px; }
+    .spectrum span { width: 7px; height: 7px; border-radius: 50%; display: block; }
+    .spectrum span:nth-child(1) { background: #a78bfa; }
+    .spectrum span:nth-child(2) { background: #f472b6; }
+    .spectrum span:nth-child(3) { background: #fb923c; }
+    .spectrum span:nth-child(4) { background: #facc15; }
+    .spectrum span:nth-child(5) { background: #2dd4bf; }
+    .spectrum span:nth-child(6) { background: #38bdf8; }
+    .tools { padding-bottom: 116px; }
+    .section-top { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 17px; }
+    h2 { margin: 0; font-size: 13px; font-weight: 570; letter-spacing: .045em; text-transform: uppercase; color: #e5e5e9; }
+    .count { color: #818694; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+    .tool-link {
+      display: grid;
+      grid-template-columns: 94px minmax(0,1fr) 30px;
+      align-items: center;
+      gap: 24px;
+      min-height: 139px;
+      padding: 20px 25px;
+      border-radius: 15px;
+      background: var(--surface);
+      text-decoration: none;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+    .tool-link:hover { background: var(--surface-hover); transform: translateY(-2px); }
+    .tool-art { width: 94px; height: 88px; background: #343045; border-radius: 11px; display: grid; place-items: center; padding: 12px; }
+    .tool-art svg { width: 100%; height: auto; }
+    .tool-category { margin: 0 0 5px; color: var(--purple); font-size: 10px; font-weight: 600; letter-spacing: .105em; text-transform: uppercase; }
+    .tool-title { margin: 0 0 4px; font-size: 19px; font-weight: 530; line-height: 1.33; letter-spacing: -.025em; }
+    .tool-description { margin: 0; color: #afb3c0; font-size: 13px; }
+    .tool-arrow { width: 29px; height: 29px; display: grid; place-items: center; color: #c4b5fd; border-radius: 50%; transition: transform 180ms ease; }
+    .tool-link:hover .tool-arrow { transform: translate(2px,-2px); }
+    .footer { border-top: 1px solid var(--line); padding: 25px 0 31px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .footer-name { color: #858a98; font-size: 12px; }
+    .footer-spectrum { display: flex; gap: 5px; }
+    .footer-spectrum i { display: block; height: 3px; width: 16px; border-radius: 99px; }
+    .footer-spectrum i:nth-child(1) { background: #a78bfa; }
+    .footer-spectrum i:nth-child(2) { background: #f472b6; }
+    .footer-spectrum i:nth-child(3) { background: #fb923c; }
+    .footer-spectrum i:nth-child(4) { background: #facc15; }
+    .footer-spectrum i:nth-child(5) { background: #2dd4bf; }
+    .footer-spectrum i:nth-child(6) { background: #38bdf8; }
+    @media (max-width: 600px) {
+      .container { width: min(100% - 34px, 860px); }
+      .navigation { height: 67px; }
+      .hero { padding: 69px 0 70px; gap: 18px; }
+      .hero-rail { width: 14px; }
+      .hero-rail-line { min-height: 90px; }
+      h1 { font-size: clamp(38px, 10vw, 54px); }
+      .spectrum { padding-top: 28px; }
+      .tools { padding-bottom: 90px; }
+      .tool-link { padding: 17px; grid-template-columns: 78px minmax(0,1fr) 20px; min-height: 115px; gap: 13px; border-radius: 12px; }
+      .tool-art { width: 78px; height: 76px; padding: 9px; }
+      .tool-title { font-size: 16px; }
+      .tool-description { font-size: 12px; }
+      .tool-category { font-size: 9px; }
+      .tool-arrow { width: 20px; }
+    }
+    @media (max-width: 390px) {
+      .hero { gap: 13px; }
+      .tool-link { grid-template-columns: 64px minmax(0,1fr) 15px; gap: 10px; padding: 12px; }
+      .tool-art { width: 64px; height: 69px; }
+      .tool-title { font-size: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-<main>
-<header class="top">
-<h1>Student's t Curve</h1>
-<p class="subtitle">Enter a sample size, then drag either purple boundary to explore the area under the t curve. Both boundaries move together.</p>
-</header>
-<div class="topline">
-  <div class="sample-control">
-    <label for="sampleN">Sample size (n)</label>
-    <input id="sampleN" type="number" min="2" max="10000" step="1" value="25" inputmode="numeric" aria-describedby="sampleError">
-    <span class="df-tag" id="degrees">df = n − 1 = 24</span>
-  </div>
-  
-</div>
-<p id="sampleError" class="error" role="alert" hidden>Enter a whole-number sample size from 2 to 10,000.</p>
-<section class="chart-card" aria-label="Interactive Student's t distribution">
-<svg id="curve" viewBox="0 0 760 334" role="group" aria-label="Student t curve with two draggable symmetric cutoff handles">
-<defs><clipPath id="bellClip"><path id="bellShape" d="" /></clipPath></defs>
-<path id="tailFill" fill="#e4e7ed" fill-opacity=".85"></path>
-<rect id="middleRect" y="23" height="239" fill="#b49af5" fill-opacity=".65" clip-path="url(#bellClip)"></rect>
-<path id="curveStroke" fill="none" stroke="#6d28d9" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"></path>
-<line x1="28" y1="262" x2="732" y2="262" stroke="#64748b" stroke-width="1.6"></line>
-<g id="axisTicks"></g>
-<g id="leftMarker"></g><g id="rightMarker"></g>
-<text id="middleLabel" x="380" y="149" text-anchor="middle" class="chart-percent">50.0%</text>
-<text x="380" y="321" text-anchor="middle" fill="#64748b" font-size="14">t-score</text>
-</svg>
-</section>
-<section class="controls" aria-label="Fine adjustment controls">
-  <div class="controlrow">
-    <div><p class="controltitle">Fine adjustment</p><p class="controlhint">0.1 percentage point at a time</p></div>
-    <div class="buttons"><button type="button" id="decrease" aria-label="Decrease middle area by 0.1 percentage point">− 0.1%</button><button type="button" id="increase" aria-label="Increase middle area by 0.1 percentage point">+ 0.1%</button></div>
-  </div>
-</section>
-<div id="status" class="screen-reader-only" role="status" aria-live="polite">Enter a sample size and drag the boundary handles to adjust the shaded area.</div>
-</main>
-<script>
-(()=>{'use strict';
-const snaps=[{area:80,radius:1.0},{area:85,radius:1.0},{area:90,radius:1.5},{area:95,radius:1.5},{area:98,radius:0.7},{area:99,radius:0.7}];
-const MIN_AREA=10,MAX_AREA=99.9,CENTER_X=380,BASE_Y=262,LEFT=28,RIGHT=732,MIN_RANGE=3.6;
-const el=id=>document.getElementById(id);
-const svg=el('curve'),nInput=el('sampleN');
-const constrain=(v,min,max)=>Math.max(min,Math.min(max,v));
-const gammaCoefficients=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.6150291621406,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
-function logGamma(z){
-  if(z<0.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);
-  z-=1;let x=gammaCoefficients[0];for(let i=1;i<gammaCoefficients.length;i++)x+=gammaCoefficients[i]/(z+i);
-  const t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);
-}
-function betaFraction(a,b,x){
-  const MAX=250,EPS=2e-14,FPMIN=1e-300;
-  let qab=a+b,qap=a+1,qam=a-1;
-  let c=1,d=1-qab*x/qap;if(Math.abs(d)<FPMIN)d=FPMIN;
-  d=1/d;let h=d;
-  for(let m=1;m<=MAX;m++){
-    const m2=2*m;
-    let aa=m*(b-m)*x/((qam+m2)*(a+m2));
-    d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;h*=d*c;
-    aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));
-    d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;
-    const step=d*c;h*=step;if(Math.abs(step-1)<EPS)break;
-  }
-  return h;
-}
-function incompleteBeta(x,a,b){
-  if(x<=0)return 0;if(x>=1)return 1;
-  const bt=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));
-  const p=x<(a+1)/(a+b+2)?bt*betaFraction(a,b,x)/a:1-bt*betaFraction(b,a,1-x)/b;
-  return constrain(p,0,1);
-}
-let degreesFreedom=24;
-function tPdf(t){const df=degreesFreedom;return Math.exp(logGamma((df+1)/2)-logGamma(df/2)-.5*Math.log(df*Math.PI)-.5*(df+1)*Math.log1p(t*t/df));}
-function middleAreaForT(t){
-  const x=degreesFreedom/(degreesFreedom+t*t);
-  return constrain(100*(1-incompleteBeta(x,degreesFreedom/2,.5)),0,100);
-}
-function tForArea(area){
-  const target=constrain(area,MIN_AREA,MAX_AREA);
-  let low=0,high=1;
-  while(middleAreaForT(high)<target&&high<1e12)high*=2;
-  for(let i=0;i<55;i++){
-    const mid=(low+high)/2;
-    if(middleAreaForT(mid)<target)low=mid;else high=mid;
-  }
-  return (low+high)/2;
-}
-let currentArea=50,currentT=0,dragging=false,dragRange=MIN_RANGE,displayRange=MIN_RANGE,valid=true;
-const NS='http://www.w3.org/2000/svg';
-function node(name,attrs={}){const n=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,String(v));return n;}
-const xFor=t=>CENTER_X+t*((RIGHT-LEFT)/(2*displayRange));
-function yFor(t){const df=degreesFreedom;return BASE_Y-198*Math.pow(1+t*t/df,-(df+1)/2);}
-function curvePath(){let path='';for(let i=0;i<=480;i++){const v=-displayRange+2*displayRange*i/480;path+=(i?'L':'M')+xFor(v).toFixed(3)+','+yFor(v).toFixed(3);}return path;}
-function tickValue(v){if(Math.abs(v)<1e-8)return '0';return Math.abs(v)>=100?Math.round(v).toString():parseFloat(v.toFixed(1)).toString();}
-function drawAxes(){
-  el('axisTicks').replaceChildren();
-  const span=displayRange;const raw=span/3;const magnitude=Math.pow(10,Math.floor(Math.log10(raw)));const scaled=raw/magnitude;
-  const tickStep=(scaled<=1?1:scaled<=2?2:scaled<=2.5?2.5:scaled<=5?5:10)*magnitude;
-  const count=Math.min(6,Math.floor(span/tickStep));
-  for(let i=-count;i<=count;i++){
-    const v=i*tickStep;el('axisTicks').appendChild(node('line',{x1:xFor(v),x2:xFor(v),y1:BASE_Y,y2:270,stroke:'#64748b'}));
-    const txt=node('text',{x:xFor(v),y:290,'text-anchor':'middle',class:'axis-number'});txt.textContent=tickValue(v);el('axisTicks').appendChild(txt);
-  }
-}
-function marker(sign){
-  const t=sign*currentT,x=xFor(t);
-  const g=node('g',{'data-handle':sign===-1?'left':'right',tabindex:'0',role:'slider','aria-label':sign===-1?'Left t cutoff; drag horizontally, both boundaries move together':'Right t cutoff; drag horizontally, both boundaries move together','aria-valuemin':MIN_AREA.toFixed(1),'aria-valuemax':MAX_AREA.toFixed(1),'aria-valuenow':currentArea.toFixed(1),'aria-valuetext':`${currentArea.toFixed(1)} percent middle area, t-star ${currentT.toFixed(3)}`});
-  g.appendChild(node('line',{x1:x,x2:x,y1:yFor(t),y2:BASE_Y,stroke:'#6d28d9','stroke-width':2.1,'stroke-dasharray':'5 5','pointer-events':'none'}));
-  g.appendChild(node('circle',{cx:x,cy:BASE_Y,r:24,fill:'transparent',class:'hit-zone'}));
-  g.appendChild(node('circle',{cx:x,cy:BASE_Y,r:11,fill:'#7c3aed',stroke:'#fff','stroke-width':2.2,class:'handle-ring','pointer-events':'none'}));
-  g.appendChild(node('path',{d:`M${x-4} ${BASE_Y} h8 m-6 -3 l-3 3 3 3 m4 -6 l3 3 -3 3`,fill:'none',stroke:'#fff','stroke-width':1.25,'stroke-linecap':'round','pointer-events':'none'}));
-  const label=node('text',{x:x,y:312,'text-anchor':'middle',class:'cutoff-label'});label.textContent=(sign<0?'−':'+')+currentT.toFixed(3);g.appendChild(label);
-  g.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();const change=e.key==='ArrowRight'?1:-1;fineAdjust(change*(sign===1?1:-1));const replacement=el(sign===-1?'leftMarker':'rightMarker').querySelector('[data-handle]');if(replacement)replacement.focus({preventScroll:true});}});
-  return g;
-}
-function redraw(updateStatus=true){
-  if(!valid)return;
-  // Reframe only when not dragging, so pulling a handle stays continuous under the pointer.
-  displayRange=dragging?dragRange:Math.max(MIN_RANGE,currentT*1.17);
-  const path=curvePath();
-  el('curveStroke').setAttribute('d',path);
-  const closed=`M${LEFT},${BASE_Y} `+path.replace(/^M/,'L')+` L${RIGHT},${BASE_Y} Z`;
-  el('bellShape').setAttribute('d',closed);el('tailFill').setAttribute('d',closed);
-  el('middleRect').setAttribute('x',xFor(-currentT));el('middleRect').setAttribute('width',Math.max(0,2*currentT*(RIGHT-LEFT)/(2*displayRange)));
-  el('leftMarker').replaceChildren(marker(-1));el('rightMarker').replaceChildren(marker(1));
-  el('middleLabel').textContent=currentArea.toFixed(1)+'%';
-  drawAxes();
-  el('decrease').disabled=currentArea<=(MIN_AREA+0.001);el('increase').disabled=currentArea>=(MAX_AREA-0.06);
-  if(updateStatus)el('status').textContent=`Sample size ${degreesFreedom+1}, degrees of freedom ${degreesFreedom}. ${currentArea.toFixed(1)}% shaded between t = minus ${currentT.toFixed(3)} and plus ${currentT.toFixed(3)}.`;
-}
-function setArea(area,updateStatus=true){currentArea=constrain(area,MIN_AREA,MAX_AREA);currentT=tForArea(currentArea);redraw(updateStatus);}
-function setT(t,updateStatus=false){currentT=constrain(Math.abs(t),tForArea(MIN_AREA),tForArea(MAX_AREA));currentArea=middleAreaForT(currentT);redraw(updateStatus);}
-function fineAdjust(direction){if(!valid)return;svg.classList.remove('magnetized');const rounded=Math.round(currentArea*10)/10;setArea(Math.round((rounded+direction*.1)*10)/10);}
-function nearestMagnet(t){const area=middleAreaForT(t);let chosen=null;for(const stop of snaps){const distance=Math.abs(stop.area-area);if(distance<=stop.radius&&(!chosen||distance<chosen.distance))chosen={area:stop.area,distance};}return chosen;}
-function dragAt(t){const magnet=nearestMagnet(t);if(magnet){svg.classList.add('magnetized');setArea(magnet.area,false);}else{svg.classList.remove('magnetized');setT(t,false);}}
-function finishAt(t){const magnet=nearestMagnet(t);svg.classList.remove('magnetized');if(magnet)setArea(magnet.area);else setT(t,true);}
-function pointerToT(e){const rect=svg.getBoundingClientRect();const x=(e.clientX-rect.left)*760/rect.width;return Math.abs((x-CENTER_X)*dragRange/((RIGHT-LEFT)/2));}
-svg.addEventListener('pointerdown',e=>{if(!valid||!e.target.closest('[data-handle]'))return;e.preventDefault();dragging=true;dragRange=displayRange;try{svg.setPointerCapture(e.pointerId);}catch(_){}dragAt(pointerToT(e));});
-svg.addEventListener('pointermove',e=>{if(!dragging)return;e.preventDefault();dragAt(pointerToT(e));});
-function finishDrag(e){if(!dragging)return;const t=pointerToT(e);dragging=false;try{if(svg.hasPointerCapture(e.pointerId))svg.releasePointerCapture(e.pointerId);}catch(_){}finishAt(t);}
-svg.addEventListener('pointerup',finishDrag);svg.addEventListener('pointercancel',finishDrag);svg.addEventListener('lostpointercapture',()=>{if(dragging){dragging=false;svg.classList.remove('magnetized');redraw();}});
-el('decrease').addEventListener('click',()=>fineAdjust(-1));el('increase').addEventListener('click',()=>fineAdjust(1));
-nInput.addEventListener('input',()=>{
-  const raw=nInput.value.trim();const n=Number(raw);
-  valid=raw!==''&&Number.isInteger(n)&&n>=2&&n<=10000;
-  el('sampleError').hidden=valid;el('degrees').textContent=valid?`df = n − 1 = ${n-1}`:'df = —';nInput.setAttribute('aria-invalid',String(!valid));
-  if(valid){degreesFreedom=n-1;setArea(currentArea);}else{el('decrease').disabled=true;el('increase').disabled=true;el('status').textContent='Enter a valid sample size from 2 to 10,000.';}
-});
-setArea(50);
-})();
-</script>
+  <header class="site-header">
+    <nav class="container navigation" aria-label="Main navigation">
+      <a href="./" class="brand" aria-label="Statistics Tools homepage"><span class="brand-star" aria-hidden="true">✳</span><span>Statistics Tools</span></a>
+      <a class="nav-link" href="#tools">Explore</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-rail" aria-hidden="true"><span class="hero-rail-line"></span><span class="hero-rail-number">01</span></div>
+      <div class="hero-copy">
+        <p class="eyebrow">An interactive collection</p>
+        <h1 id="page-title">Statistics Tools<span class="period">.</span></h1>
+        <div class="spectrum" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section class="tools" id="tools" aria-labelledby="tools-title">
+      <div class="section-top">
+        <h2 id="tools-title">Interactives</h2>
+        <span class="count">01 available</span>
+      </div>
+      <!-- To add another tool later, duplicate the tool-link element and change its URL, title, description, and topic color. -->
+      <a class="tool-link" href="./normal-curve/" aria-label="Open CI Normal Curve Explorer">
+        <span class="tool-art" aria-hidden="true">
+          <svg viewBox="0 0 100 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 60H96" stroke="#8d849c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M4 60C24 60 33 52 40 29C43.6 17.2 46.8 11 50 11C53.2 11 56.4 17.2 60 29C67 52 76 60 96 60" stroke="#ded1ff" stroke-width="2.7" stroke-linecap="round"/>
+            <path d="M25 60C34 49 41 11 50 11C59 11 66 49 75 60Z" fill="#a78bfa" fill-opacity="0.42"/>
+            <path d="M25 60V49M75 60V49" stroke="#f9a8d4" stroke-width="1.5" stroke-dasharray="2.5 3"/>
+            <circle cx="25" cy="60" r="3.4" fill="#f9a8d4"/>
+            <circle cx="75" cy="60" r="3.4" fill="#f9a8d4"/>
+          </svg>
+        </span>
+        <div>
+          <p class="tool-category">Confidence intervals</p>
+          <h3 class="tool-title">CI Normal Curve Explorer</h3>
+          <p class="tool-description">Explore confidence levels and critical values.</p>
+        </div>
+        <span class="tool-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-name">Statistics Tools</span>
+      <span class="footer-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </div>
+  </footer>
 </body>
 </html>
