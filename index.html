@@ -3,154 +3,172 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Free interactive tools for exploring introductory statistics, from Normal distributions to statistical inference.">
-  <meta name="theme-color" content="#581c87">
-  <title>Statistics Lab | Interactive Statistics Tools</title>
+  <meta name="theme-color" content="#15171c">
+  <meta name="description" content="A collection of interactive statistics tools.">
+  <title>Statistics Tools</title>
   <style>
     :root {
-      color-scheme: light;
-      --purple: #581c87;
-      --accent: #ad14d7;
-      --violet: #7c3aed;
-      --lavender: #faf5ff;
-      --ink: #111827;
-      --muted: #586174;
-      --line: #e5e7eb;
-      --surface: #f3f4f6;
-      --white: #fff;
+      color-scheme: dark;
+      --bg: #15171c;
+      --surface: #232630;
+      --surface-hover: #2b2e3a;
+      --text: #f5f5f7;
+      --muted: #a2a6b3;
+      --line: #30343e;
+      --purple: #c4b5fd;
+      --pink: #f472b6;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { margin: 0; font-family: Lato, "Segoe UI", Arial, sans-serif; line-height: 1.6; color: var(--ink); background: #fff; }
-    a { color: inherit; }
-    a:focus-visible { outline: 3px solid #7c3aed; outline-offset: 4px; border-radius: 4px; }
-    .wrap { width: min(1080px, calc(100% - 40px)); margin-inline: auto; }
-    .topbar { background: #fff; border-bottom: 1px solid var(--line); }
-    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; color: var(--purple); font-size: 1.13rem; font-weight: 800; letter-spacing: -.02em; }
-    .logo { width: 37px; height: 37px; display: grid; place-items: center; background: var(--lavender); border: 1px solid #e9d5ff; border-radius: 11px; }
-    .navlinks { display: flex; gap: 24px; align-items: center; }
-    .navlinks a { font-weight: 650; font-size: .93rem; text-decoration: none; color: #4b5563; }
-    .navlinks a:hover { color: var(--purple); }
-    .hero { position: relative; overflow: hidden; background: linear-gradient(116deg, #431267 0%, #581c87 56%, #7830a1 100%); color: white; }
-    .hero:after { content: ""; position: absolute; top: -140px; right: -80px; width: 470px; height: 470px; border-radius: 50%; border: 85px solid rgba(255,255,255,.055); pointer-events: none; }
-    .hero-inner { position: relative; z-index: 1; padding: 68px 0 72px; max-width: 780px; }
-    .eyebrow { display: inline-block; font-size: .76rem; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; margin-bottom: 13px; color: #ead5ff; }
-    h1 { font-size: clamp(2.3rem, 5vw, 4rem); line-height: 1.12; letter-spacing: -.045em; margin: 0 0 17px; }
-    .hero p { font-size: clamp(1.04rem, 2vw, 1.22rem); color: #f3e8ff; max-width: 620px; margin: 0 0 26px; }
-    .hero .action { display: inline-flex; align-items: center; gap: 9px; padding: 11px 19px; border-radius: 9px; color: var(--purple); background: white; text-decoration: none; font-weight: 800; }
-    .hero .action:hover { background: #f5eafd; }
-    main { padding: 52px 0 64px; }
-    .section-kicker { color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: .10em; font-size: .73rem; margin-bottom: 5px; }
-    h2 { color: var(--purple); font-size: clamp(1.55rem, 3vw, 2.05rem); line-height: 1.25; margin: 0 0 10px; letter-spacing: -.025em; }
-    .intro { margin: 0 0 24px; color: var(--muted); max-width: 680px; }
-    .tool-card { overflow: hidden; display: grid; grid-template-columns: minmax(240px, 42%) minmax(0, 1fr); border: 1px solid #e9d5ff; border-radius: 16px; background: white; box-shadow: 0 10px 35px rgba(64, 30, 85, .06); }
-    .tool-visual { display: grid; place-items: center; background: linear-gradient(145deg, #faf5ff, #f1e7ff); min-height: 300px; padding: 24px; }
-    .tool-visual svg { width: 100%; max-width: 370px; height: auto; }
-    .tool-content { padding: 36px 35px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
-    .status { display: inline-block; border: 1px solid #e9d5ff; border-radius: 999px; padding: 3px 10px; color: var(--purple); font-size: .75rem; font-weight: 800; background: var(--lavender); margin-bottom: 14px; }
-    h3 { font-size: 1.45rem; line-height: 1.3; letter-spacing: -.025em; margin: 0 0 12px; color: var(--purple); }
-    .tool-content p { color: #4b5563; margin: 0 0 20px; }
-    .primary-link { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; padding: 10px 17px; border-radius: 9px; text-decoration: none; font-weight: 750; }
-    .primary-link:hover { background: #6b21a8; }
-    .note { display: flex; gap: 11px; align-items: flex-start; border-left: 4px solid var(--accent); background: var(--lavender); border-radius: 9px; padding: 16px 18px; margin-top: 24px; color: #4b5563; font-size: .94rem; }
-    .note strong { color: var(--purple); }
-    .looking-ahead { border-top: 1px solid var(--line); margin-top: 54px; padding-top: 40px; }
-    .coming { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: 19px; }
-    .coming div { border: 1px solid var(--line); background: #fcfcfd; border-radius: 10px; padding: 15px 17px; }
-    .coming strong { display: block; font-size: .98rem; }
-    .coming span { display: block; font-size: .82rem; color: #6b7280; margin-top: 5px; }
-    footer { border-top: 1px solid var(--line); color: #6b7280; padding: 22px 0 28px; font-size: .88rem; }
-    footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    @media (max-width: 740px) {
-      .wrap { width: min(100% - 28px, 1080px); }
-      .nav { min-height: 64px; }
-      .navlinks { gap: 13px; }
-      .hero-inner { padding: 46px 0 52px; }
-      main { padding-top: 36px; }
-      .tool-card { grid-template-columns: 1fr; }
-      .tool-visual { min-height: 205px; padding: 20px; }
-      .tool-visual svg { max-width: 300px; }
-      .tool-content { padding: 25px 23px 29px; }
-      .coming { grid-template-columns: 1fr; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
     }
-    @media (max-width: 380px) { .navlinks a:first-child { display: none; } .brand { font-size: 1rem; } }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid #e9d5ff; outline-offset: 5px; }
+    .container { width: min(860px, calc(100% - 48px)); margin: 0 auto; }
+    .site-header { border-bottom: 1px solid var(--line); }
+    .navigation { height: 78px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 570; text-decoration: none; letter-spacing: -.025em; }
+    .brand-star { color: var(--pink); font-size: 25px; line-height: 1; font-weight: 400; }
+    .nav-link { color: #b9bdc8; font-size: 13px; text-decoration: none; transition: color 180ms ease; }
+    .nav-link:hover { color: #fff; }
+    .hero { display: flex; padding: 91px 0 87px; gap: 28px; align-items: stretch; }
+    .hero-rail { width: 20px; flex: none; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .hero-rail-line { width: 2px; min-height: 108px; flex: 1; background: #a78bfa; }
+    .hero-rail-number { color: #8d90a0; font-size: 10px; letter-spacing: .08em; }
+    .hero-copy { padding-top: 2px; }
+    .eyebrow { margin: 0 0 19px; color: #a8aab6; font-size: 11px; letter-spacing: .15em; font-weight: 570; text-transform: uppercase; }
+    h1 { font-size: clamp(39px, 7vw, 68px); font-weight: 420; line-height: 1.08; letter-spacing: -.064em; margin: 0; }
+    h1 .period { color: #c4b5fd; }
+    .spectrum { display: flex; align-items: center; gap: 10px; padding-top: 33px; }
+    .spectrum span { width: 7px; height: 7px; border-radius: 50%; display: block; }
+    .spectrum span:nth-child(1) { background: #a78bfa; }
+    .spectrum span:nth-child(2) { background: #f472b6; }
+    .spectrum span:nth-child(3) { background: #fb923c; }
+    .spectrum span:nth-child(4) { background: #facc15; }
+    .spectrum span:nth-child(5) { background: #2dd4bf; }
+    .spectrum span:nth-child(6) { background: #38bdf8; }
+    .tools { padding-bottom: 116px; }
+    .section-top { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 17px; }
+    h2 { margin: 0; font-size: 13px; font-weight: 570; letter-spacing: .045em; text-transform: uppercase; color: #e5e5e9; }
+    .count { color: #818694; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+    .tool-link {
+      display: grid;
+      grid-template-columns: 94px minmax(0,1fr) 30px;
+      align-items: center;
+      gap: 24px;
+      min-height: 139px;
+      padding: 20px 25px;
+      border-radius: 15px;
+      background: var(--surface);
+      text-decoration: none;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+    .tool-link:hover { background: var(--surface-hover); transform: translateY(-2px); }
+    .tool-art { width: 94px; height: 88px; background: #343045; border-radius: 11px; display: grid; place-items: center; padding: 12px; }
+    .tool-art svg { width: 100%; height: auto; }
+    .tool-category { margin: 0 0 5px; color: var(--purple); font-size: 10px; font-weight: 600; letter-spacing: .105em; text-transform: uppercase; }
+    .tool-title { margin: 0 0 4px; font-size: 19px; font-weight: 530; line-height: 1.33; letter-spacing: -.025em; }
+    .tool-description { margin: 0; color: #afb3c0; font-size: 13px; }
+    .tool-arrow { width: 29px; height: 29px; display: grid; place-items: center; color: #c4b5fd; border-radius: 50%; transition: transform 180ms ease; }
+    .tool-link:hover .tool-arrow { transform: translate(2px,-2px); }
+    .footer { border-top: 1px solid var(--line); padding: 25px 0 31px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .footer-name { color: #858a98; font-size: 12px; }
+    .footer-spectrum { display: flex; gap: 5px; }
+    .footer-spectrum i { display: block; height: 3px; width: 16px; border-radius: 99px; }
+    .footer-spectrum i:nth-child(1) { background: #a78bfa; }
+    .footer-spectrum i:nth-child(2) { background: #f472b6; }
+    .footer-spectrum i:nth-child(3) { background: #fb923c; }
+    .footer-spectrum i:nth-child(4) { background: #facc15; }
+    .footer-spectrum i:nth-child(5) { background: #2dd4bf; }
+    .footer-spectrum i:nth-child(6) { background: #38bdf8; }
+    @media (max-width: 600px) {
+      .container { width: min(100% - 34px, 860px); }
+      .navigation { height: 67px; }
+      .hero { padding: 69px 0 70px; gap: 18px; }
+      .hero-rail { width: 14px; }
+      .hero-rail-line { min-height: 90px; }
+      h1 { font-size: clamp(38px, 10vw, 54px); }
+      .spectrum { padding-top: 28px; }
+      .tools { padding-bottom: 90px; }
+      .tool-link { padding: 17px; grid-template-columns: 78px minmax(0,1fr) 20px; min-height: 115px; gap: 13px; border-radius: 12px; }
+      .tool-art { width: 78px; height: 76px; padding: 9px; }
+      .tool-title { font-size: 16px; }
+      .tool-description { font-size: 12px; }
+      .tool-category { font-size: 9px; }
+      .tool-arrow { width: 20px; }
+    }
+    @media (max-width: 390px) {
+      .hero { gap: 13px; }
+      .tool-link { grid-template-columns: 64px minmax(0,1fr) 15px; gap: 10px; padding: 12px; }
+      .tool-art { width: 64px; height: 69px; }
+      .tool-title { font-size: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <nav class="wrap nav" aria-label="Main navigation">
-      <a class="brand" href="./" aria-label="Statistics Lab home">
-        <span class="logo" aria-hidden="true">
-          <svg viewBox="0 0 36 32" width="29" height="26" fill="none">
-            <path d="M2 26 H34" stroke="#581c87" stroke-width="1.5"/>
-            <path d="M2 26 C9 26 11 24 14 14 C15.5 8 16.6 5 18 5 C19.4 5 20.5 8 22 14 C25 24 27 26 34 26" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M10 26 C13 21 15 5 18 5 C21 5 23 21 26 26 Z" fill="#c4b5fd" fill-opacity=".65"/>
-          </svg>
-        </span>
-        <span>Statistics Lab</span>
-      </a>
-      <div class="navlinks"><a href="./" aria-current="page">Home</a><a href="#tools">Interactive tools</a></div>
+  <header class="site-header">
+    <nav class="container navigation" aria-label="Main navigation">
+      <a href="./" class="brand" aria-label="Statistics Tools homepage"><span class="brand-star" aria-hidden="true">✳</span><span>Statistics Tools</span></a>
+      <a class="nav-link" href="#tools">Explore</a>
     </nav>
   </header>
-  <section class="hero">
-    <div class="wrap hero-inner">
-      <span class="eyebrow">Free, interactive statistics learning</span>
-      <h1>Explore statistics.<br>See how it works.</h1>
-      <p>Interactive graphs and hands-on tools to help you investigate statistical concepts, make connections, and learn by doing.</p>
-      <a class="action" href="#tools">Explore the tools <span aria-hidden="true">↓</span></a>
-    </div>
-  </section>
-  <main class="wrap">
-    <section id="tools" aria-labelledby="tools-heading">
-      <div class="section-kicker">Explore</div>
-      <h2 id="tools-heading">Interactive tools</h2>
-      <p class="intro">Choose a tool to explore. Each activity opens in your browser—no software installation or student login required.</p>
-      <!-- LIVE TOOL: Duplicate this article to add a new tool in the future. -->
-      <article class="tool-card">
-        <div class="tool-visual" aria-hidden="true">
-          <svg viewBox="0 0 370 230" role="presentation">
-            <defs>
-              <clipPath id="bellArea">
-                <path d="M16 185 C58 185 78 180 103 156 C132 128 145 45 185 45 C225 45 238 128 267 156 C292 180 312 185 354 185 L354 185 L16 185 Z"/>
-              </clipPath>
-            </defs>
-            <rect x="99" y="30" width="172" height="155" fill="#a78bfa" fill-opacity=".56" clip-path="url(#bellArea)"/>
-            <path d="M16 185 C58 185 78 180 103 156 C132 128 145 45 185 45 C225 45 238 128 267 156 C292 180 312 185 354 185" stroke="#7c3aed" fill="none" stroke-width="3.2" stroke-linecap="round"/>
-            <line x1="16" y1="185" x2="354" y2="185" stroke="#64748b" stroke-width="1.8"/>
-            <path d="M99 185 V159 M271 185 V159" stroke="#6d28d9" stroke-width="2" stroke-dasharray="5 4"/>
-            <circle cx="99" cy="185" r="8" fill="#7c3aed" stroke="#fff" stroke-width="2"/>
-            <circle cx="271" cy="185" r="8" fill="#7c3aed" stroke="#fff" stroke-width="2"/>
-            <text x="185" y="140" fill="#581c87" font-family="Lato,Arial,sans-serif" font-size="25" font-weight="800" text-anchor="middle">95%</text>
-            <text x="185" y="159" fill="#6b21a8" font-family="Lato,Arial,sans-serif" font-size="12" text-anchor="middle">middle area</text>
-            <text x="99" y="208" fill="#581c87" font-family="Lato,Arial,sans-serif" font-size="12" text-anchor="middle">−1.960</text>
-            <text x="271" y="208" fill="#581c87" font-family="Lato,Arial,sans-serif" font-size="12" text-anchor="middle">+1.960</text>
-          </svg>
-        </div>
-        <div class="tool-content">
-          <span class="status">Available now</span>
-          <h3>Standard Normal Curve Explorer</h3>
-          <p>Drag the boundaries of a Standard Normal curve and watch the shaded area and z-scores change. Explore how confidence levels relate to critical values.</p>
-          <a class="primary-link" href="./normal-curve/">Open Normal Curve Explorer <span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
-      <aside class="note">
-        <span aria-hidden="true">✦</span>
-        <div><strong>How to use these tools:</strong> Experiment with the interactive, then return to your Canvas lesson or MyOpenMath assignment to answer the questions. Your activity won't automatically submit answers to your course.</div>
-      </aside>
-    </section>
-    <section class="looking-ahead" aria-labelledby="coming-heading">
-      <div class="section-kicker">Looking ahead</div>
-      <h2 id="coming-heading">More explorations to come</h2>
-      <p class="intro">As new interactives are developed, they will be added here.</p>
-      <div class="coming">
-        <div><strong>Sampling Distributions</strong><span>Planned</span></div>
-        <div><strong>Confidence Intervals</strong><span>Planned</span></div>
-        <div><strong>Correlation &amp; Regression</strong><span>Planned</span></div>
+
+  <main class="container">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-rail" aria-hidden="true"><span class="hero-rail-line"></span><span class="hero-rail-number">01</span></div>
+      <div class="hero-copy">
+        <p class="eyebrow">An interactive collection</p>
+        <h1 id="page-title">Statistics Tools<span class="period">.</span></h1>
+        <div class="spectrum" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
       </div>
     </section>
+
+    <section class="tools" id="tools" aria-labelledby="tools-title">
+      <div class="section-top">
+        <h2 id="tools-title">Interactives</h2>
+        <span class="count">01 available</span>
+      </div>
+      <!-- To add another tool later, duplicate the tool-link element and change its URL, title, description, and topic color. -->
+      <a class="tool-link" href="./normal-curve/" aria-label="Open CI Normal Curve Explorer">
+        <span class="tool-art" aria-hidden="true">
+          <svg viewBox="0 0 100 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 60H96" stroke="#8d849c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M4 60C24 60 33 52 40 29C43.6 17.2 46.8 11 50 11C53.2 11 56.4 17.2 60 29C67 52 76 60 96 60" stroke="#ded1ff" stroke-width="2.7" stroke-linecap="round"/>
+            <path d="M25 60C34 49 41 11 50 11C59 11 66 49 75 60Z" fill="#a78bfa" fill-opacity="0.42"/>
+            <path d="M25 60V49M75 60V49" stroke="#f9a8d4" stroke-width="1.5" stroke-dasharray="2.5 3"/>
+            <circle cx="25" cy="60" r="3.4" fill="#f9a8d4"/>
+            <circle cx="75" cy="60" r="3.4" fill="#f9a8d4"/>
+          </svg>
+        </span>
+        <div>
+          <p class="tool-category">Confidence intervals</p>
+          <h3 class="tool-title">CI Normal Curve Explorer</h3>
+          <p class="tool-description">Explore confidence levels and critical values.</p>
+        </div>
+        <span class="tool-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </span>
+      </a>
+    </section>
   </main>
-  <footer><div class="wrap"><span>Statistics Lab · Interactive tools for introductory statistics</span><span>Free to explore</span></div></footer>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-name">Statistics Tools</span>
+      <span class="footer-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </div>
+  </footer>
 </body>
 </html>
