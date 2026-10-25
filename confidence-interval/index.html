@@ -1,1 +1,209 @@
-
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#faf5ff">
+<meta name="description" content="Student-friendly confidence interval calculator for one population mean (t or z) and one population proportion (z).">
+<title>Confidence Interval Calculator | Statistics Lab</title>
+<style>
+:root{font-family:Lato,"Segoe UI",Arial,sans-serif;color:#263147;background:#fff;font-synthesis:none;--ink:#263147;--muted:#64748b;--purple:#6d28d9;--violet:#ad14d7;--light:#faf5ff;--border:#e9d5ff;--rose:#f472b6}
+*{box-sizing:border-box}
+body{margin:0;padding:22px 16px 45px;line-height:1.5}
+main{max-width:1050px;margin:auto}
+a{color:var(--purple)}
+header.top{padding:18px 22px;border-left:5px solid var(--violet);border-radius:11px;background:#f3f4f6}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.115em;text-transform:uppercase;color:#8750b0;margin:0 0 4px}
+h1{font-size:clamp(23px,3vw,31px);line-height:1.2;color:#581c87;letter-spacing:-.025em;margin:0 0 6px}
+p{margin:0}.subtitle{font-size:14px;color:#475569;max-width:690px}
+.tabs{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0 16px}
+.tab{display:flex;align-items:center;gap:8px;min-height:46px;border:1px solid #ddd6fe;background:#fff;color:#55426b;padding:10px 17px;border-radius:9px;cursor:pointer;font:inherit;font-weight:750;transition:background .16s,border-color .16s}
+.tab .pill{font-size:11px;border-radius:5px;padding:2px 7px;background:#f1e8ff;color:#6d28d9}
+.tab[aria-selected="true"]{border-color:#9155de;color:#581c87;background:#f4ecff;box-shadow:inset 0 0 0 1px #b68afa}
+.tab:hover{background:#faf5ff}
+.layout{display:grid;grid-template-columns:minmax(300px, .93fr) minmax(0, 1.07fr);gap:16px;align-items:start}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:15px;box-shadow:0 3px 18px rgba(32,16,56,.035);overflow:hidden}
+.panelhead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:19px 21px 14px}
+h2{font-size:19px;line-height:1.2;color:#351952;margin:0;letter-spacing:-.02em}
+.panel-sub{color:var(--muted);font-size:12px;margin-top:4px}
+.number{font-size:12px;font-weight:900;letter-spacing:.08em;color:#9058ac;background:#f3e8ff;border-radius:6px;padding:6px 9px}
+.panelbody{padding:0 21px 21px}
+.soft-label{font-size:12px;color:#6b5678;font-weight:800;letter-spacing:.065em;text-transform:uppercase;margin:12px 0 8px}
+.switch{display:flex;border:1px solid #e5e0f0;background:#f7f6fa;border-radius:10px;padding:4px;gap:3px}
+.switch button{border:none;background:transparent;color:#65576e;font:inherit;font-weight:650;font-size:13px;padding:9px 12px;border-radius:7px;cursor:pointer;flex:1;min-height:39px}
+.switch button[aria-pressed="true"]{background:#fff;color:#642da0;box-shadow:0 1px 6px #31124c1a}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 13px;margin:14px 0 15px}
+.field.wide{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:750;color:#334155;margin-bottom:6px}
+label .symbol{color:#7c3aed;font-weight:800}
+input[type="number"],textarea,select{width:100%;height:46px;border:1px solid #d6d6e0;border-radius:9px;padding:9px 12px;background:#fff;color:#1e293b;font:inherit;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}
+input[type="number"]:focus,textarea:focus,select:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #ddd6fe88}
+textarea{resize:vertical;height:144px;min-height:105px;font-size:14px}
+.hint{font-size:12px;color:var(--muted);margin-top:5px}
+.divider{height:1px;background:#ece7f0;margin:19px 0 15px}
+.level-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.level{padding:8px 13px;min-height:39px;border:1px solid #ddd6e8;border-radius:8px;background:#fff;color:#5b5671;font:inherit;font-size:13px;font-weight:750;cursor:pointer}
+.level[aria-pressed="true"]{background:#6d28d9;color:#fff;border-color:#6d28d9}
+.custom-level{display:flex;align-items:center;gap:7px;margin-top:11px;max-width:220px}
+.custom-level input{max-width:98px;height:43px}
+.custom-level span{font-size:13px;color:#64748b}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:20px}
+.primary{border:1px solid #6d28d9;border-radius:9px;background:#6d28d9;color:#fff;min-height:45px;padding:10px 19px;font:inherit;font-weight:800;cursor:pointer}
+.primary:hover{background:#581c87}
+.secondary{border:1px solid #e1d5ee;border-radius:9px;background:#fff;color:#6d28d9;min-height:43px;padding:9px 14px;font:inherit;font-weight:700;cursor:pointer}
+.secondary:hover{background:#faf5ff}
+button:focus-visible{outline:3px solid #0284c7;outline-offset:2px}
+.error{border-radius:9px;padding:10px 12px;background:#fff1f2;color:#9f1239;font-size:13px;margin-top:13px;border:1px solid #fecdd3}
+.result-panel{border-color:#e9d5ff}
+.result-header{padding:18px 21px;background:linear-gradient(110deg,#faf5ff 0%,#fff 96%);border-bottom:1px solid #eee8f6}
+.result-topline{display:flex;justify-content:space-between;gap:9px;align-items:center}
+.result-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.095em;color:#7c3aed;font-weight:800}
+.result-type{font-size:12px;color:#766986;background:#fff;border:1px solid #e9d5ff;border-radius:99px;padding:4px 9px}
+.result-title{font-size:15px;color:#475569;margin:8px 0 1px;font-weight:650}
+.interval{font-size:clamp(24px,3.2vw,32px);font-weight:850;line-height:1.3;color:#581c87;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin:2px 0 7px;overflow-wrap:anywhere}
+.interval-caption{font-size:13px;color:#64748b}
+.results-content{padding:18px 21px 22px}
+.metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.metric{border:1px solid #ece7f4;background:#fff;border-radius:10px;padding:11px 9px}
+.metric .k{font-size:11px;color:#6b6476;font-weight:650;line-height:1.35}
+.metric .v{font-size:19px;line-height:1.4;color:#45216c;font-weight:800;font-variant-numeric:tabular-nums;margin-top:3px;overflow-wrap:anywhere}
+.chart{margin-top:16px;border:1px solid #eee3fa;background:linear-gradient(180deg,#fcfaff,#fff);border-radius:11px;padding:7px 7px 0}
+.chart svg{display:block;width:100%;height:auto}
+.axis-caption{font-size:11px;color:#68768c;text-align:center;padding:0 0 8px}
+.details{margin-top:15px;border:1px solid #e9d5ff;border-radius:11px;background:#fdfbff;padding:0 13px}
+.details summary{padding:13px 3px;color:#622892;font-size:14px;font-weight:800;cursor:pointer;user-select:none}
+.steps{padding:0 3px 14px;color:#42516a;font-size:13px;line-height:1.85}
+.steps strong{color:#522077}
+.explain{background:#f3f8ff;border:1px solid #dbeafe;border-radius:10px;padding:13px 15px;font-size:13px;margin-top:15px;color:#334155;line-height:1.7}
+.explain .heading{font-weight:800;color:#1d4c83;margin-bottom:4px}
+.note{font-size:12px;color:#637188;line-height:1.6;padding-top:10px}
+.warning{border-radius:10px;background:#fff9e8;border:1px solid #fde68a;color:#854d0e;padding:11px 13px;font-size:12px;margin-top:12px;line-height:1.6}
+.success{font-size:12px;color:#16794c;font-weight:700;min-height:18px}
+.hidden{display:none!important}
+.sr-only{position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+footer{margin:18px 0;color:#94a3b8;text-align:center;font-size:11px}
+@media(max-width:750px){body{padding:10px 10px 25px}.layout{grid-template-columns:minmax(0,1fr)}.tab{flex:1;min-width:160px;justify-content:center}.tabs{gap:7px}.panelhead{padding:16px 17px 11px}.panelbody,.results-content{padding:0 17px 18px}.results-content{padding-top:15px}.result-header{padding:16px 17px}}
+@media(max-width:420px){.tab{font-size:12px;padding:8px;min-width:100%}.fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}.interval{font-size:23px}.metric .v{font-size:16px}.metric .k{font-size:10px}.metric{padding:9px 7px}header.top{padding:14px 16px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+<p class="eyebrow">Statistics Lab · Inference tools</p>
+<h1>Confidence Interval Calculator</h1>
+<p class="subtitle">Enter your sample information, choose a confidence level, and see the interval, margin of error, and calculations—all in one place.</p>
+</header>
+<nav class="tabs" aria-label="Confidence interval method" role="tablist">
+<button class="tab" type="button" role="tab" id="tab-t" data-mode="t" aria-selected="true"><span>One mean</span><span class="pill">t</span></button>
+<button class="tab" type="button" role="tab" id="tab-zmean" data-mode="zmean" aria-selected="false"><span>One mean</span><span class="pill">z</span></button>
+<button class="tab" type="button" role="tab" id="tab-prop" data-mode="prop" aria-selected="false"><span>One proportion</span><span class="pill">z</span></button>
+</nav>
+<div class="layout">
+<section class="panel" aria-labelledby="inputs-title">
+<div class="panelhead"><div><h2 id="inputs-title">Your sample</h2><p class="panel-sub" id="mode-description">Population standard deviation unknown · use t</p></div><span class="number">01 / INPUT</span></div>
+<div class="panelbody">
+<div id="mean-section">
+<p class="soft-label">How would you like to enter data?</p>
+<div class="switch" role="group" aria-label="Sample entry method"><button type="button" class="mean-source" data-source="summary" aria-pressed="true">Summary statistics</button><button type="button" class="mean-source" data-source="raw" aria-pressed="false">Raw sample data</button></div>
+<div id="mean-summary" class="fields">
+<div class="field"><label for="mean-n">Sample size <span class="symbol">n</span></label><input type="number" id="mean-n" value="25" min="2" max="100000" step="1" inputmode="numeric"></div>
+<div class="field"><label for="mean-x">Sample mean <span class="symbol">x̄</span></label><input type="number" id="mean-x" value="167.6" step="any" inputmode="decimal"></div>
+<div class="field wide"><label for="mean-s" id="spread-label">Sample standard deviation <span class="symbol">s</span></label><input type="number" id="mean-s" value="11.6" min="0" step="any" inputmode="decimal"><p class="hint" id="spread-hint">Use the sample standard deviation, not the population standard deviation.</p></div>
+</div>
+<div id="mean-raw" class="hidden">
+<div class="fields"><div class="field wide"><label for="raw-data">Enter sample observations</label><textarea id="raw-data" placeholder="e.g. 20.6, 21.5, 20.6, 21.2">20.6, 21.5, 20.6, 21.2</textarea><p class="hint" id="raw-hint">Separate values with commas, spaces, or new lines. We'll calculate n, x̄, and s for you.</p></div></div>
+<div id="raw-sigma" class="field hidden"><label for="raw-sigma-value">Known population standard deviation <span class="symbol">σ</span></label><input type="number" id="raw-sigma-value" value="12" min="0" step="any"><p class="hint">For a z-interval, σ must be known independently of this sample.</p></div>
+</div>
+</div>
+<div id="prop-section" class="hidden">
+<p class="soft-label">How would you like to enter data?</p>
+<div class="switch" role="group" aria-label="Proportion entry method"><button class="prop-source" type="button" data-psource="counts" aria-pressed="true">Successes &amp; sample size</button><button class="prop-source" type="button" data-psource="phat" aria-pressed="false">Sample proportion &amp; n</button></div>
+<div class="fields"><div class="field" id="successes-field"><label for="successes">Number of successes <span class="symbol">x</span></label><input type="number" id="successes" value="320" min="0" max="100000" step="1"></div><div class="field hidden" id="phat-field"><label for="phat">Sample proportion <span class="symbol">p̂</span></label><input type="number" id="phat" value="0.4" min="0" max="1" step="any"></div><div class="field"><label for="prop-n">Sample size <span class="symbol">n</span></label><input type="number" id="prop-n" value="800" min="1" max="100000" step="1"></div></div>
+<p class="hint">“Success” means the response or outcome you're estimating, not necessarily something positive.</p>
+</div>
+<div class="divider"></div>
+<p class="soft-label">Confidence level</p>
+<div class="level-row" role="group" aria-label="Common confidence levels">
+<button type="button" class="level" data-level="80" aria-pressed="false">80%</button>
+<button type="button" class="level" data-level="90" aria-pressed="false">90%</button>
+<button type="button" class="level" data-level="95" aria-pressed="true">95%</button>
+<button type="button" class="level" data-level="98" aria-pressed="false">98%</button>
+<button type="button" class="level" data-level="99" aria-pressed="false">99%</button>
+</div>
+<div class="custom-level"><label for="confidence" style="margin:0;white-space:nowrap">Or enter</label><input id="confidence" aria-label="Confidence level in percent" type="number" min="1" max="99.9" step="any" value="95"><span>% confidence</span></div>
+<div class="actions"><button type="button" class="primary" id="calculate">Calculate interval</button><button type="button" class="secondary" id="reset">Reset example</button></div>
+<div id="error" class="error hidden" role="alert"></div>
+</div>
+</section>
+<section class="panel result-panel" aria-labelledby="result-heading">
+<div class="result-header">
+<div class="result-topline"><span class="result-kicker">Your confidence interval</span><span class="result-type" id="result-method">one-mean t</span></div>
+<p class="result-title" id="result-heading">95% confidence interval</p>
+<div class="interval" id="interval" aria-live="polite">(162.812, 172.388)</div>
+<p class="interval-caption" id="interval-caption">Estimated range for the population mean μ</p>
+</div>
+<div class="results-content">
+<div class="metric-grid">
+<div class="metric"><div class="k" id="stat-label">Sample mean x̄</div><div class="v" id="stat-value">167.600</div></div>
+<div class="metric"><div class="k" id="critical-label">Critical value t*</div><div class="v" id="critical-value">2.064</div></div>
+<div class="metric"><div class="k">Margin of error E</div><div class="v" id="margin-value">4.788</div></div>
+</div>
+<div class="chart" aria-label="Central confidence area under the reference distribution">
+<svg viewBox="0 0 560 230" role="img" id="curve" aria-labelledby="curve-title curve-desc"><title id="curve-title">Critical values on a distribution</title><desc id="curve-desc">Shaded central 95 percent with symmetric cutoff values</desc><defs><clipPath id="bell-clip"><path id="bell-shape"/></clipPath></defs><path id="tail-shape" fill="#e5e7eb"/><rect id="middle-fill" y="10" height="175" fill="#c7b0f5" fill-opacity=".8" clip-path="url(#bell-clip)"/><path id="curve-line" fill="none" stroke="#6d28d9" stroke-width="3" stroke-linecap="round"/><line x1="30" y1="182" x2="530" y2="182" stroke="#94a3b8" stroke-width="1.5"/><g id="cut-lines"></g><text x="280" y="106" font-size="26" font-weight="850" text-anchor="middle" fill="#581c87" id="middle-label">95%</text><text x="280" y="219" font-size="12" text-anchor="middle" fill="#64748b" id="axis-label">t-score (df = 24)</text></svg>
+<div class="axis-caption">The shaded area matches your confidence level. The endpoints are critical z or t values.</div>
+</div>
+<div class="explain"><div class="heading">Interpretation</div><p id="interpretation">We are 95% confident that the population mean is between 162.812 and 172.388.</p></div>
+<div class="warning hidden" id="condition-warning"></div>
+<details class="details" open><summary>Show calculations</summary><div id="steps" class="steps"></div></details>
+<div class="actions" style="margin-top:13px"><button type="button" class="secondary" id="copy">Copy result</button><span id="copy-status" class="success" role="status" aria-live="polite"></span></div>
+<p class="note" id="assumptions">Check that the sample was randomly selected and observations are independent. For small samples, the population should be approximately Normal, without strong skew or extreme outliers.</p>
+</div>
+</section>
+</div>
+<footer>Statistics Lab · Educational tool · Confidence intervals estimate population parameters, not individual observations.</footer>
+</main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+let mode='t',meanSource='summary',propSource='counts';
+const gammaCoefficients=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.6150291621406,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+function logGamma(z){if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=gammaCoefficients[0];for(let i=1;i<gammaCoefficients.length;i++)x+=gammaCoefficients[i]/(z+i);const t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);}
+function betaFrac(a,b,x){const EPS=2e-14,FPMIN=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<FPMIN)d=FPMIN;d=1/d;let h=d;for(let m=1;m<=250;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;const step=d*c;h*=step;if(Math.abs(step-1)<EPS)break;}return h;}
+function regIncBeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));const v=x<(a+1)/(a+b+2)?bt*betaFrac(a,b,x)/a:1-bt*betaFrac(b,a,1-x)/b;return Math.max(0,Math.min(1,v));}
+function tCDF(t,df){if(t===0)return .5;const x=df/(df+t*t),part=.5*regIncBeta(x,df/2,.5);return t>=0?1-part:part;}
+function invTCDF(p,df){if(p<=0||p>=1)throw Error('Confidence level must be between 0 and 100%.');if(p<.5)return -invTCDF(1-p,df);let low=0,high=1;while(tCDF(high,df)<p&&high<1e12)high*=2;for(let i=0;i<62;i++){const mid=(low+high)/2;if(tCDF(mid,df)<p)low=mid;else high=mid;}return (low+high)/2;}
+function invNorm(p){if(p<=0||p>=1)throw Error('The requested probability is outside the supported range.');const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239],b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],c=[-.007784894002430293,-.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],d=[.007784695709041462,.3224671290700398,2.445134137142996,3.754408661907416];let x,q,r;if(p<.02425){q=Math.sqrt(-2*Math.log(p));x=(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}else if(p>1-.02425){q=Math.sqrt(-2*Math.log1p(-p));x=-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}else{q=p-.5;r=q*q;x=(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}return x;}
+function val(id){const s=$(id).value.trim();if(!s)throw Error('Please fill in all required fields.');const v=Number(s);if(!Number.isFinite(v))throw Error('Enter valid numeric values.');return v;}
+function count(id,min){const v=val(id);if(!Number.isInteger(v)||v<min||v>100000)throw Error('Sample sizes and counts must be whole numbers from '+min+' to 100,000.');return v;}
+const fixed=(v,d=3)=>Number(v).toFixed(d);
+function estimateStats(list){let n=list.length,mean=0,m2=0;list.forEach((x,i)=>{const delta=x-mean;mean+=delta/(i+1);m2+=delta*(x-mean);});return {n,mean,s:n>1?Math.sqrt(Math.max(0,m2/(n-1))):NaN};}
+function data(){if(mode==='prop'){const n=count('prop-n',1);let p,x;if(propSource==='counts'){x=count('successes',0);if(x>n)throw Error('The number of successes cannot be greater than the sample size.');p=x/n;}else{p=val('phat');if(p<0||p>1)throw Error('The sample proportion must be between 0 and 1.');x=p*n;}return {n,p,x};}
+let n,mean,s;if(meanSource==='raw'){const tokens=$('raw-data').value.split(/[\s,;]+/).filter(Boolean);if(!tokens.length)throw Error('Enter at least two sample observations.');if(tokens.length>100000)throw Error('Please use a sample with at most 100,000 values.');const values=tokens.map(v=>Number(v));if(values.some(v=>!Number.isFinite(v)))throw Error('Raw sample data must contain only numbers separated by commas, spaces, or new lines.');({n,mean,s}=estimateStats(values));if(mode==='zmean')s=val('raw-sigma-value');}else{n=count('mean-n',mode==='t'?2:1);mean=val('mean-x');s=val('mean-s');}
+if(n<(mode==='t'?2:1))throw Error(mode==='t'?'A t-interval requires at least two sample observations.':'Enter at least one observation.');if(!(s>0))throw Error('The '+(mode==='t'?'sample':'population')+' standard deviation must be greater than zero.');return {n,mean,s};}
+const names={t:'One mean · t',zmean:'One mean · z',prop:'One proportion · z'};
+const descriptions={t:'Population standard deviation unknown · use t',zmean:'Population standard deviation known · use z',prop:'Population proportion · use z'};
+function updateMode(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.mode===mode)));$('mode-description').textContent=descriptions[mode];$('mean-section').classList.toggle('hidden',mode==='prop');$('prop-section').classList.toggle('hidden',mode!=='prop');const z=mode==='zmean';$('spread-label').innerHTML=z?'Known population standard deviation <span class="symbol">σ</span>':'Sample standard deviation <span class="symbol">s</span>';$('spread-hint').textContent=z?'Enter the population standard deviation σ, which must be known independently of this sample.':'Use the sample standard deviation, not the population standard deviation.';$('raw-sigma').classList.toggle('hidden',!z);$('raw-hint').textContent=z?'Separate values with commas, spaces, or new lines. We will calculate n and x̄. Enter the known population σ below.':'Separate values with commas, spaces, or new lines. We will calculate n, x̄, and s.';$('mean-summary').classList.toggle('hidden',meanSource==='raw');$('mean-raw').classList.toggle('hidden',meanSource!=='raw');document.querySelectorAll('.mean-source').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.source===meanSource)));document.querySelectorAll('.prop-source').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.psource===propSource)));$('successes-field').classList.toggle('hidden',propSource!=='counts');$('phat-field').classList.toggle('hidden',propSource!=='phat');}
+function curveDraw(critical,confidence,df){const svg=$('curve'),left=30,right=530,mid=280,base=182,range=Math.max(3.8,critical*1.2),scale=250/range;const y=t=>{let ratio;if(df){ratio=Math.pow(1+t*t/df,-(df+1)/2);}else{ratio=Math.exp(-.5*t*t);}return base-134*ratio;};const xp=t=>mid+t*scale;let p='';for(let i=0;i<=360;i++){let t=-range+2*range*i/360;p+=(i?'L':'M')+fixed(xp(t),2)+','+fixed(y(t),2);}const closed=`M${left},${base} ${p.replace(/^M/,'L')} L${right},${base} Z`;$('tail-shape').setAttribute('d',closed);$('bell-shape').setAttribute('d',closed);$('curve-line').setAttribute('d',p);$('middle-fill').setAttribute('x',xp(-critical));$('middle-fill').setAttribute('width',2*critical*scale);$('middle-label').textContent=fixed(confidence,Number.isInteger(confidence)?0:1)+'%';$('axis-label').textContent=df?'t-score · df = '+df:'z-score';const line=`<line x1="${xp(-critical)}" x2="${xp(-critical)}" y1="${y(-critical)}" y2="${base}" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="4 4"/><line x1="${xp(critical)}" x2="${xp(critical)}" y1="${y(critical)}" y2="${base}" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="4 4"/><circle cx="${xp(-critical)}" cy="${base}" r="4" fill="#7c3aed"/><circle cx="${xp(critical)}" cy="${base}" r="4" fill="#7c3aed"/><text x="${xp(-critical)}" y="200" text-anchor="middle" font-size="13" font-weight="750" fill="#581c87">−${fixed(critical)}</text><text x="${xp(critical)}" y="200" text-anchor="middle" font-size="13" font-weight="750" fill="#581c87">+${fixed(critical)}</text>`;$('cut-lines').innerHTML=line;$('curve-desc').textContent=`Central ${fixed(confidence,1)} percent between ${df?'t':'z'} values minus ${fixed(critical)} and plus ${fixed(critical)}.`;}
+function line(container,label,value){const p=document.createElement('div');const strong=document.createElement('strong');strong.textContent=label+' ';p.append(strong,document.createTextNode(value));container.appendChild(p);}
+let copyText='';
+function calculate(){const err=$('error');err.classList.add('hidden');$('copy-status').textContent='';try{const conf=val('confidence');if(conf<1||conf>99.9)throw Error('Enter a confidence level between 1% and 99.9%.');const alpha=1-conf/100,info=data(),df=mode==='t'?info.n-1:null,critical=df?invTCDF(1-alpha/2,df):invNorm(1-alpha/2),prop=mode==='prop',center=prop?info.p:info.mean,se=prop?Math.sqrt(center*(1-center)/info.n):info.s/Math.sqrt(info.n),E=critical*se,lo=center-E,hi=center+E;if(!Number.isFinite(E))throw Error('Unable to calculate with these inputs. Please review your data.');const label=prop?'population proportion p':'population mean μ';const fmt=prop?v=>fixed(v,4):v=>fixed(v,3),fc=v=>fixed(v,3),interval=`(${fmt(lo)}, ${fmt(hi)})`;
+$('result-method').textContent=names[mode];$('result-heading').textContent=`${fixed(conf,Number.isInteger(conf)?0:1)}% confidence interval`;$('interval').textContent=interval;$('interval-caption').textContent='Estimated range for the '+label;$('stat-label').textContent=prop?'Sample proportion p̂':'Sample mean x̄';$('stat-value').textContent=fmt(center);$('critical-label').textContent=`Critical value ${df?'t*':'z*'}`;$('critical-value').textContent=fc(critical);$('margin-value').textContent=fmt(E);
+$('interpretation').textContent=`We are ${fixed(conf,Number.isInteger(conf)?0:1)}% confident that the ${label} is between ${fmt(lo)} and ${fmt(hi)}${prop?` (about ${fixed(100*lo,2)}% to ${fixed(100*hi,2)}%)`:''}.`;
+curveDraw(critical,conf,df);
+const steps=$('steps');steps.replaceChildren();line(steps,'Confidence level:',`${fixed(conf,Number.isInteger(conf)?0:1)}%; α = ${fixed(alpha,4)}; α/2 = ${fixed(alpha/2,4)}`);if(prop){line(steps,'Sample proportion:',`p̂ = ${fmt(info.p)}${propSource==='counts'?` = ${info.x} / ${info.n}`:''}`);line(steps,'Standard error:',`SE(p̂) = √[p̂(1 − p̂)/n] = ${fixed(se,5)}`);}else{line(steps,'Sample statistics:',`n = ${info.n}, x̄ = ${fmt(info.mean)}, ${df?'s':'σ'} = ${fmt(info.s)}`);if(df)line(steps,'Degrees of freedom:',`df = n − 1 = ${df}`);line(steps,'Standard error:',`SE(x̄) = ${df?'s':'σ'}/√n = ${fixed(se,5)}`);}line(steps,'Critical value:',`${df?'t*':'z*'} = ${fixed(critical,5)}`);line(steps,'Margin of error:',`E = ${fixed(critical,5)} × ${fixed(se,5)} = ${fixed(E,5)}`);line(steps,'Confidence interval:',`${prop?'p̂':'x̄'} ± ${df?'t*':'z*'} × SE = ${fmt(center)} ± ${fmt(E)} = ${interval}`);
+const caution=$('condition-warning');caution.classList.add('hidden');const assumptions=$('assumptions');if(prop){const successes=info.x,failures=info.n-info.x;if(successes<10||failures<10){caution.textContent=`Caution: the usual one-proportion z-interval may not be reliable here. The sample has ${fixed(successes,2)} successes and ${fixed(failures,2)} failures; both should generally be at least 10. Consider a different interval method.`;caution.classList.remove('hidden');}assumptions.textContent='Before using this interval, check random/independent sampling, at least 10 successes and 10 failures, and the 10% condition when sampling without replacement. This uses the introductory one-proportion z-interval.';}else if(df){assumptions.textContent='Before using this t-interval, check random/independent sampling. With small samples, the population should be approximately Normal; check for strong skew or extreme outliers. If sampling without replacement, check the 10% condition.';}else{assumptions.textContent='Before using this z-interval, population σ must truly be known. Check random/independent sampling and Normality or an adequately large sample without severe skew/outliers.';}
+copyText=`${fixed(conf,Number.isInteger(conf)?0:1)}% confidence interval for the ${label}: ${interval}. Point estimate: ${fmt(center)}. ${df?'t*':'z*'} = ${fixed(critical,3)}. SE = ${fixed(se,5)}. Margin of error = ${fmt(E)}. ${$('interpretation').textContent}`;return {lo,hi,critical,se,E,center,df,n:info.n,conf,mode};}catch(e){err.textContent=e.message;err.classList.remove('hidden');$('result-heading').textContent='Check your inputs';$('interval').textContent='—';$('interval-caption').textContent='Correct the highlighted input issue, then calculate again.';['stat-value','critical-value','margin-value'].forEach(id=>$(id).textContent='—');$('interpretation').textContent='Enter valid values to see the interpretation.';$('steps').replaceChildren();$('condition-warning').classList.add('hidden');copyText='';return null;}}
+function changeLevel(){const c=Number($('confidence').value);document.querySelectorAll('.level').forEach(b=>b.setAttribute('aria-pressed',String(Math.abs(Number(b.dataset.level)-c)<1e-8)));}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;updateMode();calculate();}));
+document.querySelectorAll('.mean-source').forEach(b=>b.addEventListener('click',()=>{meanSource=b.dataset.source;updateMode();calculate();}));
+document.querySelectorAll('.prop-source').forEach(b=>b.addEventListener('click',()=>{propSource=b.dataset.psource;updateMode();calculate();}));
+document.querySelectorAll('.level').forEach(b=>b.addEventListener('click',()=>{$('confidence').value=b.dataset.level;changeLevel();calculate();}));
+$('confidence').addEventListener('input',()=>{changeLevel();});$('confidence').addEventListener('change',calculate);
+$('calculate').addEventListener('click',calculate);
+$('reset').addEventListener('click',()=>{if(mode==='prop'){$('successes').value='320';$('prop-n').value='800';$('phat').value='0.4';propSource='counts';}else if(mode==='zmean'){$('mean-n').value='64';$('mean-x').value='72';$('mean-s').value='12';$('raw-sigma-value').value='12';meanSource='summary';}else{$('mean-n').value='25';$('mean-x').value='167.6';$('mean-s').value='11.6';meanSource='summary';}$('confidence').value='95';changeLevel();updateMode();calculate();});
+$('copy').addEventListener('click',async()=>{if(!copyText)return;try{await navigator.clipboard.writeText(copyText);$('copy-status').textContent='Copied!';}catch(e){const ta=document.createElement('textarea');ta.value=copyText;ta.style.position='fixed';ta.style.top='-9999px';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();$('copy-status').textContent=ok?'Copied!':'Select and copy the result above.';}});
+updateMode();changeLevel();calculate();
+})();
+</script>
+</body>
+</html>
