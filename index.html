@@ -71,6 +71,7 @@
       transition: background 180ms ease, transform 180ms ease;
     }
     .tool-link:hover { background: var(--surface-hover); transform: translateY(-2px); }
+    .tool-link + .tool-link { margin-top: 14px; }
     .tool-art { width: 94px; height: 88px; background: #343045; border-radius: 11px; display: grid; place-items: center; padding: 12px; }
     .tool-art svg { width: 100%; height: auto; }
     .tool-category { margin: 0 0 5px; color: var(--purple); font-size: 10px; font-weight: 600; letter-spacing: .105em; text-transform: uppercase; }
@@ -138,7 +139,7 @@
     <section class="tools" id="tools" aria-labelledby="tools-title">
       <div class="section-top">
         <h2 id="tools-title">Interactives</h2>
-        <span class="count">01 available</span>
+        <span class="count">02 available</span>
       </div>
       <!-- To add another tool later, duplicate the tool-link element and change its URL, title, description, and topic color. -->
       <a class="tool-link" href="./normal-curve/" aria-label="Open CI Normal Curve Explorer">
@@ -156,6 +157,26 @@
           <p class="tool-category">Confidence intervals</p>
           <h3 class="tool-title">CI Normal Curve Explorer</h3>
           <p class="tool-description">Explore confidence levels and critical values.</p>
+        </div>
+        <span class="tool-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </span>
+      </a>
+      <a class="tool-link" href="./t-distribution/" aria-label="Open Student's t Curve Explorer">
+        <span class="tool-art" aria-hidden="true">
+          <svg viewBox="0 0 100 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 60H96" stroke="#8d849c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M4 59C17 57.5 28 47 37 32C43 22 47 19 50 19C53 19 57 22 63 32C72 47 83 57.5 96 59" stroke="#ded1ff" stroke-width="2.7" stroke-linecap="round"/>
+            <path d="M25 60C30 53 34 37 40 28C44 22 47 19 50 19C53 19 56 22 60 28C66 37 70 53 75 60Z" fill="#a78bfa" fill-opacity="0.42"/>
+            <path d="M25 60V49M75 60V49" stroke="#f9a8d4" stroke-width="1.5" stroke-dasharray="2.5 3"/>
+            <circle cx="25" cy="60" r="3.4" fill="#f9a8d4"/>
+            <circle cx="75" cy="60" r="3.4" fill="#f9a8d4"/>
+          </svg>
+        </span>
+        <div>
+          <p class="tool-category">Confidence intervals</p>
+          <h3 class="tool-title">Student's t Curve Explorer</h3>
+          <p class="tool-description">Enter a sample size to explore t critical values and confidence levels.</p>
         </div>
         <span class="tool-arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
