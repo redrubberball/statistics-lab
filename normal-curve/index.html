@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#faf5ff">
 <title>Standard Normal Curve | Statistics Lab</title>
+<script>
+(function(){try{var p=localStorage.getItem('statistics-lab-theme')||'system';var d=p==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;document.documentElement.setAttribute('data-theme',d)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();
+</script>
 <style>
 :root{font-family:Lato,"Segoe UI",Arial,sans-serif;color:#172033;background:#fff;font-synthesis:none}
 *{box-sizing:border-box}
@@ -37,13 +40,57 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .screen-reader-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:560px){body{padding:8px}.top{padding:13px}.topline{margin:12px 0 9px}.chart-card{padding:2px}.controls{padding:11px}.controlrow{align-items:stretch}.buttons{width:100%}.buttons button{flex:1;min-width:0}.standard{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Shared color-theme picker: consistently placed on every Statistics Lab page. */
+.sl-theme-switch{display:inline-flex;align-self:flex-start;gap:2px;align-items:center;flex:none;padding:3px;border:1px solid var(--theme-border,#ded6e8);border-radius:10px;background:var(--theme-track,#f2edf7);box-shadow:0 1px 3px #18122410}
+.sl-theme-switch>button{font-family:inherit;font-size:11px;font-weight:740;line-height:1.2;min-width:0;min-height:33px;white-space:nowrap;padding:7px 9px;border:0!important;border-radius:7px;background:transparent!important;color:var(--theme-muted,#5f5871)!important;box-shadow:none;cursor:pointer;touch-action:manipulation}
+.sl-theme-switch>button[aria-pressed="true"]{background:var(--theme-active,#ffffff)!important;color:var(--theme-active-text,#5e2590)!important;box-shadow:0 1px 5px #00000023}
+.sl-theme-switch>button:hover:not([aria-pressed="true"]){background:var(--theme-hover,#e9e1f2)!important}
+.sl-theme-switch>button:focus-visible{outline:3px solid #0ea5e9!important;outline-offset:2px}
+html[data-theme="dark"]{--theme-border:#4c445d;--theme-track:#272537;--theme-muted:#c4bed5;--theme-active:#4b3b69;--theme-active-text:#f8ecff;--theme-hover:#38334a}
+html[data-theme="light"]{--theme-border:#ded6e8;--theme-track:#f2edf7;--theme-muted:#5f5871;--theme-active:#fff;--theme-active-text:#5e2590;--theme-hover:#e9e1f2}
+@media(max-width:450px){.sl-theme-switch>button{font-size:10px;padding:7px 6px}}
+
+
+/* Dark-mode overrides for both standalone curve explorers; keep chart data unchanged. */
+html[data-theme="dark"]{color-scheme:dark;background:#11141e;color:#f3f0fa}
+html[data-theme="dark"] body{background:#11141e;color:#f3f0fa}
+html[data-theme="dark"] .top{background:#222536;border-left-color:#ca8ce9}
+html[data-theme="dark"] h1{color:#e3c4ff}
+html[data-theme="dark"] .subtitle,html[data-theme="dark"] .controlhint,html[data-theme="dark"] .hint,html[data-theme="dark"] .standard{color:#bdc4d3}
+html[data-theme="dark"] .chart-card{background:#1b2030;border-color:#50445d}
+html[data-theme="dark"] .controls{background:#242237;border-color:#524261}
+html[data-theme="dark"] .controltitle,html[data-theme="dark"] .sample-control label{color:#e4c7ff}
+html[data-theme="dark"] .sample-control input{background:#181d2b;color:#f4efff;border-color:#8b77aa}
+html[data-theme="dark"] .df-tag{background:#343246;color:#e4ddf2}
+html[data-theme="dark"] .buttons button{background:#332c48;color:#f3e8ff;border-color:#8267b2}
+html[data-theme="dark"] .buttons button:hover{background:#44365e}
+html[data-theme="dark"] #tailFill{fill:#373b4c}
+html[data-theme="dark"] #middleRect{fill:#9474d1;fill-opacity:.83}
+html[data-theme="dark"] #curveStroke{stroke:#c9a3fb}
+html[data-theme="dark"] #curve > line,html[data-theme="dark"] #axisTicks line{stroke:#99a4b7}
+html[data-theme="dark"] #leftMarker line,html[data-theme="dark"] #rightMarker line{stroke:#c4a0fc}
+html[data-theme="dark"] .chart-percent,html[data-theme="dark"] .cutoff-label{fill:#f0d5ff}
+html[data-theme="dark"] .axis-number,html[data-theme="dark"] #curve>text:not(#middleLabel){fill:#bdc6d6}
+html[data-theme="dark"] .handle-ring{fill:#9272e4;stroke:#161927}
+/* Header layout stays small enough for embedded MyOpenMath frames. */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.top-copy{min-width:0;flex:1}
+@media(max-width:560px){.top{gap:10px;flex-wrap:wrap}.top>.sl-theme-switch{margin-left:auto}}
+
 </style>
 </head>
 <body>
 <main>
 <header class="top">
-<h1>Standard Normal Curve</h1>
+<div class="top-copy"><h1>Standard Normal Curve</h1>
 <p class="subtitle">Drag either purple boundary to explore the area under the Standard Normal curve. Both boundaries move together.</p>
+</div>
+<div class="sl-theme-switch" role="group" aria-label="Color theme">
+<button type="button" data-sl-theme="light" aria-pressed="false" title="Use light appearance">☀ <span>Light</span></button>
+<button type="button" data-sl-theme="dark" aria-pressed="false" title="Use dark appearance">☾ <span>Dark</span></button>
+<button type="button" data-sl-theme="system" aria-pressed="false" title="Follow device appearance">◐ <span>Auto</span></button>
+</div>
 </header>
 <div class="topline"><p class="standard">Standard Normal: mean = 0, SD = 1</p></div>
 <section class="chart-card" aria-label="Interactive standard Normal distribution">
@@ -170,6 +217,20 @@ svg.addEventListener('pointerup',finishDrag);svg.addEventListener('pointercancel
 el('decrease').addEventListener('click',()=>fineAdjust(-1));
 el('increase').addEventListener('click',()=>fineAdjust(1));
 setArea(50);
+})();
+</script>
+<script>
+(function(){'use strict';
+var key='statistics-lab-theme',media=window.matchMedia('(prefers-color-scheme: dark)'),memoryPref='system';
+function preference(){try{var p=localStorage.getItem(key);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memoryPref}}
+function render(){var p=preference(),resolved=p==='system'?(media.matches?'dark':'light'):p;
+document.documentElement.setAttribute('data-theme',resolved);
+document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slTheme===p))});
+var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',resolved==='dark'?'#14151f':'#fbfafc');}
+document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.addEventListener('click',function(){memoryPref=b.dataset.slTheme;try{localStorage.setItem(key,memoryPref)}catch(e){};render()})});
+if(media.addEventListener)media.addEventListener('change',render);else if(media.addListener)media.addListener(render);
+window.addEventListener('storage',function(e){if(e.key===key)render()});
+render();
 })();
 </script>
 </body>
