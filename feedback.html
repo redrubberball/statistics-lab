@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feedback & Suggestions | Statistics Lab</title><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#7059e8">
+<style>:root{color-scheme:light dark}*{box-sizing:border-box}body{margin:0;background:#f7f8fc;font:16px/1.6 Lato,'Segoe UI',Arial,sans-serif;color:#182440}.top{height:5px;background:linear-gradient(90deg,#ed4895,#f7c44a,#12b78d,#20b1e4,#9850e9)}main{max-width:730px;margin:0 auto;padding:26px 19px 55px}.back{color:#5633a6;font-weight:750;text-decoration:none}.card{margin-top:30px;background:white;border:1px solid #dce3f0;border-radius:17px;padding:24px;box-shadow:0 12px 32px #16234c0a}h1{line-height:1.15;letter-spacing:-.03em;font-size:clamp(27px,6vw,38px)}p{color:#596681}.btn{display:inline-block;background:#683bcc;color:white;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:800;margin-top:8px}.btn[hidden]{display:none}small{color:#596681}.tip{font-size:14px;border-left:4px solid #a46ae2;padding-left:12px;margin-top:20px}@media(prefers-color-scheme:dark){body{background:#111827;color:#f1f5ff}.card{background:#1b2536;border-color:#394961}p,small{color:#b9c6db}.back{color:#d4baff}}</style></head>
+<body><div class="top"></div><main><a class="back" href="./">← Statistics Lab</a><div class="card"><h1>💬 Feedback &amp; Suggestions</h1><p>Notice something incorrect, confusing, or not working? Have an idea for a new tool or feature? I'd love to hear about it!</p><p id="soon">The feedback form will be linked here soon.</p><a class="btn" id="form-link" target="_blank" rel="noopener noreferrer" hidden>Open feedback form ↗</a><p class="tip">For course-specific questions about grades, homework, or deadlines, use Canvas. Please don't put student IDs, grades, or private information in website feedback.</p></div></main>
+<script>
+// ONE-LINE SETUP: paste your published Google Forms response URL inside these quotes.
+const FEEDBACK_FORM_URL = '';
+if (/^https:\/\//.test(FEEDBACK_FORM_URL)) {
+ const link=document.getElementById('form-link'); link.href=FEEDBACK_FORM_URL;link.hidden=false;
+ document.getElementById('soon').textContent='Use the form below to report an error, suggest an improvement, or share an idea.';
+}
+</script></body></html>
