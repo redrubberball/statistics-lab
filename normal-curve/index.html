@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#faf5ff">
-<title>Standard Normal Curve | Statistics Lab</title>
+<meta name="description" content="Explore Standard Normal critical values for confidence intervals. Use confidence level presets or drag the symmetric cutoff handles.">
+<title>Normal Critical Value Explorer | Statistics Lab</title>
 <script>
 (function(){try{var p=localStorage.getItem('statistics-lab-theme')||'system';var d=p==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;document.documentElement.setAttribute('data-theme',d)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();
 </script>
@@ -78,13 +79,49 @@ html[data-theme="dark"] .handle-ring{fill:#9272e4;stroke:#161927}
 .top-copy{min-width:0;flex:1}
 @media(max-width:560px){.top{gap:10px;flex-wrap:wrap}.top>.sl-theme-switch{margin-left:auto}}
 
+
+/* Consistent navigation for Home Screen / standalone browsing. */
+.sl-home-nav{margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap}
+.sl-home-link{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid var(--theme-border,#d9d1e4);border-radius:9px;background:var(--theme-track,#f2edf7);color:var(--theme-active-text,#5e2590);font:700 13px/1.3 Lato,"Segoe UI",Arial,sans-serif;text-decoration:none}
+.sl-home-link:hover,.sl-home-link:focus-visible{outline:2px solid #a66de4;outline-offset:1px}.sl-full-link{font:700 12px/1.35 Lato,"Segoe UI",Arial,sans-serif;color:#6d28d9;text-decoration:none;padding:8px 5px}html[data-theme="dark"] .sl-full-link{color:#dfbfff}.sl-full-link:hover,.sl-full-link:focus-visible{text-decoration:underline}
+html[data-theme="dark"] .sl-home-link{color:#e9d5ff;background:#302941;border-color:#655174}
+
+/* Mobile-first critical value shortcuts and readable numeric outputs. */
+.critical-toolbar{border:1px solid #e9d5ff;background:#fff;border-radius:11px;padding:12px 13px;margin:11px 0 12px}
+.critical-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
+.critical-head strong{font-size:14px;color:#581c87}
+.critical-head span{font-size:11px;color:#657388}
+.quick-levels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.quick-levels button{min-height:44px;min-width:0;padding:7px 3px;border-radius:8px;font-size:13px;font-weight:800}
+.quick-levels button[aria-pressed="true"]{background:#6d28d9;color:#fff;border-color:#6d28d9}
+.critical-results{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;margin-top:10px}
+.critical-results>div{padding:9px 10px;border-radius:9px;background:#f8f5ff;min-width:0}
+.critical-results span{display:block;font-size:11px;color:#646377;line-height:1.25}
+.critical-results strong{display:block;font-size:clamp(14px,1.9vw,20px);font-variant-numeric:tabular-nums;color:#5b218b;white-space:nowrap}
+#curve [data-handle] .hit-zone{r:29}
+html[data-theme="dark"] .critical-toolbar{background:#1b2030;border-color:#50445d}
+html[data-theme="dark"] .critical-head strong,html[data-theme="dark"] .critical-results strong{color:#ecd3ff}
+html[data-theme="dark"] .critical-head span,html[data-theme="dark"] .critical-results span{color:#bdc6d6}
+html[data-theme="dark"] .critical-results>div{background:#30283f}
+html[data-theme="dark"] .quick-levels button[aria-pressed="true"]{background:#8552c6;color:#fff;border-color:#a078d8}
+@media(max-width:560px){
+body{padding:8px 7px}.sl-home-nav{margin-bottom:8px}.top{padding:11px 12px}h1{font-size:19px}.subtitle{font-size:12px;line-height:1.35}
+.topline{margin:8px 0 4px}.critical-toolbar{margin:8px 0;padding:9px}.critical-head span{font-size:10px}
+.critical-results{gap:5px;margin-top:8px}.critical-results>div{padding:8px 6px}.critical-results span{font-size:10px}.critical-results strong{font-size:14px}
+.chart-card{padding:0}.controls{margin-top:9px;padding:9px}.controlhint{font-size:12px}
+#curve [data-handle] .hit-zone{r:49}#curve [data-handle] .handle-ring{r:17}
+.sl-theme-switch>button{min-height:36px}.buttons button{min-height:46px}
+}
+@media(max-width:370px){.critical-head span{display:none}.critical-results strong{font-size:12px}.quick-levels button{font-size:12px;padding:6px 2px}}
+@media(max-width:560px){.top{flex-direction:column;align-items:stretch;gap:6px}.top>.sl-theme-switch{align-self:flex-end;margin-left:0}.top-copy{width:100%}}
 </style>
 </head>
 <body>
 <main>
+<nav class="sl-home-nav" aria-label="Back to Statistics Lab"><a class="sl-home-link" href="../" aria-label="Return to Statistics Lab homepage">← Statistics Lab</a><a class="sl-full-link" href="./" target="_blank" rel="noopener noreferrer">Open in new tab ↗</a></nav>
 <header class="top">
-<div class="top-copy"><h1>Standard Normal Curve</h1>
-<p class="subtitle">Drag either purple boundary to explore the area under the Standard Normal curve. Both boundaries move together.</p>
+<div class="top-copy"><h1>Normal Critical Value Explorer</h1>
+<p class="subtitle">Find z* for a confidence interval. Choose a confidence level or drag the symmetric boundaries to explore.</p>
 </div>
 <div class="sl-theme-switch" role="group" aria-label="Color theme">
 <button type="button" data-sl-theme="light" aria-pressed="false" title="Use light appearance">☀ <span>Light</span></button>
@@ -93,6 +130,21 @@ html[data-theme="dark"] .handle-ring{fill:#9272e4;stroke:#161927}
 </div>
 </header>
 <div class="topline"><p class="standard">Standard Normal: mean = 0, SD = 1</p></div>
+<section class="critical-toolbar" aria-label="Confidence interval critical values">
+<div class="critical-head"><strong>Confidence level</strong><span>Middle shaded area · two equal tails</span></div>
+<div class="quick-levels" role="group" aria-label="Common confidence levels">
+<button type="button" data-confidence="80" aria-pressed="false">80%</button>
+<button type="button" data-confidence="90" aria-pressed="false">90%</button>
+<button type="button" data-confidence="95" aria-pressed="false">95%</button>
+<button type="button" data-confidence="98" aria-pressed="false">98%</button>
+<button type="button" data-confidence="99" aria-pressed="false">99%</button>
+</div>
+<div class="critical-results" aria-label="Calculated critical values">
+<div><span>Critical value</span><strong id="criticalValue">z* = —</strong></div>
+<div><span>Middle area</span><strong id="currentConfidence">—</strong></div>
+<div><span>Each tail</span><strong id="tailProbability">—</strong></div>
+</div>
+</section>
 <section class="chart-card" aria-label="Interactive standard Normal distribution">
 <svg id="curve" viewBox="0 0 760 334" role="group" aria-label="Standard Normal bell curve with two draggable, symmetric cutoff handles">
 <defs><clipPath id="bellClip"><path id="bellShape" d="" /></clipPath></defs>
@@ -200,6 +252,11 @@ function redraw(updateStatus){
   // During pointer drag, replaceChildren is safe; pointer capture is on the SVG, not the handles.
   el('leftMarker').replaceChildren(marker(-1));el('rightMarker').replaceChildren(marker(1));
   el('middleLabel').textContent=pct.toFixed(1)+'%';
+
+  el('criticalValue').textContent=`z* = ${currentZ.toFixed(3)}`;
+  el('currentConfidence').textContent=currentArea.toFixed(1)+'%';
+  el('tailProbability').textContent=((100-currentArea)/2).toFixed(2)+'%';
+  document.querySelectorAll('[data-confidence]').forEach(b=>b.setAttribute('aria-pressed',String(Math.abs(Number(b.dataset.confidence)-currentArea)<0.05)));
   el('decrease').disabled=pct<=(MIN_AREA+0.001);
   el('increase').disabled=pct>=(MAX_AREA-0.06);
   if(updateStatus)el('status').textContent=pct.toFixed(1)+'% shaded between z = −'+currentZ.toFixed(3)+' and +'+currentZ.toFixed(3)+'.';
@@ -214,9 +271,10 @@ svg.addEventListener('pointerdown',event=>{
 svg.addEventListener('pointermove',event=>{if(!dragging)return;event.preventDefault();dragAt(pointerToZ(event));});
 function finishDrag(event){if(!dragging)return;dragging=false;try{if(svg.hasPointerCapture(event.pointerId))svg.releasePointerCapture(event.pointerId);}catch(err){}finishAt(pointerToZ(event));}
 svg.addEventListener('pointerup',finishDrag);svg.addEventListener('pointercancel',finishDrag);svg.addEventListener('lostpointercapture',()=>{if(dragging){dragging=false;svg.classList.remove('magnetized');redraw(true);}});
+document.querySelectorAll('[data-confidence]').forEach(b=>b.addEventListener('click',()=>{svg.classList.remove('magnetized');setArea(Number(b.dataset.confidence));}));
 el('decrease').addEventListener('click',()=>fineAdjust(-1));
 el('increase').addEventListener('click',()=>fineAdjust(1));
-setArea(50);
+setArea(95);
 })();
 </script>
 <script>
