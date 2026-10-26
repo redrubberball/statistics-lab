@@ -8,8 +8,8 @@
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Statistics Lab">
-<meta name="description" content="Statistics Lab: interactive tools for Normal probabilities, critical values, and confidence intervals.">
-<title>Statistics Lab | Interactive Statistics Tools</title>
+<meta name="description" content="Pride in Stats: free interactive statistics tools, real data, and daily statistics.">
+<title>Pride in Stats | Interactive Statistics Lab</title>
 <script>(function(){try{var t=localStorage.getItem('statistics-lab-theme')||'system';var d=t==='system'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):t;document.documentElement.dataset.theme=d;}catch(e){document.documentElement.dataset.theme='light';}})()</script>
 <style>
 :root{color-scheme:light;--page:#f7f8fc;--surface:#fff;--soft:#f6f7fc;--text:#182440;--muted:#596681;--line:#dce3f0;--shadow:0 12px 32px #16234c0a;--theme-track:#eeedfa;--theme-select:#fff;--theme-text:#30416a;--focus:#176eca;--button-ink:#5633a6;--icon-bg:#f3efff}
@@ -34,6 +34,19 @@ html[data-theme="dark"]{color-scheme:dark;--page:#111827;--surface:#1b2536;--sof
 .phone-help{border-top:1px solid var(--line);padding-top:14px;margin-top:13px}
 .phone-help summary{cursor:pointer;font-weight:800;color:var(--button-ink);font-size:12.5px}.phone-help ul{padding-left:18px;margin:11px 0 0;font-size:12px;line-height:1.75;color:var(--muted)}
 @media(max-width:670px){.support-grid{grid-template-columns:1fr}.support-panel{padding:17px}}
+
+/* Make the landing page quicker to scan than the original. */
+.hero{padding:31px 0 18px}.tools{padding:12px 0 22px}.tool-card{min-height:201px;padding:18px 20px 15px}.description{margin:12px 0 13px}
+@media(max-width:740px){.tool-card{padding:15px;min-height:205px}}
+@media(max-width:520px){.hero{padding:24px 2px 16px}.tools{padding:8px 0 19px}.tool-card{min-height:0;padding:14px}}
+/* Small daily data feature; the core tools stay first. */
+.daily-stat{display:flex;align-items:center;gap:18px;justify-content:space-between;border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:17px 19px;margin:0 0 34px;box-shadow:var(--shadow)}
+.daily-stat-main{min-width:0;flex:1}.daily-kicker{color:var(--button-ink);font-size:10px;font-weight:850;letter-spacing:.09em;margin:0 0 5px}.daily-kicker span{font-weight:650;letter-spacing:0;color:var(--muted)}
+.daily-stat h2{font-size:16px;margin:0 0 5px;letter-spacing:-.03em}.daily-context{font-size:13px;margin:0 0 6px}.daily-question{font-size:12.5px;font-weight:650;margin:0 0 6px;color:var(--muted)}.daily-credit{font-size:10.5px;margin:0;color:var(--muted)}.daily-credit a{color:var(--button-ink);font-weight:800}.daily-credit span{margin-left:8px}
+.daily-number{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 13px;width:168px;min-height:90px;flex:none;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:2px}.daily-number strong{font-size:31px;letter-spacing:-.045em;font-variant-numeric:tabular-nums;line-height:1.1}.daily-number span{font-size:10.5px;color:var(--muted);line-height:1.3}
+.site-motto{text-align:center;color:var(--muted);font-size:12px;font-weight:750;padding:0 0 20px}
+@media(max-width:560px){.daily-stat{padding:14px;gap:10px;align-items:flex-start}.daily-number{width:108px;padding:9px 6px;min-height:85px}.daily-number strong{font-size:25px}.daily-number span{font-size:9px}.daily-stat h2{font-size:15px}.daily-context{font-size:12px}.daily-question{font-size:12px}.footer-inner{flex-wrap:wrap}}
+@media(max-width:365px){.daily-stat{flex-direction:column}.daily-number{width:100%;flex-direction:row;align-items:center;gap:9px;min-height:60px}.daily-number span{font-size:11px}}
 </style>
 </head>
 <body>
@@ -41,14 +54,14 @@ html[data-theme="dark"]{color-scheme:dark;--page:#111827;--surface:#1b2536;--sof
 <header class="site-header">
  <div class="wrap header-inner">
   <a class="brand" href="./" aria-label="Statistics Lab home"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M3 23h24M3 22c7 0 8-17 12-17s5 17 12 17" stroke="white" stroke-width="2.3" stroke-linecap="round"/><path d="M16 6c2.6 2.2 4.2 9.8 6.4 13.5H16V6Z" fill="#fff" fill-opacity=".35"/></svg></span>Statistics Lab</a>
-  <div class="nav-side"><a href="#tools">All tools</a><a href="#whats-new">What's New</a><a href="./feedback.html">Feedback</a><div class="theme" role="group" aria-label="Color theme"><button type="button" data-sl-theme="light" aria-pressed="false" title="Light appearance">Light</button><button type="button" data-sl-theme="dark" aria-pressed="false" title="Dark appearance">Dark</button><button type="button" data-sl-theme="system" aria-pressed="false" title="Follow device appearance">Auto</button></div></div>
+  <div class="nav-side"><a href="#tools">All tools</a><a href="./about.html">About &amp; Updates</a><a href="./feedback.html">Feedback</a><div class="theme" role="group" aria-label="Color theme"><button type="button" data-sl-theme="light" aria-pressed="false" title="Light appearance">Light</button><button type="button" data-sl-theme="dark" aria-pressed="false" title="Dark appearance">Dark</button><button type="button" data-sl-theme="system" aria-pressed="false" title="Follow device appearance">Auto</button></div></div>
  </div>
 </header>
 <main class="wrap">
  <section class="hero" aria-labelledby="page-title">
   <p class="hero-eyebrow">Interactive statistics tools</p>
-  <h1 id="page-title">Explore. Calculate. Understand.</h1>
-  <p class="hero-sub">Explore probabilities, critical values, confidence intervals, and real data. Built for learning, checking, and experimenting.</p>
+  <h1 id="page-title">Pride in Stats</h1>
+  <p class="hero-sub">Your interactive Statistics Lab. Explore concepts, check calculations, and investigate real data—one graph at a time.</p>
   <div class="hero-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
  </section>
  <section class="tools" id="tools" aria-labelledby="tools-title">
@@ -77,35 +90,50 @@ html[data-theme="dark"]{color-scheme:dark;--page:#111827;--surface:#1b2536;--sof
   </div>
   <a class="live-teaser" href="./live-data/" aria-label="Open Live Stats in its own page">
    <span class="live-symbol" aria-hidden="true">◉</span>
-   <span class="live-copy"><span class="live-kicker">Real data · Fresh feeds &amp; official snapshots</span><h3>Live Stats: Sports, Elections &amp; More</h3><p>Explore actual scores, official election statistics, recent weather, and earthquakes—one graph at a time.</p></span>
+   <span class="live-copy"><span class="live-kicker">Real data · Scores, weather &amp; more</span><h3>Live Stats: Sports, Weather &amp; More</h3><p>Explore sports first, then weather, elections, and earthquakes—one graph at a time.</p></span>
    <span class="live-today">Explore live data ↗</span>
   </a>
  </section>
- <section class="support-grid" aria-label="Statistics Lab information">
-  <div class="support-panel" id="whats-new">
-   <h2>✨ What's New</h2>
-   <span class="support-date">October 26, 2026</span>
-   <p>New: Live Stats now starts with sports and lets you explore scores, elections, weather, and earthquakes through simple graphs. The calculators and critical-value explorers are still available.</p>
-   <p>I'll post noteworthy new features and fixes here as the site grows.</p>
+ <section class="daily-stat" aria-labelledby="daily-stat-title">
+  <div class="daily-stat-main">
+   <p class="daily-kicker">📈 TODAY IN DATA <span id="daily-date"></span></p>
+   <h2 id="daily-stat-title">One real number. One question.</h2>
+   <p class="daily-context" id="daily-context" role="status" aria-live="polite">Checking the latest earthquake reports…</p>
+   <p class="daily-question" id="daily-question">What can—and can't—we learn from one statistic?</p>
+   <p class="daily-credit"><a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php" target="_blank" rel="noopener noreferrer">Source: USGS live feeds ↗</a> <span id="daily-updated"></span></p>
   </div>
-  <div class="support-panel">
-   <h2>💬 Feedback &amp; Suggestions</h2>
-   <p>Notice an error? Something confusing? Have an idea for another tool? Let me know so I can keep improving Statistics Lab.</p>
-   <a href="./feedback.html">Open feedback page ↗</a>
-   <details class="phone-help" id="add-to-phone">
-    <summary>📱 Add Statistics Lab to your phone</summary>
-    <ul>
-     <li><strong>iPhone (Safari):</strong> Open this site in Safari, tap Share, choose <strong>Add to Home Screen</strong>, turn on <strong>Open as Web App</strong> if offered, then tap Add.</li>
-     <li><strong>Android (Chrome):</strong> Open the site in Chrome, tap the three-dot menu, choose <strong>Install app</strong> or <strong>Install and create shortcut</strong> (wording varies), then follow the prompts.</li>
-    </ul>
-    <p style="margin:8px 0 0">The icon opens Statistics Lab like an app. Online calculators and fresh data require internet access.</p>
-   </details>
-  </div>
+  <div class="daily-number" aria-label="Reported earthquakes magnitude 2.5 or greater in the past 24 hours"><strong id="daily-count">—</strong><span>M2.5+ earthquakes<br>in the past 24 hours</span></div>
  </section>
 </main>
-<footer class="footer"><div class="wrap footer-inner"><span>Statistics Lab · Introductory statistics resources</span><span><a href="./feedback.html" style="color:inherit">Feedback</a> · <a href="#whats-new" style="color:inherit">What's New</a></span></div><div class="wrap" style="padding:0 0 15px;color:var(--muted);font-size:11px">AI transparency: AI-assisted tools helped develop this website. Its educational content is reviewed and refined by the site author. Data sources are credited on each tool.</div></footer>
+<footer class="footer"><div class="wrap footer-inner"><span>Statistics Lab · Free educational tools</span><span><a href="./about.html" style="color:inherit">About &amp; Updates</a> · <a href="./feedback.html" style="color:inherit">Feedback</a></span></div><div class="wrap site-motto">Have fun. Be safe. Make good choices. Be weird. Explore stats!</div></footer>
 <script>
 (function(){'use strict';var key='statistics-lab-theme',media=matchMedia('(prefers-color-scheme:dark)'),memoryPref='system';function preference(){try{var p=localStorage.getItem(key);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memoryPref}}function update(){var p=preference(),r=p==='system'?(media.matches?'dark':'light'):p;document.documentElement.dataset.theme=r;document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slTheme===p))});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=r==='dark'?'#111827':'#f7f8fc';}document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.addEventListener('click',function(){memoryPref=b.dataset.slTheme;try{localStorage.setItem(key,memoryPref)}catch(e){}update()})});if(media.addEventListener)media.addEventListener('change',update);else media.addListener(update);window.addEventListener('storage',function(e){if(e.key===key)update()});update();})();
 </script>
 
+<script>
+(function(){'use strict';
+ const d=new Date(), localDay=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
+ const prompts=[
+  'Is this a random sample of all earthquakes? Why or why not?',
+  'Which would be more informative here: a count or an average?',
+  'What does “magnitude 2.5+” leave out of the data?',
+  'How might this count change if we used a 7-day window?',
+  'Does a larger number necessarily mean more earthquakes actually occurred?',
+  'What could you graph to compare one day with another?',
+  'Does a recent count tell us anything about the long-term average?'
+ ];
+ const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat();
+ $('daily-date').textContent='· '+d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+ $('daily-question').textContent=prompts[((localDay%prompts.length)+prompts.length)%prompts.length];
+ fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson',{cache:'no-store'})
+ .then(r=>{if(!r.ok)throw new Error('Unavailable');return r.json()})
+ .then(j=>{if(!Array.isArray(j.features))throw new Error('Unexpected data');
+   $('daily-count').textContent=fmt.format(j.features.length);
+   $('daily-context').textContent='USGS has reported '+fmt.format(j.features.length)+' earthquakes of magnitude 2.5 or greater worldwide in its rolling 24-hour feed.';
+   const t=j.metadata&&Number(j.metadata.generated);
+   $('daily-updated').textContent=t?'Feed generated '+new Date(t).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Data loaded when you visit';
+ })
+ .catch(()=>{$('daily-count').textContent='—';$('daily-context').textContent='Today’s live statistic is temporarily unavailable. Try again later.';$('daily-updated').textContent='';});
+})();
+</script>
 </body></html>
