@@ -75,9 +75,9 @@ html[data-theme="dark"]{color-scheme:dark;--page:#111827;--surface:#1b2536;--sof
     <div class="card-footer"><span>Open calculator</span><span class="arrow" aria-hidden="true">↗</span></div>
    </a>
   </div>
-  <a class="live-teaser" href="./live-data/" aria-label="Open Live Data Playground in its own page">
+  <a class="live-teaser" href="./live-data/" aria-label="Open Live Stats in its own page">
    <span class="live-symbol" aria-hidden="true">◉</span>
-   <span class="live-copy"><span class="live-kicker">Real data · Updated from public feeds</span><h3>Live Data: Earthquakes &amp; Sports</h3><p>See recent earthquake reports and game scores, with simple summaries and graphs.</p></span>
+   <span class="live-copy"><span class="live-kicker">Real data · Fresh feeds &amp; official snapshots</span><h3>Live Stats: Sports, Elections &amp; More</h3><p>Explore actual scores, official election statistics, recent weather, and earthquakes—one graph at a time.</p></span>
    <span class="live-today">Explore live data ↗</span>
   </a>
  </section>
@@ -85,7 +85,7 @@ html[data-theme="dark"]{color-scheme:dark;--page:#111827;--surface:#1b2536;--sof
   <div class="support-panel" id="whats-new">
    <h2>✨ What's New</h2>
    <span class="support-date">October 26, 2026</span>
-   <p>Explore the confidence interval calculator, Normal and t critical value explorers, and our simpler real-data page with earthquakes and sports.</p>
+   <p>New: Live Stats now starts with sports and lets you explore scores, elections, weather, and earthquakes through simple graphs. The calculators and critical-value explorers are still available.</p>
    <p>I'll post noteworthy new features and fixes here as the site grows.</p>
   </div>
   <div class="support-panel">
@@ -103,7 +103,7 @@ html[data-theme="dark"]{color-scheme:dark;--page:#111827;--surface:#1b2536;--sof
   </div>
  </section>
 </main>
-<footer class="footer"><div class="wrap footer-inner"><span>Statistics Lab · Introductory statistics resources</span><span><a href="./feedback.html" style="color:inherit">Feedback</a> · <a href="#whats-new" style="color:inherit">What's New</a></span></div></footer>
+<footer class="footer"><div class="wrap footer-inner"><span>Statistics Lab · Introductory statistics resources</span><span><a href="./feedback.html" style="color:inherit">Feedback</a> · <a href="#whats-new" style="color:inherit">What's New</a></span></div><div class="wrap" style="padding:0 0 15px;color:var(--muted);font-size:11px">AI transparency: AI-assisted tools helped develop this website. Its educational content is reviewed and refined by the site author. Data sources are credited on each tool.</div></footer>
 <script>
 (function(){'use strict';var key='statistics-lab-theme',media=matchMedia('(prefers-color-scheme:dark)'),memoryPref='system';function preference(){try{var p=localStorage.getItem(key);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memoryPref}}function update(){var p=preference(),r=p==='system'?(media.matches?'dark':'light'):p;document.documentElement.dataset.theme=r;document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slTheme===p))});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=r==='dark'?'#111827':'#f7f8fc';}document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.addEventListener('click',function(){memoryPref=b.dataset.slTheme;try{localStorage.setItem(key,memoryPref)}catch(e){}update()})});if(media.addEventListener)media.addEventListener('change',update);else media.addListener(update);window.addEventListener('storage',function(e){if(e.key===key)update()});update();})();
 </script>
