@@ -264,7 +264,20 @@ function showView(name){const explore=name==='explore';$('calculateView').classL
 $('viewCalc').addEventListener('click',()=>showView('calculate'));
 $('viewExplore').addEventListener('click',()=>showView('explore'));
 $('applyreference').addEventListener('click',()=>{if(!last||dirty){$('referenceStatus').textContent='Return to Calculate and click Compute first.';return;}try{const raw=$('reference').value.trim(),reference=raw===''?null:num('reference');const units=$('units').value.trim();if(units!==last.units)saved=[];last={...last,reference,units};$('referenceStatus').textContent=reference===null?'Reference line cleared.':'Reference value added to the plot.';renderCompare();}catch(e){$('referenceStatus').textContent=e.message;}});
-updateMode();updateLevels();renderCompare();
+
+const urlParams = new URLSearchParams(window.location.search);
+const importedData = urlParams.get('data');
+if (importedData) {
+  const values = importedData.split(/[\s,;]+/).filter(Boolean);
+  if (values.length >= 2 && values.length <= 1000 &&
+      values.every(v => Number.isFinite(Number(v)))) {
+    mode = 't';
+    meanSource = 'raw';
+    $('rawdata').value = values.join(', ');
+  }
+}
+
+      updateMode();updateLevels();renderCompare();
 })();
 </script>
 <script>
