@@ -1,316 +1,159 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>Descriptive Statistics | Statistics Lab</title>
-  <style>
-    :root {--accent:#ad14d7;--accentDark:#8310aa;--ink:#172033;--muted:#64748b;--line:#e4e7ed;--soft:#f7f8fb;--lavender:#fbf5ff;--radius:14px;}
-    * {box-sizing:border-box}
-    html {scroll-behavior:smooth}
-    body {margin:0;background:#fff;font:15px/1.55 Lato,Arial,Helvetica,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
-    .shell {width:min(920px,calc(100% - 36px));margin:44px auto 72px}
-    .eyebrow {font-size:12px;font-weight:800;letter-spacing:.13em;color:#7d278f;text-transform:uppercase;margin:0 0 6px}
-    h1 {font-size:clamp(29px,5vw,40px);letter-spacing:-.035em;line-height:1.17;margin:0 0 7px;font-weight:750}
-    .lead {font-size:16px;color:var(--muted);margin:0 0 28px}
-    .panel {border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:24px}
-    label {display:block;font-weight:750;font-size:14px;margin:0 0 9px}
-    .subtle {font-size:13px;color:var(--muted);font-weight:400}
-    textarea {display:block;width:100%;min-height:164px;resize:vertical;border:1px solid #cfd4df;border-radius:10px;padding:14px 15px;background:#fff;color:var(--ink);font:15px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;outline:none}
-    textarea:focus {border-color:var(--accent);box-shadow:0 0 0 3px #ad14d71e}
-    textarea::placeholder {color:#94a3b8}
-    .toolbar {display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:14px}
-    button {font:700 14px Lato,Arial,sans-serif;border-radius:9px;padding:10px 16px;min-height:42px;cursor:pointer;transition:background .12s,border-color .12s,color .12s}
-    button:focus-visible,summary:focus-visible {outline:3px solid #d4a6ed;outline-offset:2px}
-    .primary {background:var(--accent);color:white;border:1px solid var(--accent)}
-    .primary:hover {background:var(--accentDark);border-color:var(--accentDark)}
-    .secondary {background:#fff;color:#334155;border:1px solid #d7dce5}
-    .secondary:hover {background:#f7f8fc}
-    .linkbtn {border:0;background:transparent;color:#685074;padding:9px 6px}
-    .linkbtn:hover {color:var(--accent)}
-    .hint {margin:12px 0 0;color:var(--muted);font-size:12.5px}
-    .error {color:#b42318;background:#fff6f4;border:1px solid #f7c9c0;border-radius:9px;padding:11px 13px;margin-top:13px;font-size:13px}
-    .hidden {display:none!important}
-    .results {margin-top:27px}
-    .resultsHead {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-    h2 {font-size:19px;letter-spacing:-.01em;margin:0;font-weight:800}
-    .smallTag {font-size:12px;color:#64748b;background:#f5f6f9;border:1px solid var(--line);padding:4px 9px;border-radius:999px}
-    .topStats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .stat {border:1px solid var(--line);border-radius:12px;padding:17px 16px 15px;background:#fff;min-width:0}
-    .statLabel {font-size:12px;color:var(--muted);font-weight:750;letter-spacing:.025em;margin:0 0 4px}
-    .statVal {font-size:clamp(23px,3.3vw,30px);font-weight:800;line-height:1.3;letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-    .statsTable {width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
-    .statsTable tr:not(:last-child) {border-bottom:1px solid #eef0f4}
-    .statsTable th {text-align:left;font-weight:500;color:#475569;padding:9px 6px 9px 0}
-    .statsTable td {text-align:right;font-variant-numeric:tabular-nums;font-weight:750;padding:9px 0 9px 6px}
-    .expand {border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px}
-    .expand summary {list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 17px;font-size:14px;font-weight:800;cursor:pointer}
-    .expand summary::-webkit-details-marker {display:none}
-    .expand summary::after {content:'+';font-size:21px;font-weight:400;color:#6b7280;line-height:1}
-    .expand[open] summary::after {content:'−'}
-    .expand[open] summary {border-bottom:1px solid var(--line)}
-    .expandBody {padding:10px 18px 19px}
-    .detailGrid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-    .note {font-size:12px;color:#697588;margin:10px 0 0}
-    .vizArea {display:grid;gap:18px;padding-top:17px}
-    h3 {font-size:14px;font-weight:800;margin:0 0 7px}
-    .chartWrap {width:100%;overflow:hidden;border:1px solid #f1f2f6;border-radius:9px;padding:8px;background:#fff}
-    svg {display:block;width:100%;height:auto;max-width:100%}
-    .frequencyWrap {max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:9px;margin-top:8px}
-    .freq {width:100%;border-collapse:collapse;font-size:13px}
-    .freq th {font-size:12px;position:sticky;top:0;background:#f8f9fb;color:#5b6578;text-align:right;padding:9px 12px}
-    .freq th:first-child,.freq td:first-child {text-align:left}
-    .freq td {padding:8px 12px;text-align:right;border-top:1px solid #edf0f4;font-variant-numeric:tabular-nums}
-    .footer {margin-top:24px;color:#778295;font-size:12px;text-align:center}
-    .summaryActions {display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-    .status {font-size:12px;color:#577b39}
-    @media(max-width:650px) {
-      .shell {width:calc(100% - 24px);margin:24px auto 45px}
-      .panel {padding:16px}
-      .topStats {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-      .stat {padding:12px}
-      .detailGrid {grid-template-columns:1fr;gap:0}
-      .lead {font-size:14px;margin-bottom:20px}
-      textarea {min-height:150px}
-    }
-    @media(prefers-reduced-motion:reduce) {html{scroll-behavior:auto}button{transition:none}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Descriptive Statistics | Statistics Lab</title>
+<style>
+:root{color-scheme:light;--bg:#faf9fc;--surface:#ffffff;--surface2:#f6f5f9;--ink:#1e2130;--muted:#656a7b;--faint:#9296a4;--border:#e5e2eb;--border-strong:#d5cedc;--accent:#ad14d7;--accent-dark:#8911b3;--accent-wash:#faf0ff;--accent-muted:#8d2fa9;--graph-grid:#ebe9f0;--graph-text:#646779;--graph-bar:#aa41cf;--graph-bar-hover:#8422af;--graph-soft:#eed8f6;--graph-stroke:#972bbc;--good:#267a5b;--shadow:0 6px 28px rgba(35,26,54,.035);--tooltip:#242238;--tooltip-ink:#fff}
+html[data-theme="dark"]{color-scheme:dark;--bg:#11121a;--surface:#1a1b27;--surface2:#222332;--ink:#f1eff7;--muted:#b3adbf;--faint:#8e8a9c;--border:#373343;--border-strong:#4b4356;--accent:#da83f2;--accent-dark:#eaa3fb;--accent-wash:#392441;--accent-muted:#e5abf2;--graph-grid:#393645;--graph-text:#c0b9cd;--graph-bar:#b960d5;--graph-bar-hover:#d894ec;--graph-soft:#43304c;--graph-stroke:#d38ae8;--good:#72d4af;--shadow:0 7px 28px rgba(0,0,0,.07);--tooltip:#f4eff9;--tooltip-ink:#1d1d29}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Lato,Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}button,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,.plot-mark:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.container{width:min(1120px,calc(100% - 48px));margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;padding:25px 0 12px}.brand{font-size:11px;color:var(--accent-muted);font-weight:800;letter-spacing:.13em;text-transform:uppercase}.theme-btn{border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--ink);display:flex;align-items:center;gap:7px;padding:8px 12px;font-size:12px;font-weight:700;min-height:36px}.theme-btn:hover,.secondary:hover{border-color:var(--accent);color:var(--accent-muted)}.theme-symbol{font-size:15px;line-height:1}header{padding:24px 0 28px}h1{font-size:clamp(29px,4vw,41px);line-height:1.1;letter-spacing:-.044em;margin:0 0 10px;font-weight:800}header p{margin:0;font-size:15px;color:var(--muted)}.accentline{height:3px;width:43px;background:var(--accent);border-radius:4px;margin-bottom:19px}
+.workspace{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.15fr);gap:18px;align-items:start}.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:23px;box-shadow:var(--shadow)}.panel h2{font-size:17px;line-height:1.25;margin:0 0 5px;letter-spacing:-.015em}.sub{color:var(--muted);font-size:12.5px;margin:0 0 18px}.kicker{color:var(--accent-muted);font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin:0 0 7px}
+textarea{background:var(--surface2);color:var(--ink);border:1px solid var(--border-strong);border-radius:10px;width:100%;min-height:218px;padding:14px 15px;resize:vertical;outline:none;font:14px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;transition:border-color .15s}textarea:focus{border-color:var(--accent)}textarea::placeholder{color:var(--faint)}.input-help{margin:10px 0 0;font-size:12px;color:var(--muted)}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:19px}.button{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);padding:10px 15px;border-radius:9px;min-height:42px;font-size:13px;font-weight:750}.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding-inline:25px}.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark)}html[data-theme="dark"] .primary{color:#211125}.secondary{background:var(--surface)}.linkbutton{padding:5px;background:none;border:0;color:var(--accent-muted);font-size:12px;font-weight:700}.linkbutton:hover{text-decoration:underline}.error{background:var(--accent-wash);border-left:3px solid var(--accent);color:var(--ink);padding:11px;margin-top:15px;font-size:13px;border-radius:5px}.hidden{display:none!important}
+.panel-top{display:flex;align-items:start;justify-content:space-between;gap:12px}.selected-count{font-size:11px;font-weight:700;color:var(--accent-muted);border:1px solid var(--border);background:var(--accent-wash);padding:3px 9px;border-radius:100px;white-space:nowrap;margin-top:2px}.picking{display:grid;grid-template-columns:1fr 1fr;gap:14px 21px}.group-title{font-size:11px;letter-spacing:.065em;text-transform:uppercase;font-weight:800;color:var(--muted);margin:0 0 8px}.option{display:flex;align-items:center;gap:9px;min-height:31px;font-size:13px;cursor:pointer;user-select:none}.option input{margin:0;width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex:none}.option:hover{color:var(--accent-muted)}.option:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px;border-radius:5px}.rule{height:1px;background:var(--border);margin:16px 0 13px}.vis-options{display:flex;gap:10px 20px;flex-wrap:wrap}.more{margin-top:12px;font-size:12px}.more summary{color:var(--accent-muted);font-weight:700;cursor:pointer}.more[open] summary{margin-bottom:11px}.more-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 16px}.pickfooter{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:13px}.pickfooter .divider{color:var(--border-strong)}
+.output{margin:27px 0 60px;scroll-margin-top:20px}.out-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:13px}.out-heading h2{font-size:21px;margin:0;letter-spacing:-.025em}.out-meta{font-size:12px;color:var(--muted);margin-top:3px}.output-panel{background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:16px;overflow:hidden}.output-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid var(--border)}.output-toolbar strong{font-size:14px}.output-toolbar small{font-size:12px;color:var(--muted)}.output-tools{display:flex;gap:10px;align-items:center}.copy{border:1px solid var(--border-strong);color:var(--ink);background:var(--surface);border-radius:8px;padding:7px 11px;font-size:12px;font-weight:750}.copy:hover{border-color:var(--accent)}.copy-status{color:var(--good);font-size:12px}.result-table{width:100%;border-collapse:collapse;font-size:14px}.result-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.055em;color:var(--muted);padding:9px 20px;border-bottom:1px solid var(--border);font-weight:750}.result-table th:last-child{text-align:right}.result-table .group-row td{font-size:11px;color:var(--accent-muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;background:var(--surface2);padding:8px 20px;border-top:1px solid var(--border)}.result-table .data-row td{padding:11px 20px;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}.result-table .data-row:last-child td{border-bottom:0}.result-table .data-row td:last-child{text-align:right;font-weight:750;letter-spacing:-.01em}.result-table .data-row:hover td{background:var(--accent-wash)}.result-table .data-row td:first-child{color:var(--muted)}.metric-hint{margin-left:6px;color:var(--faint);cursor:help;font-size:11px}.notes{border-top:1px solid var(--border);padding:11px 20px;font-size:12px;color:var(--muted);background:var(--surface2)}
+.chart-grid{display:grid;grid-template-columns:1fr;gap:15px;margin-top:16px}.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow)}.chart-head{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:5px}.chart-head h3{font-size:16px;margin:0;letter-spacing:-.01em}.chart-sub{font-size:12px;color:var(--muted);margin:0 0 12px}.chart-controls{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px}.chart-controls select{border:1px solid var(--border-strong);border-radius:7px;color:var(--ink);background:var(--surface);font-size:12px;padding:6px}.plot-shell{position:relative;min-width:0}.plot-shell svg{width:100%;height:auto;display:block;overflow:visible}.plot-shell svg .grid-line{stroke:var(--graph-grid);stroke-width:1}.plot-shell svg .axis-line{stroke:var(--graph-text);stroke-opacity:.6;stroke-width:1}.plot-shell svg text{fill:var(--graph-text);font-size:12px;font-family:Lato,Arial,sans-serif}.plot-shell svg .axis-label{font-weight:700;font-size:11px}.plot-shell .bar{fill:var(--graph-bar);transition:fill .12s;cursor:crosshair}.plot-shell .plot-mark:hover .bar,.plot-shell .plot-mark:focus .bar{fill:var(--graph-bar-hover)}.plot-shell .plot-mark{cursor:crosshair;outline:none}.plot-shell .plot-mark:focus-visible{outline:none;filter:drop-shadow(0 0 3px var(--accent))}.plot-shell .box-fill{fill:var(--graph-soft);stroke:var(--graph-stroke);stroke-width:2}.plot-shell .whisker{stroke:var(--graph-text);stroke-width:2.5;stroke-linecap:round}.plot-shell .median{stroke:var(--graph-stroke);stroke-width:3.5}.plot-shell .mean-dot{fill:var(--graph-bar-hover);stroke:var(--surface);stroke-width:2}.plot-shell .feature-dot{fill:var(--graph-stroke);stroke:var(--surface);stroke-width:1.5}.plot-shell .outlier-dot{fill:#df688a}.plot-shell .target-hit{stroke:transparent;stroke-width:20;fill:none}.chart-tooltip{position:absolute;pointer-events:none;z-index:2;background:var(--tooltip);color:var(--tooltip-ink);font-size:12px;line-height:1.45;padding:9px 12px;border-radius:9px;box-shadow:0 9px 18px rgba(0,0,0,.16);max-width:220px;min-width:105px;transform:translate(-50%,-115%)}.chart-tooltip strong{display:block;font-size:12.5px;margin-bottom:2px}.chart-foot{color:var(--muted);font-size:12px;margin:9px 0 0}.frequency-frame{border:1px solid var(--border);border-radius:9px;overflow:auto;max-height:300px}.frequency{width:100%;border-collapse:collapse;font-size:13px}.frequency th{position:sticky;top:0;background:var(--surface2);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:right;padding:9px 13px}.frequency td{text-align:right;border-top:1px solid var(--border);padding:8px 13px;font-variant-numeric:tabular-nums}.frequency th:first-child,.frequency td:first-child{text-align:left}.frequency tbody tr:hover{background:var(--accent-wash)}.footer{padding:0 0 30px;text-align:center;color:var(--faint);font-size:12px}
+@media(max-width:800px){.workspace{grid-template-columns:1fr}.picking{grid-template-columns:1fr 1fr}.chart-card{padding:16px}}
+@media(max-width:530px){.container{width:calc(100% - 26px)}.topbar{padding-top:15px}header{padding-top:14px}.panel{padding:18px}.picking{gap:12px}.more-grid{grid-template-columns:1fr 1fr}.output-toolbar{padding:12px 14px}.result-table th,.result-table td,.result-table .group-row td,.result-table .data-row td{padding-left:14px;padding-right:14px}.chart-card{padding:13px}.chart-head h3{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
 <body>
-  <main class="shell">
-    <p class="eyebrow">Statistics Lab</p>
-    <h1>Descriptive Statistics</h1>
-    <p class="lead">Paste your data, click Calculate, and get the essentials.</p>
-    <section class="panel" aria-labelledby="dataHeading">
-      <label id="dataHeading" for="dataInput">Your data <span class="subtle">(one column from Excel works great)</span></label>
-      <textarea id="dataInput" spellcheck="false" placeholder="12\n15\n14\n18\n16\n14" aria-describedby="inputHint"></textarea>
-      <div class="toolbar">
-        <button type="button" class="primary" id="calculate">Calculate</button>
-        <button type="button" class="secondary" id="example">Try example</button>
-        <button type="button" class="linkbtn" id="clear">Clear</button>
-      </div>
-      <p class="hint" id="inputHint">Paste a single column or type numbers separated by commas, spaces, or new lines. Calculations stay in your browser.</p>
-      <div class="error hidden" id="error" role="alert"></div>
-    </section>
-
-    <section class="results hidden" id="results" aria-live="polite" aria-labelledby="resultsHeading">
-      <div class="resultsHead">
-        <h2 id="resultsHeading">Your results</h2>
-        <div class="summaryActions"><span class="smallTag" id="dataCount"></span><button id="copy" type="button" class="secondary">Copy summary</button><span class="status" id="copyStatus" aria-live="polite"></span></div>
-      </div>
-      <div class="topStats">
-        <div class="stat"><p class="statLabel">Sample size (n)</p><div class="statVal" id="n"></div></div>
-        <div class="stat"><p class="statLabel">Mean (x̄)</p><div class="statVal" id="mean"></div></div>
-        <div class="stat"><p class="statLabel">Median</p><div class="statVal" id="median"></div></div>
-        <div class="stat"><p class="statLabel">Sample SD (s)</p><div class="statVal" id="sd"></div></div>
-      </div>
-      <details class="expand" id="moreStats">
-        <summary>More statistics</summary>
-        <div class="expandBody">
-          <div class="detailGrid">
-            <table class="statsTable" aria-label="Location and spread">
-              <tbody>
-                <tr><th scope="row">Minimum</th><td id="min"></td></tr>
-                <tr><th scope="row">Q1 (25th percentile)</th><td id="q1"></td></tr>
-                <tr><th scope="row">Q3 (75th percentile)</th><td id="q3"></td></tr>
-                <tr><th scope="row">Maximum</th><td id="max"></td></tr>
-                <tr><th scope="row">Range</th><td id="range"></td></tr>
-                <tr><th scope="row">IQR</th><td id="iqr"></td></tr>
-              </tbody>
-            </table>
-            <table class="statsTable" aria-label="Additional measures">
-              <tbody>
-                <tr><th scope="row">Sample variance (s²)</th><td id="variance"></td></tr>
-                <tr><th scope="row">Standard error (SE)</th><td id="se"></td></tr>
-                <tr><th scope="row">Population SD (σ)</th><td id="popSd"></td></tr>
-                <tr><th scope="row">Mode(s)</th><td id="mode"></td></tr>
-                <tr><th scope="row">Sum</th><td id="sum"></td></tr>
-                <tr><th scope="row">Potential outliers</th><td id="outlierCount"></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="note">Sample SD uses <em>n − 1</em>; SE = s / √n. Quartiles use the inclusive percentile method (as in Excel's QUARTILE.INC). Potential outliers use the 1.5 × IQR rule. For n = 1, sample SD and SE are undefined.</p>
-        </div>
-      </details>
-      <details class="expand" id="charts">
-        <summary>Charts</summary>
-        <div class="expandBody vizArea">
-          <div><h3>Histogram</h3><div class="chartWrap" id="histogram" role="img" aria-label="Histogram of the entered data"></div></div>
-          <div><h3>Boxplot</h3><div class="chartWrap" id="boxplot" role="img" aria-label="Boxplot of the entered data"></div><p class="note">Whiskers extend to the smallest and largest observations within the 1.5 × IQR fences; circles mark potential outliers.</p></div>
-        </div>
-      </details>
-      <details class="expand" id="frequencySection">
-        <summary>Frequency table</summary>
-        <div class="expandBody">
-          <p class="note" style="margin:0 0 8px">Counts of each distinct value in your data.</p>
-          <div class="frequencyWrap"><table class="freq"><thead><tr><th scope="col">Value</th><th scope="col">Count</th><th scope="col">Percent</th></tr></thead><tbody id="frequencyRows"></tbody></table></div>
-        </div>
-      </details>
-    </section>
-    <footer class="footer">Descriptive Statistics · Statistics Lab</footer>
-  </main>
-  <script>
-    'use strict';
-    const $ = id => document.getElementById(id);
-    const input = $('dataInput'), error = $('error'), results = $('results');
-    const exampleData = [12,15,14,18,16,14,21,17,15,14,19,16];
-    let lastSummary = '';
-    const nf = new Intl.NumberFormat('en-US', {maximumFractionDigits:4});
-    const fmt = x => Number.isFinite(x) ? nf.format(Math.abs(x) < 1e-11 ? 0 : x) : '—';
-
-    function readNumbers(raw) {
-      const tokens = raw.trim().split(/[,;\s]+/).filter(Boolean);
-      if (!tokens.length) throw new Error('Paste some numerical data to get started.');
-      if (tokens.length > 50000) throw new Error('Please paste 50,000 values or fewer.');
-      const vals=[];
-      for (let i=0;i<tokens.length;i++) {
-        const token = tokens[i].replace(/\u2212/g,'-');
-        if (!/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(token)) {
-          // Allow one optional spreadsheet column header as the first token.
-          if (i===0 && tokens.length>1 && !/\d/.test(token)) continue;
-          throw new Error(`“${tokens[i]}” isn't a number. Paste one column of numeric data (without units or thousands separators).`);
-        }
-        const n=Number(token);
-        if (!Number.isFinite(n)) throw new Error('One or more values are too large to calculate.');
-        vals.push(n);
-      }
-      if (!vals.length) throw new Error('No numeric values found.');
-      return vals;
-    }
-    function quantile(a, p) {
-      if (a.length===1) return a[0];
-      const r=(a.length-1)*p, low=Math.floor(r), frac=r-low;
-      return a[low] + frac*(a[Math.min(a.length-1,low+1)]-a[low]);
-    }
-    function compute(a) {
-      const n=a.length, sorted=a.slice().sort((x,y)=>x-y);
-      // Welford's numerically stable one-pass variance.
-      let mean=0, m2=0, sum=0, compensation=0;
-      for (let i=0;i<n;i++) {
-        const x=a[i], delta=x-mean;
-        mean += delta/(i+1);
-        m2 += delta*(x-mean);
-        const y=x-compensation,t=sum+y;
-        compensation=(t-sum)-y;sum=t;
-      }
-      const variance=n>1?Math.max(0,m2/(n-1)):NaN;
-      const sd=Math.sqrt(variance), se=n>1?sd/Math.sqrt(n):NaN;
-      const popSd=Math.sqrt(Math.max(0,m2/n));
-      const median=quantile(sorted,.5), q1=quantile(sorted,.25),q3=quantile(sorted,.75);
-      const min=sorted[0],max=sorted[n-1],iqr=q3-q1;
-      const f=new Map(); for (const x of sorted) f.set(x,(f.get(x)||0)+1);
-      const top=Math.max(...f.values());
-      const modes=top===1 ? [] : [...f].filter(e=>e[1]===top).map(e=>e[0]);
-      const fenceL=q1-1.5*iqr,fenceU=q3+1.5*iqr;
-      const inliers=sorted.filter(x=>x>=fenceL&&x<=fenceU);
-      const outliers=sorted.filter(x=>x<fenceL||x>fenceU);
-      return {n, sorted, sum, mean,median,q1,q3,min,max,iqr,range:max-min,variance,sd,se,popSd,modes,f,outliers,inliers};
-    }
-    function element(tag,attrs={}) {
-      const n=document.createElementNS('http://www.w3.org/2000/svg',tag);
-      for (const [k,v] of Object.entries(attrs)) n.setAttribute(k,String(v));
-      return n;
-    }
-    function addText(svg,x,y,text,anchor='middle',fill='#64748b',fontSize=12) {
-      const t=element('text',{x,y,'text-anchor':anchor,fill,'font-size':fontSize,'font-family':'Arial, sans-serif'});
-      t.textContent=text;svg.append(t);
-    }
-    function drawHistogram(s) {
-      const parent=$('histogram');parent.replaceChildren();
-      const w=740,h=225,left=46,right=15,top=18,bottom=38;
-      const svg=element('svg',{viewBox:`0 0 ${w} ${h}`,'aria-hidden':'true'});
-      const pw=w-left-right,ph=h-top-bottom;
-      let bins;
-      if(s.min===s.max) bins=[{start:s.min,end:s.max,count:s.n}];
-      else {
-        const nb=Math.max(4,Math.min(12,Math.round(Math.sqrt(s.n))));
-        bins=Array.from({length:nb},(_,i)=>({start:s.min+(s.range*i/nb),end:s.min+(s.range*(i+1)/nb),count:0}));
-        for (const x of s.sorted) bins[Math.min(nb-1,Math.floor((x-s.min)/s.range*nb))].count++;
-      }
-      const peak=Math.max(...bins.map(b=>b.count),1);
-      for(let k=0;k<=3;k++){
-        const v=Math.round(peak*k/3),y=top+ph*(1-k/3);
-        svg.append(element('line',{x1:left,y1:y,x2:w-right,y2:y,stroke:'#eceff4'}));
-        addText(svg,left-9,y+4,String(v),'end');
-      }
-      const bw=pw/bins.length;
-      bins.forEach((b,i)=>{
-        const bh=b.count/peak*ph;
-        svg.append(element('rect',{x:left+bw*i+2,y:top+ph-bh,width:Math.max(1,bw-4),height:bh,rx:3,fill:'#b258d0'}));
-      });
-      svg.append(element('line',{x1:left,y1:top+ph,x2:w-right,y2:top+ph,stroke:'#aab2bf'}));
-      const labelVal=(s.min===s.max?[s.min,s.min,s.min]:[s.min,(s.min+s.max)/2,s.max]);
-      [0,.5,1].forEach((d,i)=> addText(svg,left+pw*d,h-12,fmt(labelVal[i])));
-      parent.append(svg);
-    }
-    function drawBoxplot(s) {
-      const parent=$('boxplot');parent.replaceChildren();
-      const w=740,h=146,left=46,right=22,pw=w-left-right;
-      const svg=element('svg',{viewBox:`0 0 ${w} ${h}`,'aria-hidden':'true'});
-      const spread=s.max-s.min || 1;
-      const a=s.min===s.max ? s.min-spread*.5 : s.min-spread*.04;
-      const b=s.min===s.max ? s.max+spread*.5 : s.max+spread*.04;
-      const scale=x=>left+(x-a)/(b-a)*pw;
-      const y=62,low=s.inliers[0],high=s.inliers[s.inliers.length-1];
-      svg.append(element('line',{x1:scale(low),x2:scale(high),y1:y,y2:y,stroke:'#64748b','stroke-width':2}));
-      for (const v of [low,high]) svg.append(element('line',{x1:scale(v),x2:scale(v),y1:y-13,y2:y+13,stroke:'#64748b','stroke-width':2}));
-      svg.append(element('rect',{x:scale(s.q1),y:y-23,width:Math.max(1,scale(s.q3)-scale(s.q1)),height:46,rx:3,fill:'#ead1f4',stroke:'#ad14d7','stroke-width':2}));
-      svg.append(element('line',{x1:scale(s.median),x2:scale(s.median),y1:y-23,y2:y+23,stroke:'#8310aa','stroke-width':3}));
-      s.outliers.forEach(x=>svg.append(element('circle',{cx:scale(x),cy:y,r:4,fill:'#cb435e'})));
-      svg.append(element('line',{x1:left,y1:105,x2:w-right,y2:105,stroke:'#aab2bf'}));
-      for(let k=0;k<=4;k++){
-        const val=a+(b-a)*k/4;const x=scale(val);
-        svg.append(element('line',{x1:x,y1:105,x2:x,y2:109,stroke:'#aab2bf'}));
-        addText(svg,x,126,fmt(val));
-      }
-      parent.append(svg);
-    }
-    function drawFrequency(s) {
-      const body=$('frequencyRows');body.replaceChildren();
-      for (const [x,count] of s.f){
-        const tr=document.createElement('tr');
-        for(const str of [fmt(x),String(count),`${fmt(count/s.n*100)}%`]){
-          const td=document.createElement('td');td.textContent=str;tr.append(td);
-        }
-        body.append(tr);
-      }
-    }
-    function display(s) {
-      const fields={n:s.n,mean:s.mean,median:s.median,sd:s.sd,min:s.min,q1:s.q1,q3:s.q3,max:s.max,
-        range:s.range,iqr:s.iqr,variance:s.variance,se:s.se,popSd:s.popSd,sum:s.sum,
-        mode:s.modes.length ? s.modes.map(fmt).join(', ') : 'None',outlierCount:s.outliers.length};
-      for (const [k,v] of Object.entries(fields)) $(k).textContent=typeof v==='number'?fmt(v):String(v);
-      $('dataCount').textContent=`${fmt(s.n)} values`;
-      drawHistogram(s);drawBoxplot(s);drawFrequency(s);
-      lastSummary=[
-        'Descriptive Statistics',`n: ${s.n}`,`Mean: ${fmt(s.mean)}`,`Median: ${fmt(s.median)}`,
-        `Sample SD: ${fmt(s.sd)}`,`Sample variance: ${fmt(s.variance)}`,`SE: ${fmt(s.se)}`,
-        `Minimum: ${fmt(s.min)}`,`Q1: ${fmt(s.q1)}`,`Q3: ${fmt(s.q3)}`,
-        `Maximum: ${fmt(s.max)}`,`Range: ${fmt(s.range)}`,`IQR: ${fmt(s.iqr)}`,
-        `Population SD: ${fmt(s.popSd)}`,`Mode: ${fields.mode}`,`Sum: ${fmt(s.sum)}`,
-        `Potential outliers: ${s.outliers.length}`].join('\n');
-      results.classList.remove('hidden');
-      $('copyStatus').textContent='';
-    }
-    function showError(message){error.textContent=message;error.classList.remove('hidden');results.classList.add('hidden');}
-    function calculate(){
-      error.classList.add('hidden');
-      try { display(compute(readNumbers(input.value))); }
-      catch(ex){showError(ex.message||'Unable to calculate. Please check your data.');}
-    }
-    $('calculate').addEventListener('click', calculate);
-    $('example').addEventListener('click',()=>{input.value=exampleData.join('\n');calculate();});
-    $('clear').addEventListener('click',()=>{input.value='';error.classList.add('hidden');results.classList.add('hidden');lastSummary='';input.focus();});
-    $('copy').addEventListener('click',async()=>{
-      if(!lastSummary)return;
-      try {await navigator.clipboard.writeText(lastSummary);$('copyStatus').textContent='Copied!';}
-      catch(e){
-        const t=document.createElement('textarea');t.value=lastSummary;t.style.position='fixed';t.style.opacity='0';document.body.append(t);t.select();
-        const succeeded=document.execCommand('copy');t.remove();$('copyStatus').textContent=succeeded?'Copied!':'Select the results to copy.';
-      }
-    });
-    input.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();calculate();}});
-  </script>
+<div class="container">
+<div class="topbar"><div class="brand">Statistics Lab <span style="color:var(--faint);font-weight:500">/ Tools</span></div><button id="themeToggle" class="theme-btn" type="button" aria-label="Switch color theme"><span class="theme-symbol" id="themeSymbol" aria-hidden="true">☾</span><span id="themeText">Dark mode</span></button></div>
+<header><div class="accentline"></div><h1>Descriptive Statistics</h1><p>Paste your data. Choose what you want to calculate. Explore the results.</p></header>
+<main>
+<div class="workspace">
+<section class="panel" aria-labelledby="dataHeading">
+<div class="kicker">01 / Data</div><h2 id="dataHeading">Enter your dataset</h2><p class="sub">Paste a single column from Excel, or type numbers separated by commas or spaces.</p>
+<textarea id="dataInput" spellcheck="false" aria-label="Numerical dataset" placeholder="12&#10;15&#10;14&#10;18&#10;16&#10;14"></textarea>
+<p class="input-help">One numerical variable · Up to 50,000 observations · Calculated in your browser</p>
+<div class="actions"><button class="button primary" id="calculate" type="button">Calculate statistics</button><button class="button secondary" id="example" type="button">Try example</button><button class="linkbutton" id="clearData" type="button">Clear data</button></div>
+<div id="error" class="error hidden" role="alert"></div>
+</section>
+<section class="panel" aria-labelledby="chooseHeading">
+<div class="panel-top"><div><div class="kicker">02 / Select</div><h2 id="chooseHeading">Choose your output</h2><p class="sub">Only the statistics you select will appear.</p></div><span class="selected-count" id="selectedCount">4 selected</span></div>
+<div class="picking">
+<div><h3 class="group-title">Center &amp; count</h3>
+<label class="option"><input type="checkbox" value="n" checked> Sample size (n)</label>
+<label class="option"><input type="checkbox" value="mean" checked> Mean</label>
+<label class="option"><input type="checkbox" value="median" checked> Median</label>
+<label class="option"><input type="checkbox" value="mode"> Mode</label>
+</div><div><h3 class="group-title">Spread</h3>
+<label class="option"><input type="checkbox" value="sd" checked> Sample standard deviation</label>
+<label class="option"><input type="checkbox" value="variance"> Sample variance</label>
+<label class="option"><input type="checkbox" value="se"> Standard error (SE)</label>
+<label class="option"><input type="checkbox" value="range"> Range</label>
+</div><div><h3 class="group-title">Five-number summary</h3>
+<label class="option"><input type="checkbox" value="min"> Minimum</label>
+<label class="option"><input type="checkbox" value="q1"> First quartile (Q1)</label>
+<label class="option"><input type="checkbox" value="q3"> Third quartile (Q3)</label>
+<label class="option"><input type="checkbox" value="max"> Maximum</label>
+<label class="option"><input type="checkbox" value="iqr"> Interquartile range</label>
+</div><div><h3 class="group-title">Visualizations</h3>
+<label class="option"><input type="checkbox" value="histogram"> Interactive histogram</label>
+<label class="option"><input type="checkbox" value="boxplot"> Interactive boxplot</label>
+<label class="option"><input type="checkbox" value="frequency"> Frequency table</label>
+</div></div>
+<details class="more" id="moreChoices"><summary>Additional statistics</summary><div class="more-grid">
+<label class="option"><input type="checkbox" value="sum"> Sum</label>
+<label class="option"><input type="checkbox" value="popSd"> Population SD</label>
+<label class="option"><input type="checkbox" value="popVariance"> Population variance</label>
+<label class="option"><input type="checkbox" value="outlierCount"> Potential outliers</label>
+</div></details>
+<div class="rule"></div><div class="pickfooter"><button type="button" class="linkbutton" id="essentials">Essentials</button><span class="divider">·</span><button type="button" class="linkbutton" id="fiveNumber">Five-number</button><span class="divider">·</span><button type="button" class="linkbutton" id="selectAll">Select all</button><span class="divider">·</span><button type="button" class="linkbutton" id="clearSelection">Clear</button></div>
+</section></div>
+<section id="results" class="output hidden" aria-labelledby="resultHeading" aria-live="polite">
+<div class="out-heading"><div><h2 id="resultHeading">Statistical output</h2><p id="resultMeta" class="out-meta"></p></div><button class="copy" id="copyResults" type="button">Copy results</button><span class="copy-status" id="copyStatus" role="status"></span></div>
+<div class="output-panel hidden" id="tablePanel"><div class="output-toolbar"><div><strong>Descriptive Statistics</strong><div><small>One numerical variable</small></div></div><div class="output-tools"><span id="metricCount" class="sub" style="margin:0"></span></div></div><table class="result-table"><thead><tr><th scope="col">Measure</th><th scope="col">Statistic</th></tr></thead><tbody id="resultBody"></tbody></table><div id="methodNote" class="notes hidden"></div></div>
+<div id="chartArea" class="chart-grid"></div>
+</section>
+</main><footer class="footer">Statistics Lab · Descriptive Statistics</footer>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const opts=()=>[...document.querySelectorAll('input[type=checkbox]')];
+const checked=()=>opts().filter(x=>x.checked).map(x=>x.value);
+const input=$('dataInput'),results=$('results');
+const example=[12,15,14,18,16,14,21,17,15,14,19,16,13,18,17,15,14,16,12,26];
+const numberFmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:4});
+const shortFmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:2});
+const fmt=v=>Number.isFinite(v)?numberFmt.format(Math.abs(v)<1e-12?0:v):'Undefined';
+const fmtShort=v=>Number.isFinite(v)?shortFmt.format(Math.abs(v)<1e-12?0:v):'—';
+let latest=null,latestKeys=[],lastExport='';
+// A single column copied from Excel may begin with a text header. Numerical values are never silently discarded.
+function parseData(text){const raw=text.trim();if(!raw)throw Error('Paste some numbers to get started.');let lines=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(lines.length>1&&/^[A-Za-z][A-Za-z ]*$/.test(lines[0]))lines=lines.slice(1);
+ const tokens=lines.join(' ').split(/[,;\s]+/).filter(Boolean);if(tokens.length>50000)throw Error('Please use 50,000 observations or fewer.');const values=tokens.map(t=>{const cleaned=t.replace(/\u2212/g,'-');if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d+)?$/.test(cleaned))throw Error(`“${t}” is not a number. Paste only numerical data (one variable).`);const v=Number(cleaned);if(!Number.isFinite(v))throw Error('Your data contain a value too large to calculate.');return v;});if(!values.length)throw Error('No numerical observations found.');return values;}
+function quartile(a,p){if(a.length===1)return a[0];const idx=(a.length-1)*p,lo=Math.floor(idx);return a[lo]+(idx-lo)*(a[Math.min(lo+1,a.length-1)]-a[lo]);}
+function statsOf(values){const n=values.length,sorted=values.slice().sort((a,b)=>a-b);let mean=0,m2=0,sum=0,carry=0;
+ values.forEach((x,i)=>{const delta=x-mean;mean+=delta/(i+1);m2+=delta*(x-mean);const deltaSum=x-carry;const t=sum+deltaSum;carry=(t-sum)-deltaSum;sum=t;});
+ const variance=n>1?Math.max(0,m2/(n-1)):NaN,popVariance=Math.max(0,m2/n),sd=Math.sqrt(variance),popSd=Math.sqrt(popVariance);
+ const min=sorted[0],max=sorted[n-1],q1=quartile(sorted,.25),q3=quartile(sorted,.75),median=quartile(sorted,.5),iqr=q3-q1;
+ const freqs=new Map();sorted.forEach(x=>freqs.set(x,(freqs.get(x)||0)+1));const peak=Math.max(...freqs.values());const modes=peak===1?[]:[...freqs.entries()].filter(([v,c])=>c===peak).map(([v])=>v);
+ const lowFence=q1-1.5*iqr,highFence=q3+1.5*iqr,outliers=sorted.filter(x=>x<lowFence||x>highFence),inliers=sorted.filter(x=>x>=lowFence&&x<=highFence);
+ return{n,sorted,mean,sum,variance,popVariance,sd,popSd,se:n>1?sd/Math.sqrt(n):NaN,median,min,max,range:max-min,q1,q3,iqr,modes,freqs,outliers,inliers};}
+const measures=[
+ {id:'n',group:'Sample',label:'Sample size (n)',get:s=>fmt(s.n),help:'Number of observations'},
+ {id:'mean',group:'Center',label:'Mean (x̄)',get:s=>fmt(s.mean),help:'Arithmetic average'},
+ {id:'median',group:'Center',label:'Median',get:s=>fmt(s.median),help:'Middle of the ordered data'},
+ {id:'mode',group:'Center',label:'Mode',get:s=>s.modes.length?s.modes.map(fmt).join(', '):'No repeated value',help:'Most frequent value(s)'},
+ {id:'sd',group:'Variability',label:'Sample standard deviation (s)',get:s=>fmt(s.sd),help:'Sample standard deviation (n − 1 divisor)'},
+ {id:'variance',group:'Variability',label:'Sample variance (s²)',get:s=>fmt(s.variance),help:'Sample variance (n − 1 divisor)'},
+ {id:'se',group:'Variability',label:'Standard error of the mean',get:s=>fmt(s.se),help:'s / √n'},
+ {id:'range',group:'Variability',label:'Range',get:s=>fmt(s.range),help:'Maximum − minimum'},
+ {id:'min',group:'Five-number summary',label:'Minimum',get:s=>fmt(s.min),help:'Smallest observation'},
+ {id:'q1',group:'Five-number summary',label:'First quartile (Q1)',get:s=>fmt(s.q1),help:'25th percentile (inclusive interpolation)'},
+ {id:'q3',group:'Five-number summary',label:'Third quartile (Q3)',get:s=>fmt(s.q3),help:'75th percentile (inclusive interpolation)'},
+ {id:'max',group:'Five-number summary',label:'Maximum',get:s=>fmt(s.max),help:'Largest observation'},
+ {id:'iqr',group:'Five-number summary',label:'Interquartile range (IQR)',get:s=>fmt(s.iqr),help:'Q3 − Q1'},
+ {id:'sum',group:'Additional',label:'Sum',get:s=>fmt(s.sum),help:'Sum of observations'},
+ {id:'popSd',group:'Additional',label:'Population standard deviation (σ)',get:s=>fmt(s.popSd),help:'Population standard deviation (n divisor)'},
+ {id:'popVariance',group:'Additional',label:'Population variance (σ²)',get:s=>fmt(s.popVariance),help:'Population variance (n divisor)'},
+ {id:'outlierCount',group:'Additional',label:'Potential outliers (1.5 × IQR)',get:s=>fmt(s.outliers.length),help:'Observations beyond the 1.5 × IQR fences'}
+];
+function updateCount(){const n=checked().length;$('selectedCount').textContent=`${n} selected`;}
+opts().forEach(x=>x.addEventListener('change',updateCount));
+function setSelected(list){opts().forEach(x=>x.checked=list.includes(x.value));updateCount();}
+$('essentials').addEventListener('click',()=>setSelected(['n','mean','median','sd']));
+$('fiveNumber').addEventListener('click',()=>setSelected(['n','min','q1','median','q3','max','iqr','boxplot']));
+$('selectAll').addEventListener('click',()=>{opts().forEach(x=>x.checked=true);$('moreChoices').open=true;updateCount();});
+$('clearSelection').addEventListener('click',()=>setSelected([]));
+function setTheme(name){document.documentElement.dataset.theme=name;document.querySelector('meta[name=theme-color]').content=name==='dark'?'#11121a':'#faf9fc';$('themeSymbol').textContent=name==='dark'?'☀':'☾';$('themeText').textContent=name==='dark'?'Light mode':'Dark mode';$('themeToggle').setAttribute('aria-label',`Switch to ${name==='dark'?'light':'dark'} mode`);try{localStorage.setItem('statistics-lab-theme',name);}catch(e){}}
+let storedTheme;try{storedTheme=localStorage.getItem('statistics-lab-theme')}catch(e){}setTheme(storedTheme==='dark'||storedTheme==='light'?storedTheme:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+$('themeToggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+function showError(msg){$('error').textContent=msg;$('error').classList.remove('hidden');results.classList.add('hidden');}
+function calculate(){const keys=checked();$('error').classList.add('hidden');if(!keys.length)return showError('Choose at least one statistic or graph.');try{latest=statsOf(parseData(input.value));latestKeys=keys;render(latest,keys);results.classList.remove('hidden');results.scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}catch(e){showError(e.message||'Please check the values you entered.');}}
+$('calculate').addEventListener('click',calculate);
+$('example').addEventListener('click',()=>{input.value=example.join('\n');calculate();});
+$('clearData').addEventListener('click',()=>{input.value='';latest=null;results.classList.add('hidden');$('error').classList.add('hidden');input.focus();});
+input.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();calculate();}});
+function render(s,keys){$('resultMeta').textContent=`${s.n.toLocaleString('en-US')} observation${s.n===1?'':'s'} analyzed`;
+ const body=$('resultBody');body.replaceChildren();let group='',metricCount=0;lastExport='Descriptive Statistics\nMeasure\tStatistic\n';
+ measures.filter(m=>keys.includes(m.id)).forEach(m=>{if(group!==m.group){group=m.group;const tr=document.createElement('tr');tr.className='group-row';const td=document.createElement('td');td.colSpan=2;td.textContent=group;tr.append(td);body.append(tr);}const tr=document.createElement('tr');tr.className='data-row';const label=document.createElement('td');label.textContent=m.label;const hint=document.createElement('span');hint.className='metric-hint';hint.title=m.help;hint.textContent='ⓘ';label.append(hint);const value=document.createElement('td');value.textContent=m.get(s);tr.append(label,value);body.append(tr);lastExport+=`${m.label}\t${m.get(s)}\n`;metricCount++;});
+ $('tablePanel').classList.toggle('hidden',metricCount===0);$('metricCount').textContent=`${metricCount} measure${metricCount===1?'':'s'}`;
+ const notes=[];if(keys.some(k=>['q1','q3','iqr','boxplot','outlierCount'].includes(k)))notes.push('Quartiles use the inclusive method (Excel QUARTILE.INC). Boxplot outliers use 1.5 × IQR.');if(keys.some(k=>['sd','variance','se'].includes(k)))notes.push('Sample SD and variance use n − 1. Standard error = s / √n.');if(s.n===1&&keys.some(k=>['sd','variance','se'].includes(k)))notes.push('Sample SD, variance, and SE are undefined for n = 1.');$('methodNote').textContent=notes.join(' ');$('methodNote').classList.toggle('hidden',notes.length===0);
+ const host=$('chartArea');host.replaceChildren();if(keys.includes('histogram'))renderHistogram(host,s);if(keys.includes('boxplot'))renderBoxplot(host,s);if(keys.includes('frequency'))renderFrequency(host,s);$('copyStatus').textContent='';}
+$('copyResults').addEventListener('click',async()=>{if(!latest)return;try{await navigator.clipboard.writeText(lastExport);$('copyStatus').textContent='Copied';}catch(e){const ta=document.createElement('textarea');ta.value=lastExport;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();try{$('copyStatus').textContent=document.execCommand('copy')?'Copied':'Copy unavailable';}catch(e2){$('copyStatus').textContent='Copy unavailable';}ta.remove();}});
+function svgElement(name,attrs={}){const el=document.createElementNS('http://www.w3.org/2000/svg',name);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,String(v)));return el;}
+function append(parent,name,attrs={},value){const n=svgElement(name,attrs);if(value!==undefined)n.textContent=value;parent.append(n);return n;}
+function chartCard(host,title,subtitle){const card=document.createElement('section');card.className='chart-card';const header=document.createElement('div');header.className='chart-head';const titleEl=document.createElement('h3');titleEl.textContent=title;header.append(titleEl);card.append(header);const sub=document.createElement('p');sub.className='chart-sub';sub.textContent=subtitle;card.append(sub);const shell=document.createElement('div');shell.className='plot-shell';card.append(shell);host.append(card);return{card,header,shell};}
+function attachTooltips(shell){const tip=document.createElement('div');tip.className='chart-tooltip hidden';tip.setAttribute('role','tooltip');shell.append(tip);function place(evt,el){const bounds=shell.getBoundingClientRect();let x,y;if(evt&&evt.clientX!==undefined){x=evt.clientX-bounds.left;y=evt.clientY-bounds.top;}else{const rect=el.getBoundingClientRect();x=rect.left+rect.width/2-bounds.left;y=rect.top-bounds.top;}x=Math.max(66,Math.min(bounds.width-66,x));y=Math.max(44,y);tip.style.left=`${x}px`;tip.style.top=`${y}px`;}shell.querySelectorAll('.plot-mark').forEach(el=>{const desc=el.getAttribute('data-tip')||'';const [head,...rest]=desc.split('|');el.setAttribute('aria-label',desc.replace('|',', '));el.setAttribute('tabindex','0');el.setAttribute('role','img');function show(e){tip.replaceChildren();const strong=document.createElement('strong');strong.textContent=head;tip.append(strong);const second=document.createElement('span');second.textContent=rest.join(' · ');tip.append(second);tip.classList.remove('hidden');place(e?.type==='mousemove'?e:null,el);}el.addEventListener('mouseenter',show);el.addEventListener('mousemove',e=>place(e,el));el.addEventListener('mouseleave',()=>tip.classList.add('hidden'));el.addEventListener('focus',show);el.addEventListener('blur',()=>tip.classList.add('hidden'));});}
+function renderHistogram(host,s){const {header,shell}=chartCard(host,'Histogram','Hover over a bar to see its interval, count, and percent.');const tools=document.createElement('div');tools.className='chart-controls';const label=document.createElement('label');label.setAttribute('for','binCount');label.textContent='Bins';const select=document.createElement('select');select.id='binCount';[['auto','Auto'],['5','5'],['8','8'],['10','10'],['15','15']].forEach(([value,text])=>{const opt=document.createElement('option');opt.value=value;opt.textContent=text;select.append(opt);});tools.append(label,select);header.append(tools);function draw(){shell.replaceChildren();const width=780,height=285,left=58,right=20,top=15,bottom=49,pw=width-left-right,ph=height-top-bottom;const svg=append(shell,'svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':'Histogram of the dataset'});const nb=s.min===s.max?1:(select.value==='auto'?Math.min(15,Math.max(4,Math.ceil(Math.log2(s.n)+1))):Number(select.value));const bins=Array.from({length:nb},()=>0);for(const x of s.sorted){const idx=s.range===0?0:Math.min(nb-1,Math.max(0,Math.floor(((x-s.min)/s.range)*nb)));bins[idx]++;}const peak=Math.max(...bins,1),limit=Math.ceil(peak/4)*4||1;for(let i=0;i<=4;i++){const v=limit*i/4,y=top+ph*(1-i/4);append(svg,'line',{x1:left,y1:y,x2:width-right,y2:y,class:'grid-line'});append(svg,'text',{x:left-10,y:y+4,'text-anchor':'end'},String(v));}append(svg,'line',{x1:left,y1:top+ph,x2:width-right,y2:top+ph,class:'axis-line'});for(let i=0;i<=4;i++){const value=s.min+(s.range||1)*i/4;append(svg,'text',{x:left+pw*i/4,y:height-24,'text-anchor':'middle'},fmtShort(s.range===0?s.min:value));}append(svg,'text',{x:width/2,y:height-3,'text-anchor':'middle',class:'axis-label'},'Value');append(svg,'text',{x:13,y:height/2,transform:`rotate(-90 13 ${height/2})`,'text-anchor':'middle',class:'axis-label'},'Count');bins.forEach((count,i)=>{const step=pw/nb,barHeight=ph*count/limit,x=left+step*i+2,y=top+ph-barHeight;const lo=s.min+s.range*i/nb,hi=s.min+s.range*(i+1)/nb;const name=s.range===0?`Value ${fmtShort(s.min)}`:`${fmtShort(lo)} to ${i===nb-1?'≤ ':'< '}${fmtShort(hi)}`;const group=append(svg,'g',{class:'plot-mark','data-tip':`Bin ${i+1}: ${name}|${count} observation${count===1?'':'s'} · ${fmtShort(100*count/s.n)}%`});append(group,'rect',{x,y:count?y:top+ph-4,width:Math.max(1,step-4),height:count?barHeight:4,rx:2,class:'bar'});});attachTooltips(shell);}select.addEventListener('change',draw);draw();}
+function renderBoxplot(host,s){const {shell,card}=chartCard(host,'Boxplot','Hover over quartiles, whiskers, the mean, and outliers.');const width=780,height=215,left=58,right=23,top=20,center=90,pw=width-left-right;const svg=append(shell,'svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':'Boxplot of dataset'});const spread=s.range||Math.max(1,Math.abs(s.min)*.2),min=s.min-spread*.07,max=s.max+spread*.07,sc=x=>left+(x-min)/(max-min)*pw,low=s.inliers[0],high=s.inliers[s.inliers.length-1];const addMark=(title,detail,render)=>{const g=append(svg,'g',{class:'plot-mark','data-tip':`${title}|${detail}`});render(g);return g;};for(let i=0;i<=4;i++){const x=left+pw*i/4;append(svg,'line',{x1:x,x2:x,y1:160,y2:166,class:'axis-line'});append(svg,'text',{x,y:184,'text-anchor':'middle'},fmtShort(min+(max-min)*i/4));}append(svg,'line',{x1:left,x2:width-right,y1:160,y2:160,class:'axis-line'});append(svg,'text',{x:width/2,y:205,'text-anchor':'middle',class:'axis-label'},'Value');
+ append(svg,'line',{x1:sc(low),y1:center,x2:sc(high),y2:center,class:'whisker'});
+ addMark('Lower whisker',fmt(low),g=>{append(g,'line',{x1:sc(low),y1:center-19,x2:sc(low),y2:center+19,class:'whisker'});append(g,'line',{x1:sc(low),y1:center-22,x2:sc(low),y2:center+22,class:'target-hit'});});
+ addMark('Upper whisker',fmt(high),g=>{append(g,'line',{x1:sc(high),y1:center-19,x2:sc(high),y2:center+19,class:'whisker'});append(g,'line',{x1:sc(high),y1:center-22,x2:sc(high),y2:center+22,class:'target-hit'});});
+ addMark('Middle 50% (IQR)',`Q1 ${fmt(s.q1)} · Q3 ${fmt(s.q3)} · IQR ${fmt(s.iqr)}`,g=>append(g,'rect',{x:sc(s.q1),y:center-27,width:Math.max(2,sc(s.q3)-sc(s.q1)),height:54,rx:3,class:'box-fill'}));
+ addMark('First quartile (Q1)',fmt(s.q1),g=>append(g,'circle',{cx:sc(s.q1),cy:center-27,r:6,class:'feature-dot'}));
+ addMark('Third quartile (Q3)',fmt(s.q3),g=>append(g,'circle',{cx:sc(s.q3),cy:center-27,r:6,class:'feature-dot'}));
+ addMark('Median',fmt(s.median),g=>{append(g,'line',{x1:sc(s.median),y1:center-27,x2:sc(s.median),y2:center+27,class:'median'});append(g,'line',{x1:sc(s.median),y1:center-32,x2:sc(s.median),y2:center+32,class:'target-hit'});});
+ addMark('Mean',fmt(s.mean),g=>append(g,'circle',{cx:sc(s.mean),cy:center,r:6,class:'mean-dot'}));
+ s.outliers.slice(0,250).forEach((v,i)=>{const y=center+(i%3-1)*12;addMark('Potential outlier',fmt(v),g=>append(g,'circle',{cx:sc(v),cy:y,r:5,class:'outlier-dot'}));});
+ attachTooltips(shell);const foot=document.createElement('p');foot.className='chart-foot';foot.textContent='Whiskers show the most extreme observations within the 1.5 × IQR fences. The filled dot marks the mean.';card.append(foot);}
+function renderFrequency(host,s){const {card,shell}=chartCard(host,'Frequency table','Counts and percentages for each distinct value.');const frame=document.createElement('div');frame.className='frequency-frame';const table=document.createElement('table');table.className='frequency';table.innerHTML='<thead><tr><th scope="col">Value</th><th scope="col">Count</th><th scope="col">Percent</th></tr></thead>';const tbody=document.createElement('tbody');let rows=0;for(const [v,count] of s.freqs){if(rows++>=250)break;const tr=document.createElement('tr');[fmt(v),String(count),`${fmtShort(100*count/s.n)}%`].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td);});tbody.append(tr);}table.append(tbody);frame.append(table);shell.append(frame);if(s.freqs.size>250){const p=document.createElement('p');p.className='chart-foot';p.textContent='Showing the first 250 distinct values.';card.append(p);}}
+</script>
 </body>
 </html>
