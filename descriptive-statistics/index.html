@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Descriptive Statistics | Statistics Lab</title>
+  <style>
+    :root {--accent:#ad14d7;--accentDark:#8310aa;--ink:#172033;--muted:#64748b;--line:#e4e7ed;--soft:#f7f8fb;--lavender:#fbf5ff;--radius:14px;}
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth}
+    body {margin:0;background:#fff;font:15px/1.55 Lato,Arial,Helvetica,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+    .shell {width:min(920px,calc(100% - 36px));margin:44px auto 72px}
+    .eyebrow {font-size:12px;font-weight:800;letter-spacing:.13em;color:#7d278f;text-transform:uppercase;margin:0 0 6px}
+    h1 {font-size:clamp(29px,5vw,40px);letter-spacing:-.035em;line-height:1.17;margin:0 0 7px;font-weight:750}
+    .lead {font-size:16px;color:var(--muted);margin:0 0 28px}
+    .panel {border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:24px}
+    label {display:block;font-weight:750;font-size:14px;margin:0 0 9px}
+    .subtle {font-size:13px;color:var(--muted);font-weight:400}
+    textarea {display:block;width:100%;min-height:164px;resize:vertical;border:1px solid #cfd4df;border-radius:10px;padding:14px 15px;background:#fff;color:var(--ink);font:15px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;outline:none}
+    textarea:focus {border-color:var(--accent);box-shadow:0 0 0 3px #ad14d71e}
+    textarea::placeholder {color:#94a3b8}
+    .toolbar {display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:14px}
+    button {font:700 14px Lato,Arial,sans-serif;border-radius:9px;padding:10px 16px;min-height:42px;cursor:pointer;transition:background .12s,border-color .12s,color .12s}
+    button:focus-visible,summary:focus-visible {outline:3px solid #d4a6ed;outline-offset:2px}
+    .primary {background:var(--accent);color:white;border:1px solid var(--accent)}
+    .primary:hover {background:var(--accentDark);border-color:var(--accentDark)}
+    .secondary {background:#fff;color:#334155;border:1px solid #d7dce5}
+    .secondary:hover {background:#f7f8fc}
+    .linkbtn {border:0;background:transparent;color:#685074;padding:9px 6px}
+    .linkbtn:hover {color:var(--accent)}
+    .hint {margin:12px 0 0;color:var(--muted);font-size:12.5px}
+    .error {color:#b42318;background:#fff6f4;border:1px solid #f7c9c0;border-radius:9px;padding:11px 13px;margin-top:13px;font-size:13px}
+    .hidden {display:none!important}
+    .results {margin-top:27px}
+    .resultsHead {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    h2 {font-size:19px;letter-spacing:-.01em;margin:0;font-weight:800}
+    .smallTag {font-size:12px;color:#64748b;background:#f5f6f9;border:1px solid var(--line);padding:4px 9px;border-radius:999px}
+    .topStats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .stat {border:1px solid var(--line);border-radius:12px;padding:17px 16px 15px;background:#fff;min-width:0}
+    .statLabel {font-size:12px;color:var(--muted);font-weight:750;letter-spacing:.025em;margin:0 0 4px}
+    .statVal {font-size:clamp(23px,3.3vw,30px);font-weight:800;line-height:1.3;letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+    .statsTable {width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+    .statsTable tr:not(:last-child) {border-bottom:1px solid #eef0f4}
+    .statsTable th {text-align:left;font-weight:500;color:#475569;padding:9px 6px 9px 0}
+    .statsTable td {text-align:right;font-variant-numeric:tabular-nums;font-weight:750;padding:9px 0 9px 6px}
+    .expand {border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px}
+    .expand summary {list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 17px;font-size:14px;font-weight:800;cursor:pointer}
+    .expand summary::-webkit-details-marker {display:none}
+    .expand summary::after {content:'+';font-size:21px;font-weight:400;color:#6b7280;line-height:1}
+    .expand[open] summary::after {content:'−'}
+    .expand[open] summary {border-bottom:1px solid var(--line)}
+    .expandBody {padding:10px 18px 19px}
+    .detailGrid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .note {font-size:12px;color:#697588;margin:10px 0 0}
+    .vizArea {display:grid;gap:18px;padding-top:17px}
+    h3 {font-size:14px;font-weight:800;margin:0 0 7px}
+    .chartWrap {width:100%;overflow:hidden;border:1px solid #f1f2f6;border-radius:9px;padding:8px;background:#fff}
+    svg {display:block;width:100%;height:auto;max-width:100%}
+    .frequencyWrap {max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:9px;margin-top:8px}
+    .freq {width:100%;border-collapse:collapse;font-size:13px}
+    .freq th {font-size:12px;position:sticky;top:0;background:#f8f9fb;color:#5b6578;text-align:right;padding:9px 12px}
+    .freq th:first-child,.freq td:first-child {text-align:left}
+    .freq td {padding:8px 12px;text-align:right;border-top:1px solid #edf0f4;font-variant-numeric:tabular-nums}
+    .footer {margin-top:24px;color:#778295;font-size:12px;text-align:center}
+    .summaryActions {display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    .status {font-size:12px;color:#577b39}
+    @media(max-width:650px) {
+      .shell {width:calc(100% - 24px);margin:24px auto 45px}
+      .panel {padding:16px}
+      .topStats {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+      .stat {padding:12px}
+      .detailGrid {grid-template-columns:1fr;gap:0}
+      .lead {font-size:14px;margin-bottom:20px}
+      textarea {min-height:150px}
+    }
+    @media(prefers-reduced-motion:reduce) {html{scroll-behavior:auto}button{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <p class="eyebrow">Statistics Lab</p>
+    <h1>Descriptive Statistics</h1>
+    <p class="lead">Paste your data, click Calculate, and get the essentials.</p>
+    <section class="panel" aria-labelledby="dataHeading">
+      <label id="dataHeading" for="dataInput">Your data <span class="subtle">(one column from Excel works great)</span></label>
+      <textarea id="dataInput" spellcheck="false" placeholder="12\n15\n14\n18\n16\n14" aria-describedby="inputHint"></textarea>
+      <div class="toolbar">
+        <button type="button" class="primary" id="calculate">Calculate</button>
+        <button type="button" class="secondary" id="example">Try example</button>
+        <button type="button" class="linkbtn" id="clear">Clear</button>
+      </div>
+      <p class="hint" id="inputHint">Paste a single column or type numbers separated by commas, spaces, or new lines. Calculations stay in your browser.</p>
+      <div class="error hidden" id="error" role="alert"></div>
+    </section>
+
+    <section class="results hidden" id="results" aria-live="polite" aria-labelledby="resultsHeading">
+      <div class="resultsHead">
+        <h2 id="resultsHeading">Your results</h2>
+        <div class="summaryActions"><span class="smallTag" id="dataCount"></span><button id="copy" type="button" class="secondary">Copy summary</button><span class="status" id="copyStatus" aria-live="polite"></span></div>
+      </div>
+      <div class="topStats">
+        <div class="stat"><p class="statLabel">Sample size (n)</p><div class="statVal" id="n"></div></div>
+        <div class="stat"><p class="statLabel">Mean (x̄)</p><div class="statVal" id="mean"></div></div>
+        <div class="stat"><p class="statLabel">Median</p><div class="statVal" id="median"></div></div>
+        <div class="stat"><p class="statLabel">Sample SD (s)</p><div class="statVal" id="sd"></div></div>
+      </div>
+      <details class="expand" id="moreStats">
+        <summary>More statistics</summary>
+        <div class="expandBody">
+          <div class="detailGrid">
+            <table class="statsTable" aria-label="Location and spread">
+              <tbody>
+                <tr><th scope="row">Minimum</th><td id="min"></td></tr>
+                <tr><th scope="row">Q1 (25th percentile)</th><td id="q1"></td></tr>
+                <tr><th scope="row">Q3 (75th percentile)</th><td id="q3"></td></tr>
+                <tr><th scope="row">Maximum</th><td id="max"></td></tr>
+                <tr><th scope="row">Range</th><td id="range"></td></tr>
+                <tr><th scope="row">IQR</th><td id="iqr"></td></tr>
+              </tbody>
+            </table>
+            <table class="statsTable" aria-label="Additional measures">
+              <tbody>
+                <tr><th scope="row">Sample variance (s²)</th><td id="variance"></td></tr>
+                <tr><th scope="row">Standard error (SE)</th><td id="se"></td></tr>
+                <tr><th scope="row">Population SD (σ)</th><td id="popSd"></td></tr>
+                <tr><th scope="row">Mode(s)</th><td id="mode"></td></tr>
+                <tr><th scope="row">Sum</th><td id="sum"></td></tr>
+                <tr><th scope="row">Potential outliers</th><td id="outlierCount"></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Sample SD uses <em>n − 1</em>; SE = s / √n. Quartiles use the inclusive percentile method (as in Excel's QUARTILE.INC). Potential outliers use the 1.5 × IQR rule. For n = 1, sample SD and SE are undefined.</p>
+        </div>
+      </details>
+      <details class="expand" id="charts">
+        <summary>Charts</summary>
+        <div class="expandBody vizArea">
+          <div><h3>Histogram</h3><div class="chartWrap" id="histogram" role="img" aria-label="Histogram of the entered data"></div></div>
+          <div><h3>Boxplot</h3><div class="chartWrap" id="boxplot" role="img" aria-label="Boxplot of the entered data"></div><p class="note">Whiskers extend to the smallest and largest observations within the 1.5 × IQR fences; circles mark potential outliers.</p></div>
+        </div>
+      </details>
+      <details class="expand" id="frequencySection">
+        <summary>Frequency table</summary>
+        <div class="expandBody">
+          <p class="note" style="margin:0 0 8px">Counts of each distinct value in your data.</p>
+          <div class="frequencyWrap"><table class="freq"><thead><tr><th scope="col">Value</th><th scope="col">Count</th><th scope="col">Percent</th></tr></thead><tbody id="frequencyRows"></tbody></table></div>
+        </div>
+      </details>
+    </section>
+    <footer class="footer">Descriptive Statistics · Statistics Lab</footer>
+  </main>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const input = $('dataInput'), error = $('error'), results = $('results');
+    const exampleData = [12,15,14,18,16,14,21,17,15,14,19,16];
+    let lastSummary = '';
+    const nf = new Intl.NumberFormat('en-US', {maximumFractionDigits:4});
+    const fmt = x => Number.isFinite(x) ? nf.format(Math.abs(x) < 1e-11 ? 0 : x) : '—';
+
+    function readNumbers(raw) {
+      const tokens = raw.trim().split(/[,;\s]+/).filter(Boolean);
+      if (!tokens.length) throw new Error('Paste some numerical data to get started.');
+      if (tokens.length > 50000) throw new Error('Please paste 50,000 values or fewer.');
+      const vals=[];
+      for (let i=0;i<tokens.length;i++) {
+        const token = tokens[i].replace(/\u2212/g,'-');
+        if (!/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(token)) {
+          // Allow one optional spreadsheet column header as the first token.
+          if (i===0 && tokens.length>1 && !/\d/.test(token)) continue;
+          throw new Error(`“${tokens[i]}” isn't a number. Paste one column of numeric data (without units or thousands separators).`);
+        }
+        const n=Number(token);
+        if (!Number.isFinite(n)) throw new Error('One or more values are too large to calculate.');
+        vals.push(n);
+      }
+      if (!vals.length) throw new Error('No numeric values found.');
+      return vals;
+    }
+    function quantile(a, p) {
+      if (a.length===1) return a[0];
+      const r=(a.length-1)*p, low=Math.floor(r), frac=r-low;
+      return a[low] + frac*(a[Math.min(a.length-1,low+1)]-a[low]);
+    }
+    function compute(a) {
+      const n=a.length, sorted=a.slice().sort((x,y)=>x-y);
+      // Welford's numerically stable one-pass variance.
+      let mean=0, m2=0, sum=0, compensation=0;
+      for (let i=0;i<n;i++) {
+        const x=a[i], delta=x-mean;
+        mean += delta/(i+1);
+        m2 += delta*(x-mean);
+        const y=x-compensation,t=sum+y;
+        compensation=(t-sum)-y;sum=t;
+      }
+      const variance=n>1?Math.max(0,m2/(n-1)):NaN;
+      const sd=Math.sqrt(variance), se=n>1?sd/Math.sqrt(n):NaN;
+      const popSd=Math.sqrt(Math.max(0,m2/n));
+      const median=quantile(sorted,.5), q1=quantile(sorted,.25),q3=quantile(sorted,.75);
+      const min=sorted[0],max=sorted[n-1],iqr=q3-q1;
+      const f=new Map(); for (const x of sorted) f.set(x,(f.get(x)||0)+1);
+      const top=Math.max(...f.values());
+      const modes=top===1 ? [] : [...f].filter(e=>e[1]===top).map(e=>e[0]);
+      const fenceL=q1-1.5*iqr,fenceU=q3+1.5*iqr;
+      const inliers=sorted.filter(x=>x>=fenceL&&x<=fenceU);
+      const outliers=sorted.filter(x=>x<fenceL||x>fenceU);
+      return {n, sorted, sum, mean,median,q1,q3,min,max,iqr,range:max-min,variance,sd,se,popSd,modes,f,outliers,inliers};
+    }
+    function element(tag,attrs={}) {
+      const n=document.createElementNS('http://www.w3.org/2000/svg',tag);
+      for (const [k,v] of Object.entries(attrs)) n.setAttribute(k,String(v));
+      return n;
+    }
+    function addText(svg,x,y,text,anchor='middle',fill='#64748b',fontSize=12) {
+      const t=element('text',{x,y,'text-anchor':anchor,fill,'font-size':fontSize,'font-family':'Arial, sans-serif'});
+      t.textContent=text;svg.append(t);
+    }
+    function drawHistogram(s) {
+      const parent=$('histogram');parent.replaceChildren();
+      const w=740,h=225,left=46,right=15,top=18,bottom=38;
+      const svg=element('svg',{viewBox:`0 0 ${w} ${h}`,'aria-hidden':'true'});
+      const pw=w-left-right,ph=h-top-bottom;
+      let bins;
+      if(s.min===s.max) bins=[{start:s.min,end:s.max,count:s.n}];
+      else {
+        const nb=Math.max(4,Math.min(12,Math.round(Math.sqrt(s.n))));
+        bins=Array.from({length:nb},(_,i)=>({start:s.min+(s.range*i/nb),end:s.min+(s.range*(i+1)/nb),count:0}));
+        for (const x of s.sorted) bins[Math.min(nb-1,Math.floor((x-s.min)/s.range*nb))].count++;
+      }
+      const peak=Math.max(...bins.map(b=>b.count),1);
+      for(let k=0;k<=3;k++){
+        const v=Math.round(peak*k/3),y=top+ph*(1-k/3);
+        svg.append(element('line',{x1:left,y1:y,x2:w-right,y2:y,stroke:'#eceff4'}));
+        addText(svg,left-9,y+4,String(v),'end');
+      }
+      const bw=pw/bins.length;
+      bins.forEach((b,i)=>{
+        const bh=b.count/peak*ph;
+        svg.append(element('rect',{x:left+bw*i+2,y:top+ph-bh,width:Math.max(1,bw-4),height:bh,rx:3,fill:'#b258d0'}));
+      });
+      svg.append(element('line',{x1:left,y1:top+ph,x2:w-right,y2:top+ph,stroke:'#aab2bf'}));
+      const labelVal=(s.min===s.max?[s.min,s.min,s.min]:[s.min,(s.min+s.max)/2,s.max]);
+      [0,.5,1].forEach((d,i)=> addText(svg,left+pw*d,h-12,fmt(labelVal[i])));
+      parent.append(svg);
+    }
+    function drawBoxplot(s) {
+      const parent=$('boxplot');parent.replaceChildren();
+      const w=740,h=146,left=46,right=22,pw=w-left-right;
+      const svg=element('svg',{viewBox:`0 0 ${w} ${h}`,'aria-hidden':'true'});
+      const spread=s.max-s.min || 1;
+      const a=s.min===s.max ? s.min-spread*.5 : s.min-spread*.04;
+      const b=s.min===s.max ? s.max+spread*.5 : s.max+spread*.04;
+      const scale=x=>left+(x-a)/(b-a)*pw;
+      const y=62,low=s.inliers[0],high=s.inliers[s.inliers.length-1];
+      svg.append(element('line',{x1:scale(low),x2:scale(high),y1:y,y2:y,stroke:'#64748b','stroke-width':2}));
+      for (const v of [low,high]) svg.append(element('line',{x1:scale(v),x2:scale(v),y1:y-13,y2:y+13,stroke:'#64748b','stroke-width':2}));
+      svg.append(element('rect',{x:scale(s.q1),y:y-23,width:Math.max(1,scale(s.q3)-scale(s.q1)),height:46,rx:3,fill:'#ead1f4',stroke:'#ad14d7','stroke-width':2}));
+      svg.append(element('line',{x1:scale(s.median),x2:scale(s.median),y1:y-23,y2:y+23,stroke:'#8310aa','stroke-width':3}));
+      s.outliers.forEach(x=>svg.append(element('circle',{cx:scale(x),cy:y,r:4,fill:'#cb435e'})));
+      svg.append(element('line',{x1:left,y1:105,x2:w-right,y2:105,stroke:'#aab2bf'}));
+      for(let k=0;k<=4;k++){
+        const val=a+(b-a)*k/4;const x=scale(val);
+        svg.append(element('line',{x1:x,y1:105,x2:x,y2:109,stroke:'#aab2bf'}));
+        addText(svg,x,126,fmt(val));
+      }
+      parent.append(svg);
+    }
+    function drawFrequency(s) {
+      const body=$('frequencyRows');body.replaceChildren();
+      for (const [x,count] of s.f){
+        const tr=document.createElement('tr');
+        for(const str of [fmt(x),String(count),`${fmt(count/s.n*100)}%`]){
+          const td=document.createElement('td');td.textContent=str;tr.append(td);
+        }
+        body.append(tr);
+      }
+    }
+    function display(s) {
+      const fields={n:s.n,mean:s.mean,median:s.median,sd:s.sd,min:s.min,q1:s.q1,q3:s.q3,max:s.max,
+        range:s.range,iqr:s.iqr,variance:s.variance,se:s.se,popSd:s.popSd,sum:s.sum,
+        mode:s.modes.length ? s.modes.map(fmt).join(', ') : 'None',outlierCount:s.outliers.length};
+      for (const [k,v] of Object.entries(fields)) $(k).textContent=typeof v==='number'?fmt(v):String(v);
+      $('dataCount').textContent=`${fmt(s.n)} values`;
+      drawHistogram(s);drawBoxplot(s);drawFrequency(s);
+      lastSummary=[
+        'Descriptive Statistics',`n: ${s.n}`,`Mean: ${fmt(s.mean)}`,`Median: ${fmt(s.median)}`,
+        `Sample SD: ${fmt(s.sd)}`,`Sample variance: ${fmt(s.variance)}`,`SE: ${fmt(s.se)}`,
+        `Minimum: ${fmt(s.min)}`,`Q1: ${fmt(s.q1)}`,`Q3: ${fmt(s.q3)}`,
+        `Maximum: ${fmt(s.max)}`,`Range: ${fmt(s.range)}`,`IQR: ${fmt(s.iqr)}`,
+        `Population SD: ${fmt(s.popSd)}`,`Mode: ${fields.mode}`,`Sum: ${fmt(s.sum)}`,
+        `Potential outliers: ${s.outliers.length}`].join('\n');
+      results.classList.remove('hidden');
+      $('copyStatus').textContent='';
+    }
+    function showError(message){error.textContent=message;error.classList.remove('hidden');results.classList.add('hidden');}
+    function calculate(){
+      error.classList.add('hidden');
+      try { display(compute(readNumbers(input.value))); }
+      catch(ex){showError(ex.message||'Unable to calculate. Please check your data.');}
+    }
+    $('calculate').addEventListener('click', calculate);
+    $('example').addEventListener('click',()=>{input.value=exampleData.join('\n');calculate();});
+    $('clear').addEventListener('click',()=>{input.value='';error.classList.add('hidden');results.classList.add('hidden');lastSummary='';input.focus();});
+    $('copy').addEventListener('click',async()=>{
+      if(!lastSummary)return;
+      try {await navigator.clipboard.writeText(lastSummary);$('copyStatus').textContent='Copied!';}
+      catch(e){
+        const t=document.createElement('textarea');t.value=lastSummary;t.style.position='fixed';t.style.opacity='0';document.body.append(t);t.select();
+        const succeeded=document.execCommand('copy');t.remove();$('copyStatus').textContent=succeeded?'Copied!':'Select the results to copy.';
+      }
+    });
+    input.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();calculate();}});
+  </script>
+</body>
+</html>
