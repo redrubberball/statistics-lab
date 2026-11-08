@@ -213,6 +213,127 @@
     body.embed .hero>div:first-child {display:none;}
     @media(max-width:800px){.charts.side{grid-template-columns:1fr;}.layout-line{align-items:start;}.layout-picker{flex-wrap:wrap;}}
     @media(max-width:540px){.shell{padding:9px 9px 25px;}header.hero{padding:12px 14px;flex-wrap:wrap;}.sl-theme-switch{margin-left:auto;}.sl-theme-switch>button{font-size:10px;padding:7px 6px;}.layout-line{gap:8px;}.layout-picker{width:100%;}.layout-picker button{flex:1;padding:8px 5px;font-size:.72rem;}.overlap-insight{font-size:.78rem;}.graph-top{align-items:start;}.graph-chip{white-space:normal;}}
+
+    /* Compact workspace: controls and curve are visible at the same time. */
+    .shell {max-width:1320px;padding:12px 16px 26px;}
+    .sl-home-nav {margin-bottom:7px;}
+    header.hero {padding:11px 14px;margin-bottom:9px;}
+    header.hero h1 {font-size:clamp(20px,2.4vw,25px);}
+    .lead {font-size:12px;margin-top:2px;}
+    .workspace-bar {margin-bottom:9px;}
+    .workspace-bar .segmented button {padding:7px 11px;font-size:12px;}
+    .workspace-bar .subtle-btn {padding:7px 11px;font-size:12px;}
+    .experiment-workspace {display:grid;grid-template-columns:minmax(280px,320px) minmax(0,1fr);gap:12px;align-items:start;}
+    .controls-column,.visual-column {min-width:0;}
+    .controls {position:sticky;top:8px;padding:13px 14px;margin:0 0 10px;z-index:2;}
+    .controls .section-heading {margin-bottom:8px;display:block;}
+    .controls .section-heading h2 {font-size:15px;}
+    .controls .section-heading .hint {display:none;}
+    .control-grid {display:flex;flex-direction:column;gap:9px;}
+    .control-grid fieldset legend {font-size:12px;margin-bottom:5px;}
+    .tail-buttons {gap:4px;}
+    .tail-buttons span {padding:7px 4px;min-height:37px;font-size:11px;gap:3px;}
+    .tail-buttons .arrow {font-size:14px;}
+    .ctrl {padding:8px 0 0;border-left:0;border-top:1px solid var(--line);}
+    .control-label {margin-bottom:1px;}
+    .control-label label {font-size:12px;}
+    .num-input {font-size:14px;width:77px;padding:4px 6px;}
+    .controls input[type="range"] {margin:6px 0 3px;min-height:20px;}
+    .limits {font-size:10px;}
+    .microcopy {font-size:11px;margin:4px 0 0;line-height:1.36;}
+    .info-strip {margin-top:10px;padding-top:9px;font-size:11px;line-height:1.35;}
+    .info-strip .i {width:17px;height:17px;font-size:10px;}
+    .guide {margin:0 0 9px;padding:11px 13px;}
+    .guide h2 {font-size:14px;margin:4px 0;}
+    .guide p {font-size:11px;margin:4px 0 6px;}
+    .guide .question {font-size:12px;margin-top:8px;}
+    .guide-kicker {font-size:10px;}
+    .guide .answer-row {gap:4px;margin:7px 0;}
+    .guide .answer {font-size:11px;padding:6px 8px;}
+    .guide .guide-actions button {padding:7px 9px;min-height:34px;font-size:11px;}
+    .guide .feedback {font-size:11px;padding:7px;}
+    .view-line {margin:0 0 6px;gap:5px;}
+    .view-line h2 {font-size:14px;}
+    .view-line .segmented button {font-size:11px;padding:6px 9px;}
+    .layout-line {margin:0 0 7px;gap:5px;}
+    .layout-line>div:first-child .hint {display:none;}
+    .layout-line strong {font-size:12px;}
+    .layout-picker button {font-size:11px;min-height:31px;padding:4px 8px;}
+    .charts {gap:9px;}
+    .graph-card {padding:10px 11px 8px;}
+    .graph-top {margin:0 2px 3px;gap:3px;}
+    .graph-top h3 {font-size:14px;}
+    .graph-top p {font-size:11px;margin:0;}
+    .graph-chip {font-size:11px;padding:4px 7px;}
+    .charts .graph {max-width:750px;max-height:220px;margin:auto;}
+    .charts.side .graph {max-height:175px;}
+    .charts.stacked .graph {max-height:180px;}
+    .legend {padding:6px 1px 0;font-size:10px;gap:5px 11px;}
+    .overlap-insight {font-size:11px;padding:7px 9px;margin:8px 0 1px;}
+    .results {margin-top:9px;padding:11px 13px;}
+    .result-eyebrow {font-size:10px;}
+    .decision {font-size:17px;}
+    .equivalence {font-size:10px;padding:4px 8px;}
+    .result-top {align-items:center;}
+    .result-explainer {font-size:11px;margin:5px 0 8px;}
+    .rule-pair {gap:7px;}
+    .rule {padding:7px 9px;}
+    .rule strong {font-size:11px;margin-bottom:3px;}
+    .rule .comparison {font-size:13px;}
+    .rule small {font-size:10px;margin-top:2px;}
+    .additional {margin-top:9px;gap:7px;}
+    .additional details {padding:7px 10px;}
+    .additional summary {font-size:11px;}
+    .presets {margin-top:11px;}
+    .mobile-dock {display:none;}
+    .mobile-guide-toggle {display:none;}
+    .mobile-guide-toggle[hidden] {display:none!important;}
+    /* Under iframe/mobile widths, the smaller dock stays above the curve. */
+    @media(max-width:850px){
+      .shell {padding:9px 10px 23px;}
+      .experiment-workspace {display:flex;flex-direction:column;gap:7px;}
+      .controls-column,.visual-column {width:100%;}
+      .controls {position:static;margin-bottom:0;padding:10px 12px;}
+      .controls .control-grid {display:block;}
+      .controls .ctrl {display:none;}
+      .controls .info-strip {margin-top:8px;padding-top:6px;}
+      .controls .microcopy {margin-top:3px;}
+      .guide {display:none;}
+      .guide:not([hidden]) {display:none;}
+      .mobile-dock {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;position:sticky;top:0;z-index:9;padding:9px 12px;margin-bottom:8px;box-shadow:0 5px 15px #1118271d;border-color:var(--line);}
+      .dock-head {display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px;font-weight:800;}
+      .dock-head output {font-variant-numeric:tabular-nums;color:var(--graph-observed);font-size:13px;font-weight:850;}
+      .dock-field:nth-child(2) .dock-head output {color:var(--graph-critical);}
+      .mobile-dock input[type="range"] {width:100%;margin:6px 0 1px;min-height:25px;accent-color:var(--purple);}
+      #mobileAlphaRange {accent-color:var(--teal);}
+      .view-line {align-items:center;}
+      .layout-line {justify-content:space-between;}
+      .charts.stacked .graph {max-height:195px;}
+      .charts.side {grid-template-columns:1fr;}
+      .charts .graph {max-height:240px;}
+      .results {margin-top:7px;}
+      .mobile-guide-toggle {display:block;margin:0 0 7px;}
+      .mobile-guide-toggle button {width:100%;min-height:32px;padding:5px 8px;font-size:11px;}
+      .guide.mobile-open:not([hidden]) {display:block;}
+
+    }
+    @media(max-width:440px){
+      .shell {padding:8px 7px 20px;}
+      header.hero {padding:10px 11px;}
+      header.hero h1 {font-size:20px;}
+      .lead {font-size:11px;}
+      .tail-buttons span {font-size:11px;}
+      .view-line .segmented button {padding:6px 7px;font-size:10px;}
+      .view-line h2 {font-size:12px;}
+      .layout-line strong {display:none;}
+      .layout-picker {width:100%;}
+      .layout-picker button {flex:1;}
+      .mobile-dock {padding:7px 9px;gap:9px;}
+      .dock-head {font-size:10px;}
+      .results .result-top {gap:5px;}
+      .result-explainer {font-size:11px;}
+      .rule .comparison {font-size:11px;}
+    }
   </style>
 </head>
 <body>
@@ -239,19 +360,8 @@
       <button id="resetBtn" type="button" class="subtle-btn">↺ Reset explorer</button>
     </div>
 
-    <section class="guide" id="guide" aria-labelledby="guideTitle">
-      <div class="guide-top"><span class="guide-kicker" id="guideStep">Investigation 1 of 4</span><nav id="stepNav" aria-label="Investigation steps"></nav></div>
-      <h2 id="guideTitle"></h2>
-      <p id="guidePrompt"></p>
-      <div class="question" id="guideQuestion"></div>
-      <div class="answer-row" id="guideAnswers" role="group" aria-label="Select your prediction"></div>
-      <div id="guideFeedback" class="feedback" role="status" hidden></div>
-      <div class="guide-actions">
-        <button id="guideExample" type="button" class="subtle-btn">↺ Restore this example</button>
-        <button id="guideNext" type="button" class="btn-primary">Next investigation →</button>
-      </div>
-    </section>
-
+    <div class="experiment-workspace">
+      <div class="controls-column">
     <section class="card controls" aria-labelledby="controlsTitle">
       <div class="section-heading"><h2 id="controlsTitle">Experiment with the test</h2><span class="hint">Change one thing at a time and watch the graphs.</span></div>
       <div class="control-grid">
@@ -280,6 +390,32 @@
       <div class="info-strip"><span class="i" aria-hidden="true">i</span><span id="changeMessage" aria-live="polite">Start with z = 1.80 and α = 0.05. Notice which boundaries define the shaded regions.</span></div>
     </section>
 
+    <div class="mobile-guide-toggle" id="mobileGuideToggleWrap"><button id="mobileGuideToggle" type="button" class="subtle-btn" aria-expanded="false" aria-controls="guide">Show current investigation ↓</button></div>
+    <section class="guide" id="guide" aria-labelledby="guideTitle">
+      <div class="guide-top"><span class="guide-kicker" id="guideStep">Investigation 1 of 4</span><nav id="stepNav" aria-label="Investigation steps"></nav></div>
+      <h2 id="guideTitle"></h2>
+      <p id="guidePrompt"></p>
+      <div class="question" id="guideQuestion"></div>
+      <div class="answer-row" id="guideAnswers" role="group" aria-label="Select your prediction"></div>
+      <div id="guideFeedback" class="feedback" role="status" hidden></div>
+      <div class="guide-actions">
+        <button id="guideExample" type="button" class="subtle-btn">↺ Restore this example</button>
+        <button id="guideNext" type="button" class="btn-primary">Next investigation →</button>
+      </div>
+    </section>
+
+      </div>
+      <div class="visual-column">
+    <div class="mobile-dock card" aria-label="Live graph controls">
+      <div class="dock-field">
+        <div class="dock-head"><label for="mobileZRange">Observed z</label><output id="mobileZValue" for="mobileZRange">+1.80</output></div>
+        <input id="mobileZRange" type="range" min="-3.5" max="3.5" step="0.05" value="1.80" aria-label="Observed z, mobile graph slider">
+      </div>
+      <div class="dock-field">
+        <div class="dock-head"><label for="mobileAlphaRange">Significance α</label><output id="mobileAlphaValue" for="mobileAlphaRange">0.05</output></div>
+        <input id="mobileAlphaRange" type="range" min="0.01" max="0.10" step="0.005" value="0.05" aria-label="Alpha, mobile graph slider">
+      </div>
+    </div>
     <div class="view-line"><h2>Explore the Normal curve</h2>
       <div class="segmented" role="group" aria-label="Choose a graph view">
         <button type="button" id="pView" aria-pressed="false">P-value</button>
@@ -291,12 +427,12 @@
     <div class="layout-line" id="layoutLine">
       <div><strong>Arrange the two methods</strong><span class="hint">Stacked is easiest to read; Overlay shows how the tail areas line up.</span></div>
       <div class="segmented layout-picker" role="group" aria-label="Compare graph arrangement">
-        <button type="button" id="stackedLayout" aria-pressed="true">↧ Stacked</button>
+        <button type="button" id="stackedLayout" aria-pressed="false">↧ Stacked</button>
         <button type="button" id="sideLayout" aria-pressed="false">▥ Side by side</button>
-        <button type="button" id="overlayLayout" aria-pressed="false">◉ Overlay</button>
+        <button type="button" id="overlayLayout" aria-pressed="true">◉ Overlay</button>
       </div>
     </div>
-    <section class="charts stacked" id="charts" aria-label="Interactive Normal distribution graphs">
+    <section class="charts overlay" id="charts" aria-label="Interactive Normal distribution graphs">
       <article class="card graph-card" id="pCard">
         <div class="graph-top"><div><h3 class="p-title">P-value approach</h3><p>How extreme is the observed z under H₀?</p></div><span class="graph-chip" id="pChip">P = 0.0359</span></div>
         <svg id="pGraph" class="graph" role="img" viewBox="0 0 640 270" aria-labelledby="pGraphTitle pGraphDesc"><title id="pGraphTitle">Normal curve with P-value shaded</title><desc id="pGraphDesc">Right tail beyond z equals 1.80 shaded blue.</desc></svg>
@@ -330,6 +466,8 @@
         <details><summary>Show the math and assumptions</summary><p id="mathText"></p><ul><li>The graph shows the sampling distribution of the <em>test statistic</em> under H₀: Z ~ N(0,1).</li><li>The test direction must be chosen from the research question <em>before</em> looking at the data.</li><li>Results presume an appropriate z-test and satisfied assumptions; this explorer does not check them.</li><li>A P-value is not the probability that H₀ is true. Failing to reject is not accepting H₀.</li></ul></details>
       </div>
     </section>
+      </div>
+    </div>
     <div class="card presets" aria-label="Example scenarios">
       <strong>Try an example:</strong>
       <button type="button" data-preset="standard">Significant result</button>
@@ -343,7 +481,7 @@
   'use strict';
   (() => {
     const $ = id => document.getElementById(id);
-    const state = {alpha:0.05, z:1.8, tail:'right', view:'both', layout:'stacked', mode:'guided', step:0, prediction:null};
+    const state = {alpha:0.05, z:1.8, tail:'right', view:'both', layout:'overlay', mode:'guided', step:0, prediction:null};
     const presets = {
       standard:{alpha:.05,z:1.8,tail:'right'},
       alpha:{alpha:.01,z:1.8,tail:'right'},
@@ -444,6 +582,8 @@
       const {alpha,z,tail,view,layout,mode}=state, c=calculate();
       $('alphaRange').value=alpha; $('alphaNumber').value=alpha.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
       $('zRange').value=z; $('zNumber').value=z.toFixed(2);
+      $('mobileZRange').value=z; $('mobileAlphaRange').value=alpha;
+      $('mobileZValue').textContent=fmtSigned(z); $('mobileAlphaValue').textContent=alpha.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
       document.querySelectorAll('input[name="tail"]').forEach(e=>{e.checked=e.value===tail;});
       $('tailHint').textContent=tail==='left'?'Left-tailed: Hₐ uses <. More negative z-values support Hₐ.':tail==='right'?'Right-tailed: Hₐ uses >. More positive z-values support Hₐ.':'Two-tailed: Hₐ uses ≠. Extreme z-values in either direction support Hₐ.';
       for (const [id,val] of [['pView','p'],['cView','critical'],['bothView','both']]) $(id).setAttribute('aria-pressed',String(view===val));
@@ -473,6 +613,7 @@
       const math=tail==='left'?`Left-tailed: P = Φ(z) = ${c.p.toFixed(6)}. Critical z = Φ⁻¹(α) ≈ ${fmtNum(c.k,3)}.`:tail==='right'?`Right-tailed: P = 1 − Φ(z) = ${c.p.toFixed(6)}. Critical z = Φ⁻¹(1 − α) ≈ ${fmtSigned(c.k,3)}.`:`Two-tailed: P = 2[1 − Φ(|z|)] = ${c.p.toFixed(6)}. Critical boundaries are ±Φ⁻¹(1 − α/2) ≈ ±${c.k.toFixed(3)}; each rejection tail has area α/2 = ${(alpha/2).toFixed(4)}.`;
       $('mathText').textContent=math;
       $('guide').hidden=mode!=='guided';
+      $('mobileGuideToggleWrap').hidden=mode!=='guided';
       $('guidedBtn').setAttribute('aria-pressed',String(mode==='guided'));
       $('exploreBtn').setAttribute('aria-pressed',String(mode==='explore'));
     }
@@ -508,6 +649,8 @@
     }
     $('alphaRange').addEventListener('input',e=>updateRange('alpha',e.target.value));
     $('zRange').addEventListener('input',e=>updateRange('z',e.target.value));
+    $('mobileAlphaRange').addEventListener('input',e=>updateRange('alpha',e.target.value));
+    $('mobileZRange').addEventListener('input',e=>updateRange('z',e.target.value));
     for(const kind of ['alpha','z']){
       $(kind+'Number').addEventListener('change',e=>updateRange(kind,e.target.value));
       $(kind+'Number').addEventListener('blur',()=>render());
@@ -517,6 +660,7 @@
     for(const [id,layout] of [['stackedLayout','stacked'],['sideLayout','side'],['overlayLayout','overlay']]) $(id).addEventListener('click',()=>{state.layout=layout;render();});
     $('guidedBtn').addEventListener('click',()=>{state.mode='guided';switchStep(state.step);render();});
     $('exploreBtn').addEventListener('click',()=>{state.mode='explore';state.view='both';render();});
+    $('mobileGuideToggle').addEventListener('click',()=>{const guide=$('guide');const visible=guide.classList.toggle('mobile-open');$('mobileGuideToggle').setAttribute('aria-expanded',String(visible));$('mobileGuideToggle').textContent=visible?'Hide current investigation ↑':'Show current investigation ↓';});
     $('resetBtn').addEventListener('click',()=>{state.mode='guided';state.step=0;switchStep(0);changeMessage('reset');render();});
     $('guideExample').addEventListener('click',()=>setFields(lessons[state.step].example,'preset'));
     $('guideNext').addEventListener('click',()=>{if(state.step<lessons.length-1)switchStep(state.step+1);else {state.mode='explore';state.view='both';render();}});
