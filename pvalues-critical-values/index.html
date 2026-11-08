@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ad14d7">
+  <meta name="description" content="An interactive introductory statistics lab exploring P-values, critical values, and consistent hypothesis-test decisions.">
+  <title>P-Values vs. Critical Values | Statistics Lab</title>
+  <script>
+    (function(){try{var p=localStorage.getItem('statistics-lab-theme')||'system';var d=p==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;document.documentElement.setAttribute('data-theme',d)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();
+  </script>
+  <style>
+    :root { color-scheme: light; --purple:#ad14d7; --blue:#2563eb; --teal:#087f77; --ink:#17233b; --muted:#56647a; --line:#dde3ef; --page:#f7f8fc; --card:#fff; --soft:#f3f4fb; --focus:#553cbb; --shadow:0 10px 30px rgba(24,33,65,.045); }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; font-family:Lato,"Segoe UI",Arial,sans-serif; background:var(--page); color:var(--ink); font-size:15px; line-height:1.48; }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible, input:focus-visible, summary:focus-visible { outline:3px solid #7155c7; outline-offset:3px; }
+    .shell { max-width:1190px; margin:0 auto; padding:22px 22px 48px; }
+    header.hero { display:flex; justify-content:space-between; align-items:center; gap:22px; margin-bottom:20px; }
+    .eyebrow { text-transform:uppercase; font-size:.72rem; letter-spacing:.115em; font-weight:900; color:#764098; margin:0 0 9px; }
+    h1 { margin:0; letter-spacing:-.04em; font-size:clamp(1.6rem,3.5vw,2.52rem); line-height:1.14; }
+    .lead { color:var(--muted); margin:10px 0 0; max-width:660px; }
+    .badge { border:1px solid #e8ceef; border-radius:99px; background:#f9effd; color:#6b267d; font-weight:800; white-space:nowrap; padding:10px 14px; font-size:.77rem; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); }
+    .workspace-bar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin:0 0 16px; }
+    .segmented { display:inline-flex; background:#edf0f7; padding:4px; border-radius:10px; gap:4px; }
+    .segmented button { border:0; background:transparent; border-radius:8px; padding:9px 13px; font-weight:800; color:#4f5c74; }
+    .segmented button[aria-pressed="true"] { background:#fff; color:#572779; box-shadow:0 2px 7px #17233b1a; }
+    .subtle-btn { background:white; border:1px solid #d4dbe9; border-radius:9px; color:#34445f; padding:9px 14px; font-size:.87rem; font-weight:750; }
+    .controls { padding:22px 24px 21px; margin-bottom:16px; }
+    .section-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:13px; }
+    .section-heading h2 { margin:0; font-size:1.1rem; letter-spacing:-.012em; }
+    .hint { color:var(--muted); font-size:.81rem; }
+    fieldset { border:0; padding:0; margin:0; min-width:0; }
+    legend { font-weight:850; margin-bottom:8px; font-size:.89rem; }
+    .tail-buttons { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+    .tail-buttons label { cursor:pointer; }
+    .tail-buttons input { position:absolute; opacity:0; width:1px; height:1px; }
+    .tail-buttons span { border:1.5px solid #d5dce9; border-radius:10px; display:flex; justify-content:center; align-items:center; gap:7px; padding:11px 8px; font-weight:750; color:#41506b; background:white; font-size:.88rem; }
+    .tail-buttons .arrow { font-size:1.25rem; line-height:1; }
+    .tail-buttons input:checked + span { background:#f8edfb; border-color:var(--purple); color:#7c258e; box-shadow:inset 0 0 0 1px var(--purple); }
+    .tail-buttons input:focus-visible + span { outline:3px solid var(--focus); outline-offset:2px; }
+    .control-grid { display:grid; grid-template-columns: 1.03fr 1fr 1fr; gap:24px; align-items:start; }
+    .ctrl { padding-left:20px; border-left:1px solid var(--line); }
+    .control-label { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; }
+    .control-label label { font-weight:850; font-size:.89rem; }
+    .num-input { width:87px; border:1.5px solid #cbd4e4; border-radius:8px; padding:5px 8px; color:var(--ink); background:white; font-size:1.1rem; font-weight:850; font-variant-numeric:tabular-nums; text-align:right; }
+    .num-input.z { color:#8c239f; }
+    .num-input.alpha { color:var(--teal); }
+    input[type="range"] { width:100%; cursor:pointer; accent-color:var(--purple); margin:9px 0; }
+    #alphaRange { accent-color:var(--teal); }
+    .limits { display:flex; justify-content:space-between; color:#637289; font-size:.74rem; }
+    .microcopy { color:var(--muted); font-size:.78rem; margin:8px 0 0; }
+    .info-strip { border-top:1px solid var(--line); margin-top:19px; padding-top:14px; display:flex; align-items:flex-start; gap:10px; color:#394c69; font-size:.87rem; }
+    .info-strip .i { flex-shrink:0; background:#f0ecff; color:#682ba2; border-radius:50%; width:20px; height:20px; display:inline-grid; place-items:center; font-weight:850; font-style:normal; font-size:.77rem; }
+    .view-line { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin:0 0 13px; }
+    .view-line h2 { font-size:1.04rem; margin:0; }
+    .view-line .segmented { background:#eceff7; }
+    .view-line .segmented button { font-size:.82rem; }
+    .charts { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .charts.single { grid-template-columns:1fr; }
+    .graph-card { min-width:0; padding:19px 16px 12px; }
+    .graph-top { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:8px; margin:0 5px 8px; }
+    .graph-top h3 { margin:0; font-size:1rem; }
+    .graph-top .p-title { color:#1855c8; }
+    .graph-top .c-title { color:#087f77; }
+    .graph-top p { margin:2px 0 0; color:var(--muted); font-size:.78rem; }
+    .graph-chip { white-space:nowrap; border-radius:8px; background:#f1f6ff; padding:6px 9px; font-weight:900; font-variant-numeric:tabular-nums; font-size:.83rem; color:#1855c8; }
+    .graph-chip.teal { background:#eaf9f5; color:#075b55; }
+    svg.graph { display:block; width:100%; height:auto; max-height:315px; overflow:visible; }
+    .legend { border-top:1px solid #e7ebf3; padding:10px 5px 0; display:flex; gap:10px 17px; flex-wrap:wrap; color:#45566f; font-size:.77rem; }
+    .legend .key { display:inline-flex; align-items:center; gap:6px; }
+    .swatch { width:17px; height:8px; border-radius:2px; display:inline-block; background:#2563eb50; border:1px solid #2563eb; }
+    .swatch.teal { background:#0d94883a; border-color:#0d9488; }
+    .linekey { height:0; width:18px; border-top:3px dashed var(--purple); }
+    .linekey.teal { border-top:3px solid var(--teal); }
+    .axis-text { fill:#536178; font-family:Lato,"Segoe UI",Arial,sans-serif; font-size:11px; }
+    .results { margin-top:16px; padding:20px 22px; }
+    .result-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; }
+    .result-eyebrow { margin:0 0 4px; color:#64718a; font-size:.71rem; text-transform:uppercase; letter-spacing:.08em; font-weight:850; }
+    .decision { margin:0; font-size:1.3rem; letter-spacing:-.02em; }
+    .decision.reject { color:#116957; }
+    .decision.fail { color:#714485; }
+    .equivalence { font-size:.76rem; background:#eef8f4; border:1px solid #cceadd; color:#126b55; font-weight:850; padding:7px 10px; border-radius:99px; }
+    .result-explainer { color:#45526b; margin:9px 0 14px; font-size:.88rem; }
+    .rule-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .rule { background:#f6f8fc; border:1px solid #e4eaf3; padding:13px; border-radius:11px; }
+    .rule strong { display:block; font-size:.77rem; color:#596681; margin-bottom:7px; }
+    .rule .comparison { font-weight:850; font-size:1.01rem; font-variant-numeric:tabular-nums; }
+    .rule small { display:block; color:#607086; margin-top:4px; }
+    .additional { margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    details { border:1px solid #dfe5ef; border-radius:10px; padding:10px 13px; background:white; }
+    details summary { font-weight:850; font-size:.84rem; cursor:pointer; color:#4b2b76; }
+    details p,details li { color:#46546c; font-size:.84rem; margin:9px 0 0; }
+    details ul { margin:8px 0 0; padding-left:20px; }
+    .guide { margin:0 0 16px; border:1px solid #e5d3ee; border-radius:15px; background:linear-gradient(110deg,#fbf7fe,#fff); padding:16px 20px; }
+    .guide-top { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .guide-kicker { text-transform:uppercase; font-weight:900; letter-spacing:.08em; color:#85329f; font-size:.69rem; }
+    .guide h2 { margin:6px 0; font-size:1.04rem; }
+    .guide p { margin:5px 0 11px; color:#485570; font-size:.88rem; }
+    .guide nav { display:flex; gap:5px; }
+    .step-dot { width:24px; height:24px; border:1px solid #d7c4e0; border-radius:50%; background:white; color:#6b437f; font-size:.73rem; font-weight:900; }
+    .step-dot[aria-current="step"] { color:white; background:var(--purple); border-color:var(--purple); }
+    .question { color:#243148; font-weight:850; font-size:.88rem; margin-top:10px; }
+    .answer-row { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+    .answer { background:white; border:1px solid #d6c5e2; padding:8px 11px; border-radius:8px; font-size:.83rem; font-weight:750; color:#563267; }
+    .answer.chosen { border-color:var(--purple); background:#f9efff; }
+    .feedback { background:#f3f6ff; border-left:3px solid #7751bc; border-radius:6px; font-size:.84rem; padding:10px 12px; color:#3e4d6a; margin-top:8px; }
+    .guide-actions { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-top:12px; }
+    .btn-primary { border:0; background:var(--purple); color:white; font-size:.84rem; font-weight:800; padding:9px 13px; border-radius:9px; }
+    .btn-primary:disabled { opacity:.45; cursor:default; }
+    .guide-actions .subtle-btn { font-size:.82rem; padding:8px 12px; }
+    .presets { margin-top:15px; padding:15px 18px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .presets strong { font-size:.84rem; margin-right:4px; }
+    .presets button { background:white; border:1px solid #d6dce9; border-radius:99px; padding:7px 11px; color:#4b5571; font-weight:750; font-size:.78rem; }
+    .notes { margin-top:16px; color:#647089; font-size:.77rem; }
+    .notes a { color:#71428d; }
+    body.embed { background:#fff; }
+    body.embed .shell { max-width:none; padding:12px; }
+    body.embed .hero,body.embed .notes { display:none; }
+    @media(max-width:880px) { .control-grid { grid-template-columns:1fr 1fr; } .control-grid fieldset { grid-column:1/-1; } .ctrl { padding-left:0; border-left:0; } .charts { grid-template-columns:1fr; } .graph-card svg { max-height:290px; } }
+    @media(max-width:540px) { .shell { padding:12px 12px 28px; } .badge { display:none; } .controls { padding:15px; } .control-grid { gap:18px; } .tail-buttons span { gap:4px; padding:10px 5px; font-size:.76rem; } .rule-pair,.additional { grid-template-columns:1fr; } .control-label { align-items:start; flex-direction:column; } .num-input { width:100%; } .graph-card { padding:13px 10px 10px; } .results { padding:16px; } .graph-chip { font-size:.76rem; } .segmented button { padding:8px 10px; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } * { transition:none !important; animation:none !important; } }
+
+    /* Match the existing Confidence Interval Calculator: shared purple header and appearance. */
+    :root { --purple:#ad14d7; --violet:#ad14d7; --teal:#288f9b; --ink:#263147; --muted:#64748b; --line:#e3e6ed; --page:#fff; --card:#fff; --shadow:0 8px 25px rgba(52,27,74,.055);
+      --graph-curve:#7536b4; --graph-axis:#8b94a4; --graph-p-blue:#2563eb; --graph-c-teal:#288f9b; --graph-observed:#ad14d7; --graph-critical:#168a94; --graph-tick:#64748b;
+      --theme-border:#ded6e8; --theme-track:#f2edf7; --theme-muted:#5f5871; --theme-active:#fff; --theme-active-text:#5e2590; --theme-hover:#e9e1f2; }
+    .shell {max-width:1170px;padding:17px 15px 35px;}
+    .sl-home-nav {margin:0 0 12px;display:flex;align-items:center;}
+    .sl-home-link {display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid var(--theme-border);border-radius:9px;background:var(--theme-track);color:var(--theme-active-text);font-weight:700;font-size:13px;line-height:1.3;text-decoration:none;}
+    .sl-home-link:hover,.sl-home-link:focus-visible {outline:2px solid #a66de4;outline-offset:1px;}
+    header.hero {background:#f3f4f6;border-left:5px solid var(--violet);border-radius:11px;padding:14px 17px;margin-bottom:15px;align-items:flex-start;gap:14px;}
+    header.hero>div:first-child {flex:1;min-width:0;}
+    .eyebrow {color:#8950a6;margin-bottom:2px;font-size:11px;}
+    header.hero h1 {color:#581c87;font-size:clamp(22px,2.7vw,27px);letter-spacing:-.025em;}
+    .lead {font-size:13px;margin-top:3px;}
+    .sl-theme-switch {display:inline-flex;align-self:flex-start;gap:2px;align-items:center;flex:none;padding:3px;border:1px solid var(--theme-border);border-radius:10px;background:var(--theme-track);box-shadow:0 1px 3px #18122410;}
+    .sl-theme-switch>button {font-family:inherit;font-size:11px;font-weight:740;line-height:1.2;min-height:33px;white-space:nowrap;padding:7px 9px;border:0!important;border-radius:7px;background:transparent!important;color:var(--theme-muted)!important;box-shadow:none;cursor:pointer;touch-action:manipulation;}
+    .sl-theme-switch>button[aria-pressed="true"] {background:var(--theme-active)!important;color:var(--theme-active-text)!important;box-shadow:0 1px 5px #00000023;}
+    .sl-theme-switch>button:hover:not([aria-pressed="true"]) {background:var(--theme-hover)!important;}
+    .sl-theme-switch>button:focus-visible {outline:3px solid #0ea5e9!important;outline-offset:2px;}
+    .card {border-radius:14px;}
+    .segmented {background:#f5f3f9;border:1px solid #ece7f3;}
+    .segmented button[aria-pressed="true"] {color:#581c87;}
+    .guide {background:#faf7ff;}
+    .graph-top .c-title,.graph-chip.teal {color:#08787e;}
+    .axis-text {fill:var(--graph-tick);}
+    .layout-line {display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:-3px 0 12px;padding:2px 0;}
+    .layout-line>div:first-child {display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 13px;}
+    .layout-line strong {font-size:.83rem;color:#49305c;}
+    .layout-picker button {font-size:.81rem;min-height:38px;padding:7px 13px;}
+    .charts.stacked {grid-template-columns:1fr;}
+    .charts.side {grid-template-columns:repeat(2,minmax(0,1fr));}
+    .charts.overlay {grid-template-columns:1fr;}
+    .charts.single {grid-template-columns:1fr;}
+    .charts.stacked .graph {max-width:830px;margin:auto;}
+    .charts.overlay .graph {max-width:830px;margin:auto;}
+    .overlap-insight {background:#f3f9fb;border:1px solid #cfebec;border-radius:9px;padding:10px 12px;margin:12px 3px 3px;font-size:.85rem;color:#2b5460;}
+    .swatch.hatch {background:repeating-linear-gradient(45deg,#288f9b3a 0,#288f9b3a 3px,transparent 3px,transparent 7px);border-color:#288f9b;}
+    html[data-theme="dark"] {color-scheme:dark;background:#11141e;color:#f3f0fa;--purple:#cf93f0;--violet:#cf93f0;--teal:#6bd5d7;--ink:#f1edfa;--muted:#b3bed1;--line:#3c4254;--page:#11141e;--card:#1c2030;--shadow:0 8px 25px #00000024;
+      --graph-curve:#ceacf9;--graph-axis:#a4aabd;--graph-p-blue:#80aaff;--graph-c-teal:#6bd5d7;--graph-observed:#f0a2f2;--graph-critical:#72e3db;--graph-tick:#bbc4d4;
+      --theme-border:#4c445d;--theme-track:#272537;--theme-muted:#c4bed5;--theme-active:#4b3b69;--theme-active-text:#f8ecff;--theme-hover:#38334a;}
+    html[data-theme="dark"] header.hero {background:#222536;border-left-color:#cf93f0;}
+    html[data-theme="dark"] header.hero h1 {color:#e9cafa;}
+    html[data-theme="dark"] .eyebrow {color:#d6a9ee;}
+    html[data-theme="dark"] .sl-home-link {color:#e9d5ff;background:#302941;border-color:#655174;}
+    html[data-theme="dark"] .lead,html[data-theme="dark"] .hint,html[data-theme="dark"] .microcopy,html[data-theme="dark"] .limits,html[data-theme="dark"] .info-strip,html[data-theme="dark"] .graph-top p,html[data-theme="dark"] .legend,html[data-theme="dark"] .result-explainer,html[data-theme="dark"] .rule small,html[data-theme="dark"] .guide p,html[data-theme="dark"] .notes,html[data-theme="dark"] details p,html[data-theme="dark"] details li {color:#bac6d8;}
+    html[data-theme="dark"] .eyebrow,html[data-theme="dark"] .guide-kicker {color:#e5b5fa;}
+    html[data-theme="dark"] .guide {background:linear-gradient(110deg,#29243b,#1c2030);border-color:#50445d;}
+    html[data-theme="dark"] .guide h2,html[data-theme="dark"] .question,html[data-theme="dark"] .layout-line strong {color:#f1e1ff;}
+    html[data-theme="dark"] .guide .step-dot {background:#26263a;border-color:#5d4c70;color:#e2d6f1;}
+    html[data-theme="dark"] .guide .step-dot[aria-current="step"] {background:#8552c6;border-color:#8552c6;color:#fff;}
+    html[data-theme="dark"] .segmented {background:#252437;border-color:#484258;}
+    html[data-theme="dark"] .segmented button {color:#cfc5df;}
+    html[data-theme="dark"] .segmented button[aria-pressed="true"] {background:#3a3152;color:#f5e8ff;box-shadow:inset 0 0 0 1px #684a8a;}
+    html[data-theme="dark"] .subtle-btn,html[data-theme="dark"] .presets button,html[data-theme="dark"] .answer {background:#29283a;color:#ead8f8;border-color:#544b68;}
+    html[data-theme="dark"] .answer.chosen {background:#422e57;border-color:#c391de;}
+    html[data-theme="dark"] .feedback {background:#252940;color:#dae1f5;border-left-color:#b78bea;}
+    html[data-theme="dark"] .btn-primary {background:#8552c6;color:white;}
+    html[data-theme="dark"] .tail-buttons span {background:#252838;border-color:#4c4b64;color:#dce4f1;}
+    html[data-theme="dark"] .tail-buttons input:checked + span {background:#40314f;border-color:#cf93f0;color:#f2d8ff;box-shadow:inset 0 0 0 1px #a567d2;}
+    html[data-theme="dark"] .num-input {background:#171b28;border-color:#5b5770;color:#f8f4ff;}
+    html[data-theme="dark"] .num-input.z {color:#edb5f0;}
+    html[data-theme="dark"] .num-input.alpha {color:#9bf0eb;}
+    html[data-theme="dark"] .info-strip {border-top-color:#3c4155;}
+    html[data-theme="dark"] .info-strip .i {background:#413450;color:#e3c3ff;}
+    html[data-theme="dark"] .graph-top .p-title {color:#94b8ff;}
+    html[data-theme="dark"] .graph-top .c-title {color:#8be4de;}
+    html[data-theme="dark"] .graph-chip {background:#243554;color:#aed0ff;}
+    html[data-theme="dark"] .graph-chip.teal {background:#1d4145;color:#a3e9e7;}
+    html[data-theme="dark"] .legend {border-top-color:#3c4155;}
+    html[data-theme="dark"] .swatch {border-color:#80aaff;background:#80aaff52;}
+    html[data-theme="dark"] .swatch.teal {border-color:#6bd5d7;background:#6bd5d752;}
+    html[data-theme="dark"] .swatch.hatch {border-color:#6bd5d7;background:repeating-linear-gradient(45deg,#6bd5d750 0,#6bd5d750 3px,transparent 3px,transparent 7px);}
+    html[data-theme="dark"] .linekey {border-top-color:#f0a2f2;}
+    html[data-theme="dark"] .linekey.teal {border-top-color:#72e3db;}
+    html[data-theme="dark"] .result-eyebrow {color:#b3bed1;}
+    html[data-theme="dark"] .decision.reject {color:#a2efd8;}
+    html[data-theme="dark"] .decision.fail {color:#e7c7fb;}
+    html[data-theme="dark"] .equivalence {background:#1c3b34;border-color:#376c60;color:#baf4df;}
+    html[data-theme="dark"] .rule {background:#252a3c;border-color:#43495b;}
+    html[data-theme="dark"] .rule strong {color:#bac5da;}
+    html[data-theme="dark"] details {background:#252235;border-color:#51445f;}
+    html[data-theme="dark"] details summary {color:#e7c8fb;}
+    html[data-theme="dark"] .overlap-insight {background:#223740;border-color:#42616b;color:#d6f3f5;}
+    html[data-theme="dark"] .notes a {color:#d8acfc;}
+    body.embed {background:var(--page);}
+    body.embed .sl-home-nav {display:none;}
+    body.embed .hero {display:flex;justify-content:flex-end;padding:0;margin-bottom:11px;background:transparent;border:0;box-shadow:none;}
+    body.embed .hero>div:first-child {display:none;}
+    @media(max-width:800px){.charts.side{grid-template-columns:1fr;}.layout-line{align-items:start;}.layout-picker{flex-wrap:wrap;}}
+    @media(max-width:540px){.shell{padding:9px 9px 25px;}header.hero{padding:12px 14px;flex-wrap:wrap;}.sl-theme-switch{margin-left:auto;}.sl-theme-switch>button{font-size:10px;padding:7px 6px;}.layout-line{gap:8px;}.layout-picker{width:100%;}.layout-picker button{flex:1;padding:8px 5px;font-size:.72rem;}.overlap-insight{font-size:.78rem;}.graph-top{align-items:start;}.graph-chip{white-space:normal;}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="sl-home-nav" aria-label="Back to Statistics Lab"><a class="sl-home-link" href="../">← Statistics Lab</a></nav>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Statistics Lab · Hypothesis Testing</p>
+        <h1>P-Values vs. Critical Values</h1>
+        <p class="lead"><strong>How surprising is our sample result?</strong> Investigate two ways to make the same hypothesis-test decision using the standard Normal distribution.</p>
+      </div>
+      <div class="sl-theme-switch" role="group" aria-label="Color theme">
+        <button type="button" data-sl-theme="light" aria-pressed="false" title="Use light appearance">☀ <span>Light</span></button>
+        <button type="button" data-sl-theme="dark" aria-pressed="false" title="Use dark appearance">☾ <span>Dark</span></button>
+        <button type="button" data-sl-theme="system" aria-pressed="false" title="Follow device appearance">◐ <span>Auto</span></button>
+      </div>
+    </header>
+
+    <div class="workspace-bar">
+      <div class="segmented" role="group" aria-label="Learning mode">
+        <button id="guidedBtn" aria-pressed="true" type="button">Guided investigation</button>
+        <button id="exploreBtn" aria-pressed="false" type="button">Free explore</button>
+      </div>
+      <button id="resetBtn" type="button" class="subtle-btn">↺ Reset explorer</button>
+    </div>
+
+    <section class="guide" id="guide" aria-labelledby="guideTitle">
+      <div class="guide-top"><span class="guide-kicker" id="guideStep">Investigation 1 of 4</span><nav id="stepNav" aria-label="Investigation steps"></nav></div>
+      <h2 id="guideTitle"></h2>
+      <p id="guidePrompt"></p>
+      <div class="question" id="guideQuestion"></div>
+      <div class="answer-row" id="guideAnswers" role="group" aria-label="Select your prediction"></div>
+      <div id="guideFeedback" class="feedback" role="status" hidden></div>
+      <div class="guide-actions">
+        <button id="guideExample" type="button" class="subtle-btn">↺ Restore this example</button>
+        <button id="guideNext" type="button" class="btn-primary">Next investigation →</button>
+      </div>
+    </section>
+
+    <section class="card controls" aria-labelledby="controlsTitle">
+      <div class="section-heading"><h2 id="controlsTitle">Experiment with the test</h2><span class="hint">Change one thing at a time and watch the graphs.</span></div>
+      <div class="control-grid">
+        <fieldset>
+          <legend>Alternative hypothesis direction</legend>
+          <div class="tail-buttons">
+            <label><input type="radio" name="tail" value="left"><span><span class="arrow" aria-hidden="true">←</span> Left-tailed</span></label>
+            <label><input type="radio" name="tail" value="right" checked><span><span class="arrow" aria-hidden="true">→</span> Right-tailed</span></label>
+            <label><input type="radio" name="tail" value="two"><span><span class="arrow" aria-hidden="true">↔</span> Two-tailed</span></label>
+          </div>
+          <p class="microcopy" id="tailHint">Right-tailed: Hₐ uses &gt;. Larger positive z-values support Hₐ.</p>
+        </fieldset>
+        <div class="ctrl">
+          <div class="control-label"><label for="alphaRange">Significance level (α)</label><input id="alphaNumber" class="num-input alpha" type="number" min="0.01" max="0.10" step="0.005" value="0.05" aria-label="Enter significance level"></div>
+          <input id="alphaRange" type="range" min="0.01" max="0.10" step="0.005" value="0.05" aria-label="Significance level alpha slider">
+          <div class="limits"><span>0.01</span><span>0.10</span></div>
+          <p class="microcopy">Changes the <strong>rejection boundary</strong>, not the P-value.</p>
+        </div>
+        <div class="ctrl">
+          <div class="control-label"><label for="zRange">Observed test statistic (z)</label><input id="zNumber" class="num-input z" type="number" min="-3.5" max="3.5" step="0.01" value="1.80" aria-label="Enter observed z-score"></div>
+          <input id="zRange" type="range" min="-3.5" max="3.5" step="0.05" value="1.80" aria-label="Observed z-score slider">
+          <div class="limits"><span>−3.50</span><span>+3.50</span></div>
+          <p class="microcopy">Changes the <strong>P-value</strong>, not the critical boundary.</p>
+        </div>
+      </div>
+      <div class="info-strip"><span class="i" aria-hidden="true">i</span><span id="changeMessage" aria-live="polite">Start with z = 1.80 and α = 0.05. Notice which boundaries define the shaded regions.</span></div>
+    </section>
+
+    <div class="view-line"><h2>Explore the Normal curve</h2>
+      <div class="segmented" role="group" aria-label="Choose a graph view">
+        <button type="button" id="pView" aria-pressed="false">P-value</button>
+        <button type="button" id="cView" aria-pressed="false">Critical value</button>
+        <button type="button" id="bothView" aria-pressed="true">Compare both</button>
+      </div>
+    </div>
+
+    <div class="layout-line" id="layoutLine">
+      <div><strong>Arrange the two methods</strong><span class="hint">Stacked is easiest to read; Overlay shows how the tail areas line up.</span></div>
+      <div class="segmented layout-picker" role="group" aria-label="Compare graph arrangement">
+        <button type="button" id="stackedLayout" aria-pressed="true">↧ Stacked</button>
+        <button type="button" id="sideLayout" aria-pressed="false">▥ Side by side</button>
+        <button type="button" id="overlayLayout" aria-pressed="false">◉ Overlay</button>
+      </div>
+    </div>
+    <section class="charts stacked" id="charts" aria-label="Interactive Normal distribution graphs">
+      <article class="card graph-card" id="pCard">
+        <div class="graph-top"><div><h3 class="p-title">P-value approach</h3><p>How extreme is the observed z under H₀?</p></div><span class="graph-chip" id="pChip">P = 0.0359</span></div>
+        <svg id="pGraph" class="graph" role="img" viewBox="0 0 640 270" aria-labelledby="pGraphTitle pGraphDesc"><title id="pGraphTitle">Normal curve with P-value shaded</title><desc id="pGraphDesc">Right tail beyond z equals 1.80 shaded blue.</desc></svg>
+        <div class="legend"><span class="key"><i class="swatch"></i> P-value area</span><span class="key"><i class="linekey"></i> Observed z</span></div>
+      </article>
+      <article class="card graph-card" id="cCard">
+        <div class="graph-top"><div><h3 class="c-title">Critical-value approach</h3><p>Is z inside the rejection region?</p></div><span class="graph-chip teal" id="criticalChip">Critical z = +1.645</span></div>
+        <svg id="cGraph" class="graph" role="img" viewBox="0 0 640 270" aria-labelledby="cGraphTitle cGraphDesc"><title id="cGraphTitle">Normal curve with rejection region shaded</title><desc id="cGraphDesc">Right rejection region beyond critical z is shaded teal.</desc></svg>
+        <div class="legend"><span class="key"><i class="swatch teal"></i> Rejection region</span><span class="key"><i class="linekey teal"></i> Critical z</span><span class="key"><i class="linekey"></i> Observed z</span></div>
+      </article>
+      <article class="card graph-card" id="overlayCard" hidden>
+        <div class="graph-top"><div><h3>Both methods on one Normal curve</h3><p>The shaded tails use the same distribution and the same z scale.</p></div><span class="graph-chip teal" id="overlapChip">P = 0.0359 · α = 0.05</span></div>
+        <svg id="overlayGraph" class="graph" role="img" viewBox="0 0 640 270" aria-labelledby="overlayGraphTitle overlayGraphDesc"><title id="overlayGraphTitle">Overlaid P-value and rejection regions</title><desc id="overlayGraphDesc">P-value shaded blue; rejection region shaded in teal diagonal stripes.</desc></svg>
+        <div class="legend"><span class="key"><i class="swatch"></i> P-value area</span><span class="key"><i class="swatch hatch"></i> Rejection region</span><span class="key"><i class="linekey"></i> Observed z</span><span class="key"><i class="linekey teal"></i> Critical z</span></div>
+        <div class="overlap-insight" id="overlapInsight" role="status"></div>
+      </article>
+    </section>
+
+    <section class="card results" aria-labelledby="decisionTitle">
+      <div class="result-top">
+        <div><p class="result-eyebrow">The hypothesis-test decision</p><h2 class="decision" id="decisionTitle" aria-live="polite">Reject H₀</h2></div>
+        <span class="equivalence" id="agreement">✓ Both approaches agree</span>
+      </div>
+      <p class="result-explainer" id="interpretation"></p>
+      <div class="rule-pair">
+        <div class="rule"><strong>P-value rule</strong><div class="comparison" id="pRule">0.0359 ≤ 0.05</div><small id="pRuleCaption">Reject when P ≤ α.</small></div>
+        <div class="rule"><strong>Critical-value rule</strong><div class="comparison" id="cRule">1.80 ≥ 1.645</div><small id="cRuleCaption">Reject when z is in the rejection region.</small></div>
+      </div>
+      <div class="additional">
+        <details id="whyDetails"><summary>Why do the methods agree?</summary><p id="whyText"></p></details>
+        <details><summary>Show the math and assumptions</summary><p id="mathText"></p><ul><li>The graph shows the sampling distribution of the <em>test statistic</em> under H₀: Z ~ N(0,1).</li><li>The test direction must be chosen from the research question <em>before</em> looking at the data.</li><li>Results presume an appropriate z-test and satisfied assumptions; this explorer does not check them.</li><li>A P-value is not the probability that H₀ is true. Failing to reject is not accepting H₀.</li></ul></details>
+      </div>
+    </section>
+    <div class="card presets" aria-label="Example scenarios">
+      <strong>Try an example:</strong>
+      <button type="button" data-preset="standard">Significant result</button>
+      <button type="button" data-preset="alpha">Stricter α</button>
+      <button type="button" data-preset="two">Two-tailed comparison</button>
+      <button type="button" data-preset="opposite">Wrong tail</button>
+    </div>
+    <footer class="notes">Built for introductory hypothesis testing · A learning tool, not a substitute for checking statistical assumptions. · <a href="https://asacollegegaise.org/recommendations" target="_blank" rel="noopener noreferrer">GAISE College recommendations ↗</a></footer>
+  </main>
+  <script>
+  'use strict';
+  (() => {
+    const $ = id => document.getElementById(id);
+    const state = {alpha:0.05, z:1.8, tail:'right', view:'both', layout:'stacked', mode:'guided', step:0, prediction:null};
+    const presets = {
+      standard:{alpha:.05,z:1.8,tail:'right'},
+      alpha:{alpha:.01,z:1.8,tail:'right'},
+      two:{alpha:.05,z:1.8,tail:'two'},
+      opposite:{alpha:.05,z:-2.5,tail:'right'}
+    };
+    const lessons = [
+      {title:'Investigate the P-value',prompt:'Keep the right-tailed test. Move z from +1.00 toward +2.00 and notice the blue area.',question:'As z moves farther to the right, what happens to the P-value?',options:['It gets smaller','It gets larger','It stays the same'],correct:0,feedback:'Correct: the area to the right shrinks as z moves farther into the right tail. The result is more unusual under H₀.',example:{alpha:.05,z:1,tail:'right'},view:'p'},
+      {title:'Move the rejection boundary',prompt:'Keep z at +1.80. Decrease α from 0.05 to 0.01 and watch the teal rejection region.',question:'What happens to the rejection region when α decreases?',options:['It gets smaller','It gets larger','It stays the same'],correct:0,feedback:'Correct: a smaller α makes the rejection region smaller and moves the boundary farther into the tail. The observed z stays fixed.',example:{alpha:.05,z:1.8,tail:'right'},view:'critical'},
+      {title:'Compare the two methods',prompt:'Use both graphs. Change z or α until the decision switches. Watch how both approaches respond.',question:'With consistent tail direction and α, can the methods disagree?',options:['Yes, sometimes','No, never'],correct:1,feedback:'Correct: comparing P to α and comparing z to the critical boundary locate the same rejection region, so both methods give the same decision.',example:{alpha:.05,z:1.8,tail:'right'},view:'both'},
+      {title:'Look in the opposite direction',prompt:'Keep the right-tailed alternative, but set z = −2.50. The result is far from zero in the wrong direction.',question:'Does a very negative z support a right-tailed alternative?',options:['Yes, because |z| is large','No, it is in the opposite direction'],correct:1,feedback:'Correct: a right-tailed test looks for large positive statistics. A negative z gives a large right-tail P-value, not strong evidence for Hₐ.',example:{alpha:.05,z:-2.5,tail:'right'},view:'both'}
+    ];
+
+    // Standard normal PDF, CDF, and inverse CDF. No libraries or network calls needed.
+    const pdf = x => Math.exp(-x*x/2)/Math.sqrt(2*Math.PI);
+    // Abramowitz & Stegun 7.1.26: maximum absolute CDF error about 7.5e-8.
+    function cdf(x) {
+      const ax=Math.abs(x), t=1/(1+.2316419*ax);
+      const poly=t*(.319381530+t*(-.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
+      const upper=1-pdf(ax)*poly;
+      return x>=0?upper:1-upper;
+    }
+    // Acklam inverse normal approximation, refined by Newton iteration.
+    function invcdf(p) {
+      if (p<=0 || p>=1) throw new RangeError('Normal quantile requires 0 < p < 1');
+      const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239];
+      const b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572];
+      const c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
+      const d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
+      let x,q,r;
+      if(p<.02425){q=Math.sqrt(-2*Math.log(p));x=(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+      else if(p>1-.02425){q=Math.sqrt(-2*Math.log(1-p));x=-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+      else{q=p-.5;r=q*q;x=(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+      // Correct for the small CDF approximation error at visible precision.
+      x -= (cdf(x)-p)/pdf(x);
+      return x;
+    }
+    function calculate() {
+      const {alpha,z,tail}=state;
+      const p=tail==='left'?cdf(z):tail==='right'?1-cdf(z):2*(1-cdf(Math.abs(z)));
+      const k=tail==='left'?invcdf(alpha):tail==='right'?invcdf(1-alpha):invcdf(1-alpha/2);
+      const reject=p<=alpha+1e-12;
+      const rejectCrit=tail==='left'?z<=k:tail==='right'?z>=k:Math.abs(z)>=k;
+      return {p:Math.max(0,Math.min(1,p)),k,reject,rejectCrit};
+    }
+    const fmtSigned = (x,d=2) => `${x>=0?'+':'−'}${Math.abs(x).toFixed(d)}`;
+    const fmtNum = (x,d=2) => x.toFixed(d).replace('-', '−');
+    const fmtP = p => p<.0001?'P < 0.0001':`P = ${p.toFixed(4)}`;
+    const displayP = (p,alpha) => p<.0001?'P < 0.0001':`P = ${p.toFixed(Math.abs(p-alpha)<.00015?6:4)}`;
+    const displayPNum = (p,alpha) => p.toFixed(Math.abs(p-alpha)<.00015?6:4);
+    const vLabel = (tail,z,k) => tail==='left'?`${fmtNum(z)} ${z<=k?'≤':'>'} ${fmtNum(k,3)}`:tail==='right'?`${fmtNum(z)} ${z>=k?'≥':'<'} ${fmtNum(k,3)}`:`|${fmtNum(z)}| ${Math.abs(z)>=k?'≥':'<'} ${fmtNum(k,3)}`;
+
+    const XMIN=-4, XMAX=4, W=640, BASE=219, PEAK=170, MARGIN=36;
+    const sx=x=>MARGIN+(x-XMIN)/(XMAX-XMIN)*(W-2*MARGIN);
+    const sy=x=>BASE-pdf(x)/pdf(0)*PEAK;
+    const f=n=>Number(n).toFixed(2);
+    function areaPath(lo,hi){
+      const a=Math.max(XMIN,Math.min(XMAX,lo)), b=Math.max(XMIN,Math.min(XMAX,hi));
+      if(b<=a) return '';
+      const divisions=Math.max(4,Math.ceil((b-a)*38));
+      let path=`M ${f(sx(a))} ${f(BASE)} L ${f(sx(a))} ${f(sy(a))}`;
+      for(let i=1;i<=divisions;i++){const x=a+(b-a)*i/divisions;path+=` L ${f(sx(x))} ${f(sy(x))}`;}
+      return path+` L ${f(sx(b))} ${f(BASE)} Z`;
+    }
+    function curvePath(){let p='';for(let i=0;i<=320;i++){const x=XMIN+(XMAX-XMIN)*i/320;p+=`${i?' L':'M'} ${f(sx(x))} ${f(sy(x))}`;}return p;}
+    const curve=curvePath();
+    const escapeText=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    function line(x,color,dashed=false,thick=2.5){return `<line x1="${f(sx(x))}" x2="${f(sx(x))}" y1="40" y2="${BASE}" stroke="${color}" stroke-width="${thick}" ${dashed?'stroke-dasharray="7 5"':''}/>`;}
+    function graph(type,calculated){
+      const {alpha,z,tail}=state, {k}=calculated;
+      const pIntervals=tail==='left'?[[XMIN,z]]:tail==='right'?[[z,XMAX]]:[[XMIN,-Math.abs(z)],[Math.abs(z),XMAX]];
+      const cIntervals=tail==='left'?[[XMIN,k]]:tail==='right'?[[k,XMAX]]:[[XMIN,-k],[k,XMAX]];
+      const observed = line(z,'var(--graph-observed)',true,2.7);
+      const mirror = tail==='two' && Math.abs(z)>1e-9 ? line(-z,'var(--graph-observed)',true,1.65) : '';
+      const critical = tail==='two' ? line(-k,'var(--graph-critical)',false,2.5)+line(k,'var(--graph-critical)',false,2.5) : line(k,'var(--graph-critical)',false,2.5);
+      const descriptionP=tail==='left'?`P-value is the blue area left of z ${fmtNum(z)}.`:tail==='right'?`P-value is the blue area right of z ${fmtNum(z)}.`:`P-value is the total blue area in both tails beyond plus or minus ${Math.abs(z).toFixed(2)}; the actual observed statistic is ${fmtNum(z)}.`;
+      const descriptionC=tail==='two'?`Teal rejection areas are beyond minus ${k.toFixed(3)} and plus ${k.toFixed(3)}; observed z ${fmtNum(z)}.`:`Teal rejection area is ${tail==='left'?'left':'right'} of critical z ${fmtNum(k,3)}; observed z ${fmtNum(z)}.`;
+      const desc=type==='p'?descriptionP:type==='critical'?descriptionC:`Overlay: ${descriptionP} ${descriptionC} The teal region uses diagonal stripes where it overlaps the blue area.`;
+      const area=(regions,shade,opacity)=>regions.map(([a,b])=>`<path d="${areaPath(a,b)}" fill="${shade}" fill-opacity="${opacity}"/>`).join('');
+      const hatch=regions=>regions.map(([a,b])=>`<path d="${areaPath(a,b)}" fill="url(#overlayHatch)"/>`).join('');
+      let shading,markers;
+      if(type==='p') {shading=area(pIntervals,'var(--graph-p-blue)',.31);markers=observed+mirror;}
+      else if(type==='critical') {shading=area(cIntervals,'var(--graph-c-teal)',.31);markers=critical+observed;}
+      else {shading=area(pIntervals,'var(--graph-p-blue)',.27)+area(cIntervals,'var(--graph-c-teal)',.11)+hatch(cIntervals);markers=critical+observed+mirror;}
+      const svgId=type==='p'?'pGraph':type==='critical'?'cGraph':'overlayGraph';
+      const title=type==='p'?'P-value under the Normal curve':type==='critical'?'Critical-value rejection region under the Normal curve':'Overlay of both approaches on one Normal curve';
+      const svg=$(svgId);
+      svg.innerHTML=`<title id="${svgId}Title">${title}</title><desc id="${svgId}Desc">${escapeText(desc)}</desc>`+
+        (type==='overlay'?`<defs><pattern id="overlayHatch" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)"><path d="M 0 0 L 0 7" fill="none" stroke="var(--graph-c-teal)" stroke-width="2.4" opacity=".98"/></pattern></defs>`:'')+
+        `<line x1="${MARGIN}" y1="${BASE}" x2="${W-MARGIN}" y2="${BASE}" stroke="var(--graph-axis)" stroke-width="1.3"/>`+
+        Array.from({length:7},(_,i)=>{const x=i-3;return `<line x1="${f(sx(x))}" x2="${f(sx(x))}" y1="${BASE}" y2="${BASE+5}" stroke="var(--graph-axis)"/><text x="${f(sx(x))}" y="${BASE+20}" text-anchor="middle" class="axis-text">${x}</text>`;}).join('')+
+        `<text x="${W/2}" y="${BASE+40}" text-anchor="middle" class="axis-text">Standard Normal test statistic z (under H₀)</text>`+
+        shading+`<path d="${curve}" fill="none" stroke="var(--graph-curve)" stroke-width="3" stroke-linejoin="round"/>`+markers;
+      svg.setAttribute('aria-label',desc);
+    }
+
+    function render() {
+      const {alpha,z,tail,view,layout,mode}=state, c=calculate();
+      $('alphaRange').value=alpha; $('alphaNumber').value=alpha.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
+      $('zRange').value=z; $('zNumber').value=z.toFixed(2);
+      document.querySelectorAll('input[name="tail"]').forEach(e=>{e.checked=e.value===tail;});
+      $('tailHint').textContent=tail==='left'?'Left-tailed: Hₐ uses <. More negative z-values support Hₐ.':tail==='right'?'Right-tailed: Hₐ uses >. More positive z-values support Hₐ.':'Two-tailed: Hₐ uses ≠. Extreme z-values in either direction support Hₐ.';
+      for (const [id,val] of [['pView','p'],['cView','critical'],['bothView','both']]) $(id).setAttribute('aria-pressed',String(view===val));
+      $('layoutLine').hidden=view!=='both';
+      for(const [id,val] of [['stackedLayout','stacked'],['sideLayout','side'],['overlayLayout','overlay']]) $(id).setAttribute('aria-pressed',String(layout===val));
+      $('charts').className='charts '+(view!=='both'?'single':layout);
+      $('pCard').hidden=view==='critical'||(view==='both'&&layout==='overlay');
+      $('cCard').hidden=view==='p'||(view==='both'&&layout==='overlay');
+      $('overlayCard').hidden=view!=='both'||layout!=='overlay';
+      graph('p',c);graph('critical',c);graph('overlay',c);
+      $('overlapChip').textContent=`${fmtP(c.p)} · α = ${alpha.toFixed(3)}`;
+      const same=Math.abs(c.p-alpha)<1e-7;
+      $('overlapInsight').textContent=same?'The two shaded regions have essentially the same area: P = α, right on the decision boundary.':c.reject?'Notice: the blue P-value area sits inside the larger teal rejection region. That is why P ≤ α and we reject H₀.':'Notice: the teal rejection region sits inside the larger blue P-value area. That is why P > α and we fail to reject H₀.';
+      $('pChip').textContent=displayP(c.p,alpha);
+      $('criticalChip').textContent=tail==='two'?`Critical z = ±${c.k.toFixed(3)}`:`Critical z = ${fmtSigned(c.k,3)}`;
+      $('decisionTitle').textContent=c.reject?'Reject H₀':'Fail to reject H₀';
+      $('decisionTitle').className=`decision ${c.reject?'reject':'fail'}`;
+      $('agreement').textContent=c.reject===c.rejectCrit?'✓ Both approaches agree':'Check precision';
+      const pComparison=c.p<.0001?`P < 0.0001 ≤ α = ${alpha.toFixed(3)}`:`${displayPNum(c.p,alpha)} ${c.reject?'≤':'>'} ${alpha.toFixed(3)}`;
+      $('pRule').textContent=pComparison;
+      $('cRule').textContent=vLabel(tail,z,c.k);
+      $('pRuleCaption').textContent=c.reject?'P ≤ α: reject H₀.':'P > α: fail to reject H₀.';
+      $('cRuleCaption').textContent=c.reject?'Observed z lies in the rejection region.':'Observed z lies outside the rejection region.';
+      const direction=tail==='left'?'to the left':tail==='right'?'to the right':'in either tail';
+      $('interpretation').textContent=c.reject?`At α = ${alpha.toFixed(3)}, this result is statistically significant. A result at least as extreme ${direction} would be sufficiently unusual if H₀ were true.`:`At α = ${alpha.toFixed(3)}, this result is not statistically significant. We do not have sufficient evidence to reject H₀ at this significance level.`;
+      $('whyText').textContent=`The P-value is the probability, assuming H₀ is true, of results at least as extreme in the direction of Hₐ. The critical value marks the boundary leaving an area of α = ${alpha.toFixed(3)} in the rejection region. Because these describe the same tail area, P ≤ α happens exactly when the observed z falls in the rejection region (using the same test direction).`;
+      const math=tail==='left'?`Left-tailed: P = Φ(z) = ${c.p.toFixed(6)}. Critical z = Φ⁻¹(α) ≈ ${fmtNum(c.k,3)}.`:tail==='right'?`Right-tailed: P = 1 − Φ(z) = ${c.p.toFixed(6)}. Critical z = Φ⁻¹(1 − α) ≈ ${fmtSigned(c.k,3)}.`:`Two-tailed: P = 2[1 − Φ(|z|)] = ${c.p.toFixed(6)}. Critical boundaries are ±Φ⁻¹(1 − α/2) ≈ ±${c.k.toFixed(3)}; each rejection tail has area α/2 = ${(alpha/2).toFixed(4)}.`;
+      $('mathText').textContent=math;
+      $('guide').hidden=mode!=='guided';
+      $('guidedBtn').setAttribute('aria-pressed',String(mode==='guided'));
+      $('exploreBtn').setAttribute('aria-pressed',String(mode==='explore'));
+    }
+    function changeMessage(kind) {
+      const messages={alpha:'You changed α. The teal critical boundary and rejection area moved; the observed z and the blue P-value area did not.',z:'You changed z. The purple observed marker and blue P-value area moved; α and the teal rejection boundary did not.',tail:'You changed Hₐ direction. The relevant tail(s), P-value and critical boundary changed; z and α stayed fixed.',reset:'The explorer has been reset to the starting example.',preset:'Try comparing the two methods for this example. Change one value to see why the decision changes.'};
+      $('changeMessage').textContent=messages[kind]||messages.preset;
+    }
+    function setFields(preset,message='preset') {
+      state.alpha=preset.alpha;state.z=preset.z;state.tail=preset.tail;
+      changeMessage(message);render();
+    }
+    function switchStep(index) {
+      state.step=index;state.prediction=null;
+      const lesson=lessons[index];state.view=lesson.view;
+      setFields(lesson.example,'preset');renderGuide();
+    }
+    function renderGuide() {
+      const l=lessons[state.step];
+      $('guideStep').textContent=`Investigation ${state.step+1} of ${lessons.length}`;
+      $('guideTitle').textContent=l.title;$('guidePrompt').textContent=l.prompt;$('guideQuestion').textContent=l.question;
+      $('stepNav').innerHTML=''; lessons.forEach((_,i)=>{const b=document.createElement('button');b.type='button';b.className='step-dot';b.textContent=i+1;b.setAttribute('aria-label',`Go to investigation ${i+1}`);if(i===state.step)b.setAttribute('aria-current','step');b.addEventListener('click',()=>switchStep(i));$('stepNav').append(b);});
+      $('guideAnswers').innerHTML='';l.options.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className=`answer ${state.prediction===i?'chosen':''}`;b.textContent=o;b.setAttribute('aria-pressed',String(state.prediction===i));b.addEventListener('click',()=>{state.prediction=i;renderGuide();});$('guideAnswers').append(b);});
+      const feedback=$('guideFeedback');feedback.hidden=state.prediction===null;
+      if(state.prediction!==null){feedback.textContent=state.prediction===l.correct?l.feedback:'Not quite. Adjust the graph controls and try another prediction.';}
+      $('guideNext').textContent=state.step===lessons.length-1?'Continue in Free Explore →':'Next investigation →';
+    }
+    function clamp(value,min,max){return Math.min(max,Math.max(min,value));}
+    function updateRange(kind,value){
+      const n=Number(value);if(!Number.isFinite(n))return;
+      if(kind==='alpha') state.alpha=Number((.01+Math.round((clamp(n,.01,.10)-.01)/.005)*.005).toFixed(3));
+      else state.z=clamp(n,-3.5,3.5);
+      changeMessage(kind);render();
+    }
+    $('alphaRange').addEventListener('input',e=>updateRange('alpha',e.target.value));
+    $('zRange').addEventListener('input',e=>updateRange('z',e.target.value));
+    for(const kind of ['alpha','z']){
+      $(kind+'Number').addEventListener('change',e=>updateRange(kind,e.target.value));
+      $(kind+'Number').addEventListener('blur',()=>render());
+    }
+    document.querySelectorAll('input[name="tail"]').forEach(el=>el.addEventListener('change',e=>{state.tail=e.target.value;changeMessage('tail');render();}));
+    for(const [id,view] of [['pView','p'],['cView','critical'],['bothView','both']]) $(id).addEventListener('click',()=>{state.view=view;render();});
+    for(const [id,layout] of [['stackedLayout','stacked'],['sideLayout','side'],['overlayLayout','overlay']]) $(id).addEventListener('click',()=>{state.layout=layout;render();});
+    $('guidedBtn').addEventListener('click',()=>{state.mode='guided';switchStep(state.step);render();});
+    $('exploreBtn').addEventListener('click',()=>{state.mode='explore';state.view='both';render();});
+    $('resetBtn').addEventListener('click',()=>{state.mode='guided';state.step=0;switchStep(0);changeMessage('reset');render();});
+    $('guideExample').addEventListener('click',()=>setFields(lessons[state.step].example,'preset'));
+    $('guideNext').addEventListener('click',()=>{if(state.step<lessons.length-1)switchStep(state.step+1);else {state.mode='explore';state.view='both';render();}});
+    document.querySelectorAll('[data-preset]').forEach(el=>el.addEventListener('click',()=>{state.mode='explore';state.view='both';setFields(presets[el.dataset.preset]);}));
+    if(new URLSearchParams(location.search).get('embed')==='1') document.body.classList.add('embed');
+    switchStep(0);
+  })();
+  </script>
+
+  <script>
+    (function(){'use strict';
+      var key='statistics-lab-theme', media=window.matchMedia('(prefers-color-scheme: dark)'), memoryPref='system';
+      function preference(){try{var p=localStorage.getItem(key);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memoryPref}}
+      function renderTheme(){var p=preference(),resolved=p==='system'?(media.matches?'dark':'light'):p;
+        document.documentElement.setAttribute('data-theme',resolved);
+        document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slTheme===p))});
+        var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',resolved==='dark'?'#14151f':'#fbfafc');
+      }
+      document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.addEventListener('click',function(){memoryPref=b.dataset.slTheme;try{localStorage.setItem(key,memoryPref)}catch(e){}renderTheme();});});
+      if(media.addEventListener)media.addEventListener('change',renderTheme);else if(media.addListener)media.addListener(renderTheme);
+      window.addEventListener('storage',function(e){if(e.key===key)renderTheme()});
+      renderTheme();
+    })();
+  </script>
+</body>
+</html>
