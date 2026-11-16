@@ -1,14 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f7f8fc">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Statistics Lab">
-<meta name="description" content="Statistics Lab: free interactive statistics tools, live data, and a daily statistic.">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#f7f8fc" name="theme-color"/>
+<link href="./manifest.webmanifest" rel="manifest"/>
+<link href="./icons/icon-192.png" rel="apple-touch-icon"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="Statistics Lab" name="apple-mobile-web-app-title"/>
+<meta content="Statistics Lab: free interactive statistics tools, live data, and a daily statistic." name="description"/>
 <title>Statistics Lab | Interactive Statistics Tools</title>
 <script>(function(){try{var t=localStorage.getItem('statistics-lab-theme')||'system';var d=t==='system'?(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'):t;document.documentElement.dataset.theme=d;}catch(e){document.documentElement.dataset.theme='light';}})()</script>
 <style>
@@ -49,85 +50,150 @@ html[data-theme=dark] .tool-card.two-sample{--card-text:#d8b9ff}
 .site-motto{text-align:center;color:var(--muted);font-size:12px;font-weight:750;padding:0 0 20px}
 @media(max-width:560px){.daily-stat{padding:14px;gap:10px;align-items:flex-start}.daily-number{width:108px;padding:9px 6px;min-height:85px}.daily-number strong{font-size:25px}.daily-number span{font-size:9px}.daily-stat h2{font-size:15px}.daily-context{font-size:12px}.daily-question{font-size:12px}.footer-inner{flex-wrap:wrap}}
 @media(max-width:365px){.daily-stat{flex-direction:column}.daily-number{width:100%;flex-direction:row;align-items:center;gap:9px;min-height:60px}.daily-number span{font-size:11px}}
+
+/* ==========================================================
+   HOMEPAGE — Calculator-first with expandable extras
+   Preserves original illustrations, theme, and site scripts.
+   ========================================================== */
+.wrap{width:min(1100px,calc(100% - 40px))}
+.header-inner{min-height:67px}
+.hero{padding:23px 0 15px}
+.hero-eyebrow{margin-bottom:6px}
+h1{font-size:clamp(28px,4.4vw,42px);margin-bottom:6px}
+.hero-sub{font-size:13px;max-width:690px;line-height:1.5}
+.hero-spectrum{margin-top:11px}
+.hero-spectrum i{height:4px;width:20px}
+.tools{padding:10px 0 38px}
+.section-head{margin:0 0 3px}
+.section-head h2{font-size:19px;font-weight:850}
+.section-count{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:4px 9px;background:var(--surface)}
+.calculator-note{font-size:12px;color:var(--muted);margin:0 0 13px}
+.calculator-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.calculator-grid .tool-card{min-height:157px;border-radius:14px;padding:16px 15px 12px;box-shadow:0 4px 18px #16234c0b}
+.calculator-grid .tool-card.ci{background:linear-gradient(125deg,#f4fffc 0%,var(--surface) 53%)}
+.calculator-grid .tool-card.hyp-test{background:linear-gradient(125deg,#fff8ff 0%,var(--surface) 53%)}
+.calculator-grid .tool-card.two-sample{background:linear-gradient(125deg,#f4faff 0%,var(--surface) 53%)}
+.calculator-grid .card-head{display:flex;align-items:center;gap:11px}
+.calculator-grid .card-art{width:58px;height:56px;border-radius:11px}
+.calculator-grid .card-art svg{width:53px;height:45px}
+.calculator-grid .category{font-size:9px;margin:0 0 3px}
+.calculator-grid .tool-card h3{font-size:16px;line-height:1.24}
+.calculator-grid .description{font-size:11.7px;line-height:1.4;margin:10px 0 8px}
+.calculator-grid .card-footer{font-size:11.5px}
+.calculator-grid .arrow{width:24px;height:24px;font-size:15px}
+.more-tools{border:1px solid var(--line);background:var(--surface);border-radius:15px;margin-top:19px;overflow:hidden;box-shadow:0 5px 18px #16234c08}
+.more-tools>summary{display:flex;align-items:center;gap:13px;padding:16px 19px;cursor:pointer;list-style:none;min-height:75px}
+.more-tools>summary::-webkit-details-marker{display:none}
+.expand-icon{flex:none;border-radius:11px;width:43px;height:43px;display:grid;place-items:center;color:#8f47c1;font-size:23px;background:linear-gradient(145deg,#fce8ff,#e6f3ff)}
+.expand-copy{display:flex;flex-direction:column;gap:3px;flex:1}
+.expand-copy strong{font-size:16px;letter-spacing:-.02em}
+.expand-copy>span{font-size:11.5px;color:var(--muted)}
+.expand-arrow{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--soft);font-size:22px;line-height:1;color:var(--button-ink);transition:transform .15s ease}
+.more-tools[open] .expand-arrow{transform:rotate(180deg)}
+.more-tools>summary:hover{background:var(--soft)}
+.more-inner{padding:4px 19px 19px;border-top:1px solid var(--line)}
+.inner-heading{font-size:13px;margin:13px 0 10px;letter-spacing:-.015em}
+.explorer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.explorer-grid .tool-card{min-height:112px;padding:13px 15px 11px;border-radius:12px;box-shadow:none}
+.explorer-grid .card-head{display:flex;align-items:center;gap:10px}
+.explorer-grid .card-art{width:55px;height:48px;border-radius:10px}
+.explorer-grid .card-art svg{width:49px;height:42px}
+.explorer-grid .tool-card h3{font-size:14px}
+.explorer-grid .category{font-size:9px;margin:0 0 3px}
+.explorer-grid .description{font-size:11px;margin:7px 0 7px}
+.explorer-grid .card-footer{font-size:11px}
+.explorer-grid .arrow{width:23px;height:23px;font-size:14px}
+.real-title{margin-top:20px}
+.real-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:stretch}
+.real-grid .live-teaser{margin:0;padding:12px 13px;border-radius:12px;box-shadow:none;gap:10px;align-items:center}
+.real-grid .live-symbol{width:37px;height:37px;font-size:22px}
+.real-grid .live-copy{min-width:0}
+.real-grid .live-copy h3{font-size:14px}
+.real-grid .live-copy p{font-size:11px;line-height:1.4}
+.real-grid .live-today{display:none}
+.real-grid .daily-stat{margin:0;padding:12px 13px;border-radius:12px;box-shadow:none;gap:10px;align-items:center}
+.real-grid .daily-kicker{font-size:9px;margin-bottom:3px}
+.real-grid .daily-stat h2{font-size:14px;margin-bottom:4px}
+.real-grid .daily-context{font-size:11px;line-height:1.4}
+.real-grid .daily-question{font-size:11px;margin-bottom:0}
+.real-grid .daily-credit{display:none}
+.real-grid .daily-number{width:94px;min-height:74px;padding:7px}
+.real-grid .daily-number strong{font-size:23px}
+.real-grid .daily-number span{font-size:9px}
+html[data-theme=dark] .calculator-grid .tool-card{background:var(--surface)!important}
+html[data-theme=dark] .expand-icon{background:#34304e;color:#ddaaff}
+@media(max-width:900px){.calculator-grid{grid-template-columns:1fr;gap:10px}.calculator-grid .tool-card{min-height:115px;padding:13px 16px 11px}.calculator-grid .description{margin:6px 0}.explorer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.real-grid{grid-template-columns:1fr}.hero{padding:19px 1px 12px}h1{font-size:31px}.more-tools>summary{padding:13px}.more-inner{padding:3px 13px 14px}}
+@media(max-width:540px){.wrap{width:calc(100% - 26px)}.hero-sub{font-size:12px}.calculator-grid .tool-card{min-height:112px}.explorer-grid{grid-template-columns:1fr}.explorer-grid .tool-card{min-height:106px}.real-grid .daily-stat{flex-wrap:wrap}.real-grid .daily-number{width:92px}.more-tools>summary{min-height:70px}.expand-copy strong{font-size:15px}.expand-copy>span{font-size:11px}}
 </style>
 </head>
 <body>
-<div class="topline" aria-hidden="true"></div>
+<div aria-hidden="true" class="topline"></div>
 <header class="site-header">
- <div class="wrap header-inner">
-  <a class="brand" href="./" aria-label="Statistics Lab home"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M3 23h24M3 22c7 0 8-17 12-17s5 17 12 17" stroke="white" stroke-width="2.3" stroke-linecap="round"/><path d="M16 6c2.6 2.2 4.2 9.8 6.4 13.5H16V6Z" fill="#fff" fill-opacity=".35"/></svg></span>Statistics Lab</a>
-  <div class="nav-side"><a href="#tools">All tools</a><a href="./about.html">About &amp; Updates</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSd-mz9VI9xyuN4fvbBEHsmrREJpUAB6G9ILjC0LUqe1R3Vsjw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">Share feedback</a><div class="theme" role="group" aria-label="Color theme"><button type="button" data-sl-theme="light" aria-pressed="false" title="Light appearance">Light</button><button type="button" data-sl-theme="dark" aria-pressed="false" title="Dark appearance">Dark</button><button type="button" data-sl-theme="system" aria-pressed="false" title="Follow device appearance">Auto</button></div></div>
- </div>
+<div class="wrap header-inner">
+<a aria-label="Statistics Lab home" class="brand" href="./"><span aria-hidden="true" class="brand-icon"><svg fill="none" viewbox="0 0 30 30"><path d="M3 23h24M3 22c7 0 8-17 12-17s5 17 12 17" stroke="white" stroke-linecap="round" stroke-width="2.3"></path><path d="M16 6c2.6 2.2 4.2 9.8 6.4 13.5H16V6Z" fill="#fff" fill-opacity=".35"></path></svg></span>Statistics Lab</a>
+<div class="nav-side"><a href="#tools">All tools</a><a href="./about.html">About &amp; Updates</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSd-mz9VI9xyuN4fvbBEHsmrREJpUAB6G9ILjC0LUqe1R3Vsjw/viewform?usp=publish-editor" rel="noopener noreferrer" target="_blank">Share feedback</a><div aria-label="Color theme" class="theme" role="group"><button aria-pressed="false" data-sl-theme="light" title="Light appearance" type="button">Light</button><button aria-pressed="false" data-sl-theme="dark" title="Dark appearance" type="button">Dark</button><button aria-pressed="false" data-sl-theme="system" title="Follow device appearance" type="button">Auto</button></div></div>
+</div>
 </header>
 <main class="wrap">
- <section class="hero" aria-labelledby="page-title">
-  <p class="hero-eyebrow">Interactive statistics tools</p>
-  <h1 id="page-title">Explore. Calculate. Understand.</h1>
-  <p class="hero-sub">Interactive tools to explore statistical concepts, check calculations, and discover patterns in real data—one graph at a time.</p>
-  <div class="hero-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
- </section>
- <section class="tools" id="tools" aria-labelledby="tools-title">
-  <div class="section-head"><h2 id="tools-title">Choose a tool</h2><span class="section-count">7 interactive tools</span></div>
-  <div class="tool-grid">
-   <a class="tool-card normal-prob" href="./normal-distribution/" aria-label="Open Normal Probability Calculator">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><path d="M5 58H85" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"/><defs><linearGradient id="normline" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#f33a8e"/><stop offset=".25" stop-color="#b84bed"/><stop offset=".5" stop-color="#1ab4e7"/><stop offset=".72" stop-color="#21c59a"/><stop offset="1" stop-color="#fb884b"/></linearGradient></defs><path d="M5 57C20 57 29 48 35 28C40 10 43 9 45 9C47 9 50 10 55 28C61 48 70 57 85 57" stroke="url(#normline)" stroke-linecap="round" stroke-width="3"/><path d="M54 28C61 48 70 57 85 57H54Z" fill="#ffba4f" fill-opacity=".45"/><path d="M54 28V57" stroke="#ed8a26" stroke-width="2" stroke-dasharray="4 3"/><circle cx="54" cy="28" r="4" fill="#f28625" stroke="#fff" stroke-width="1.5"/></svg></span><div class="card-copy"><p class="category">Probabilities &amp; inverse</p><h3>Normal Probability Calculator</h3></div></div>
-    <p class="description">Calculate left, right, between, or outside areas for x or z. Explore inverse cutoffs and drag the curve after computing.</p>
-    <div class="card-footer"><span>Open calculator</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
-   <a class="tool-card normal-explorer" href="./normal-curve/" aria-label="Open Normal Critical Value Explorer">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><path d="M5 58H85" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"/><path d="M5 57C20 57 29 48 35 28C40 10 43 9 45 9C47 9 50 10 55 28C61 48 70 57 85 57" stroke="#9866ee" stroke-width="3" stroke-linecap="round"/><path d="M27 56C32 44 39 9 45 9C51 9 58 44 63 56Z" fill="#c09ff4" fill-opacity=".45"/><path d="M27 56V45M63 56V45" stroke="#c06ec8" stroke-width="1.8" stroke-dasharray="3 3"/></svg></span><div class="card-copy"><p class="category">Critical values · z</p><h3>Normal Critical Value Explorer</h3></div></div>
-    <p class="description">Find z* for confidence intervals. Tap a confidence level or drag symmetric cutoffs to explore tail areas.</p>
-    <div class="card-footer"><span>Open explorer</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
-   <a class="tool-card t-explorer" href="./t-distribution/" aria-label="Open t Critical Value Explorer">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><path d="M5 58H85" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"/><path d="M5 57C17 55 25 47 33 34C39 23 42 20 45 20C48 20 51 23 57 34C65 47 73 55 85 57" stroke="#298fd9" stroke-width="3" stroke-linecap="round"/><path d="M24 56C30 44 37 20 45 20C53 20 60 44 66 56Z" fill="#63b7eb" fill-opacity=".36"/><path d="M24 56V45M66 56V45" stroke="#6577d4" stroke-width="1.7" stroke-dasharray="3 3"/></svg></span><div class="card-copy"><p class="category">Critical values · t</p><h3>t Critical Value Explorer</h3></div></div>
-    <p class="description">Find t* for confidence intervals. Set sample size, tap a confidence level, or drag to explore.</p>
-    <div class="card-footer"><span>Open explorer</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
-   <a class="tool-card ci" href="./confidence-interval/" aria-label="Open Confidence Interval Calculator">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><path d="M8 18H82" stroke="currentColor" stroke-opacity=".18" stroke-width="1.4"/><path d="M8 35H82" stroke="currentColor" stroke-opacity=".18" stroke-width="1.4"/><path d="M8 52H82" stroke="currentColor" stroke-opacity=".18" stroke-width="1.4"/><path d="M14 21H66M18 35H75M24 49H61" stroke="#14aa91" stroke-width="3.4" stroke-linecap="round"/><path d="M14 15V27M66 15V27M18 29V41M75 29V41M24 43V55M61 43V55" stroke="#3b93bd" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="21" r="4" fill="#12b59e"/><circle cx="47" cy="35" r="4" fill="#12b59e"/><circle cx="43" cy="49" r="4" fill="#12b59e"/></svg></span><div class="card-copy"><p class="category">Confidence intervals</p><h3>Confidence Interval Calculator</h3></div></div>
-    <p class="description">Compute one-mean and one-proportion confidence intervals, check conditions, and compare results.</p>
-    <div class="card-footer"><span>Open calculator</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
-   <a class="tool-card hyp-test" href="./hyp-test/" aria-label="Open Hypothesis Test Calculator">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><rect x="9" y="10" width="72" height="50" rx="5" stroke="#b16add" stroke-width="1.7" fill="#ad14d7" fill-opacity=".06"/><path d="M9 24H81M9 39H81M45 24V60" stroke="#a777c6" stroke-width="1.4" stroke-opacity=".6"/><path d="M18 18H47" stroke="#8b35bf" stroke-width="3" stroke-linecap="round"/><path d="M17 31H33M53 31H67" stroke="#7d65ba" stroke-width="3" stroke-linecap="round"/><path d="M17 47H32" stroke="#7d65ba" stroke-width="3" stroke-linecap="round"/><path d="M52 47H69" stroke="#ad14d7" stroke-width="4" stroke-linecap="round"/><circle cx="75" cy="17" r="3" fill="#ad14d7"/></svg></span><div class="card-copy"><p class="category">Hypothesis tests · z &amp; t</p><h3>Hypothesis Test Calculator</h3></div></div>
-    <p class="description">Run one- and two-sample tests, check conditions, and view test statistics, P-values, critical values, and graphs.</p>
-    <div class="card-footer"><span>Open calculator</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
-   <a class="tool-card two-sample" href="./hyp-test-two-samp/" aria-label="Open Two-Sample Hypothesis Test Calculator">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><path d="M6 58H84" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"/><path d="M7 56C15 56 20 53 25 39C30 23 34 19 38 19C42 19 46 23 51 39C56 53 61 56 69 56" stroke="#9853df" stroke-width="2.8" stroke-linecap="round"/><path d="M21 56C28 56 34 51 40 38C46 25 50 21 55 21C60 21 64 25 70 38C76 51 81 56 84 56" stroke="#169bc1" stroke-width="2.8" stroke-linecap="round"/><path d="M39 19V58M55 21V58" stroke-width="1.4" stroke-dasharray="4 3" stroke="#8b60cf" stroke-opacity=".65"/><circle cx="38" cy="19" r="3.5" fill="#9853df"/><circle cx="55" cy="21" r="3.5" fill="#169bc1"/></svg></span><div class="card-copy"><p class="category">Two-sample inference · z &amp; t</p><h3>Two-Sample Hypothesis Test Calculator</h3></div></div>
-    <p class="description">Compare two proportions or two means with summary statistics or raw data. Includes independent and paired tests, P-values, critical values, and graphs.</p>
-    <div class="card-footer"><span>Open calculator</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
+<section aria-labelledby="page-title" class="hero">
+<p class="hero-eyebrow">Interactive statistics tools</p>
+<h1 id="page-title">Explore. Calculate. Understand.</h1>
+<p class="hero-sub">Interactive tools to explore statistical concepts, check calculations, and discover patterns in real data—one graph at a time.</p>
+<div aria-hidden="true" class="hero-spectrum"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</section>
+<section aria-labelledby="tools-title" class="tools" id="tools">
+<div class="section-head"><h2 id="tools-title">Analyze your data</h2><span class="section-count">3 calculators</span></div><p class="calculator-note">Choose a calculator to estimate, test, or compare.</p><div aria-label="Statistical calculators" class="calculator-grid"><a aria-label="Open Confidence Interval Calculator" class="tool-card ci" href="./confidence-interval/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><path d="M8 18H82" stroke="currentColor" stroke-opacity=".18" stroke-width="1.4"></path><path d="M8 35H82" stroke="currentColor" stroke-opacity=".18" stroke-width="1.4"></path><path d="M8 52H82" stroke="currentColor" stroke-opacity=".18" stroke-width="1.4"></path><path d="M14 21H66M18 35H75M24 49H61" stroke="#14aa91" stroke-linecap="round" stroke-width="3.4"></path><path d="M14 15V27M66 15V27M18 29V41M75 29V41M24 43V55M61 43V55" stroke="#3b93bd" stroke-linecap="round" stroke-width="2"></path><circle cx="40" cy="21" fill="#12b59e" r="4"></circle><circle cx="47" cy="35" fill="#12b59e" r="4"></circle><circle cx="43" cy="49" fill="#12b59e" r="4"></circle></svg></span><div class="card-copy"><p class="category">Confidence intervals</p><h3>Confidence Interval Calculator</h3></div></div>
+<p class="description">Estimate a population proportion or mean.</p>
+<div class="card-footer"><span>Open calculator</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a><a aria-label="Open One-Sample Hypothesis Test Calculator" class="tool-card hyp-test" href="./hyp-test/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><rect fill="#ad14d7" fill-opacity=".06" height="50" rx="5" stroke="#b16add" stroke-width="1.7" width="72" x="9" y="10"></rect><path d="M9 24H81M9 39H81M45 24V60" stroke="#a777c6" stroke-opacity=".6" stroke-width="1.4"></path><path d="M18 18H47" stroke="#8b35bf" stroke-linecap="round" stroke-width="3"></path><path d="M17 31H33M53 31H67" stroke="#7d65ba" stroke-linecap="round" stroke-width="3"></path><path d="M17 47H32" stroke="#7d65ba" stroke-linecap="round" stroke-width="3"></path><path d="M52 47H69" stroke="#ad14d7" stroke-linecap="round" stroke-width="4"></path><circle cx="75" cy="17" fill="#ad14d7" r="3"></circle></svg></span><div class="card-copy"><p class="category">One-sample tests · z &amp; t</p><h3>One-Sample Hypothesis Test Calculator</h3></div></div>
+<p class="description">Test a claim about one population.</p>
+<div class="card-footer"><span>Open calculator</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a><a aria-label="Open Two-Sample Hypothesis Test Calculator" class="tool-card two-sample" href="./hyp-test-two-samp/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><path d="M6 58H84" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"></path><path d="M7 56C15 56 20 53 25 39C30 23 34 19 38 19C42 19 46 23 51 39C56 53 61 56 69 56" stroke="#9853df" stroke-linecap="round" stroke-width="2.8"></path><path d="M21 56C28 56 34 51 40 38C46 25 50 21 55 21C60 21 64 25 70 38C76 51 81 56 84 56" stroke="#169bc1" stroke-linecap="round" stroke-width="2.8"></path><path d="M39 19V58M55 21V58" stroke="#8b60cf" stroke-dasharray="4 3" stroke-opacity=".65" stroke-width="1.4"></path><circle cx="38" cy="19" fill="#9853df" r="3.5"></circle><circle cx="55" cy="21" fill="#169bc1" r="3.5"></circle></svg></span><div class="card-copy"><p class="category">Two-sample tests · z &amp; t</p><h3>Two-Sample Hypothesis Test Calculator</h3></div></div>
+<p class="description">Compare groups or paired measurements.</p>
+<div class="card-footer"><span>Open calculator</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a></div><details class="more-tools" id="explore-more"><summary><span aria-hidden="true" class="expand-icon">✦</span><span class="expand-copy"><strong>Explore More Tools</strong><span>Visual explorers, probabilities, and real-world statistics</span></span><span aria-hidden="true" class="expand-arrow">⌄</span></summary><div class="more-inner"><h3 class="inner-heading">Explore distributions &amp; decisions</h3><div class="explorer-grid"><a aria-label="Open Normal Probability Calculator" class="tool-card normal-prob" href="./normal-distribution/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><path d="M5 58H85" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"></path><defs><lineargradient id="normline" x1="0" x2="1" y1="0" y2="0"><stop stop-color="#f33a8e"></stop><stop offset=".25" stop-color="#b84bed"></stop><stop offset=".5" stop-color="#1ab4e7"></stop><stop offset=".72" stop-color="#21c59a"></stop><stop offset="1" stop-color="#fb884b"></stop></lineargradient></defs><path d="M5 57C20 57 29 48 35 28C40 10 43 9 45 9C47 9 50 10 55 28C61 48 70 57 85 57" stroke="url(#normline)" stroke-linecap="round" stroke-width="3"></path><path d="M54 28C61 48 70 57 85 57H54Z" fill="#ffba4f" fill-opacity=".45"></path><path d="M54 28V57" stroke="#ed8a26" stroke-dasharray="4 3" stroke-width="2"></path><circle cx="54" cy="28" fill="#f28625" r="4" stroke="#fff" stroke-width="1.5"></circle></svg></span><div class="card-copy"><p class="category">Probabilities &amp; inverse</p><h3>Normal Probability Calculator</h3></div></div>
+<p class="description">Find probabilities and shaded areas under a normal curve.</p>
+<div class="card-footer"><span>Open calculator</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a><a aria-label="Open Normal Critical Value Explorer" class="tool-card normal-explorer" href="./normal-curve/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><path d="M5 58H85" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"></path><path d="M5 57C20 57 29 48 35 28C40 10 43 9 45 9C47 9 50 10 55 28C61 48 70 57 85 57" stroke="#9866ee" stroke-linecap="round" stroke-width="3"></path><path d="M27 56C32 44 39 9 45 9C51 9 58 44 63 56Z" fill="#c09ff4" fill-opacity=".45"></path><path d="M27 56V45M63 56V45" stroke="#c06ec8" stroke-dasharray="3 3" stroke-width="1.8"></path></svg></span><div class="card-copy"><p class="category">Critical values · z</p><h3>Normal Critical Value Explorer</h3></div></div>
+<p class="description">Explore z critical values and confidence levels.</p>
+<div class="card-footer"><span>Open explorer</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a><a aria-label="Open t Critical Value Explorer" class="tool-card t-explorer" href="./t-distribution/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><path d="M5 58H85" stroke="currentColor" stroke-opacity=".25" stroke-width="1.7"></path><path d="M5 57C17 55 25 47 33 34C39 23 42 20 45 20C48 20 51 23 57 34C65 47 73 55 85 57" stroke="#298fd9" stroke-linecap="round" stroke-width="3"></path><path d="M24 56C30 44 37 20 45 20C53 20 60 44 66 56Z" fill="#63b7eb" fill-opacity=".36"></path><path d="M24 56V45M66 56V45" stroke="#6577d4" stroke-dasharray="3 3" stroke-width="1.7"></path></svg></span><div class="card-copy"><p class="category">Critical values · t</p><h3>t Critical Value Explorer</h3></div></div>
+<p class="description">Explore t critical values and degrees of freedom.</p>
+<div class="card-footer"><span>Open explorer</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a><a aria-label="Open P-Values vs. Critical Values Explorer" class="tool-card pvalue-compare" href="./pvalues-critical-values/">
+<div class="card-head"><span aria-hidden="true" class="card-art"><svg fill="none" viewbox="0 0 90 70"><path d="M4 34H86M4 65H86" stroke="currentColor" stroke-opacity=".22" stroke-width="1.4"></path><path d="M5 33C17 33 25 32 31 21C38 7 40 7 45 7C50 7 52 7 59 21C65 32 73 33 85 33" stroke="#567de0" stroke-linecap="round" stroke-width="2.3"></path><path d="M58 33L58 21C65 32 73 33 85 33Z" fill="#4c8eed" fill-opacity=".4"></path><path d="M5 64C17 64 25 63 31 52C38 38 40 38 45 38C50 38 52 38 59 52C65 63 73 64 85 64" stroke="#168f99" stroke-linecap="round" stroke-width="2.3"></path><path d="M64 64L64 54C70 63 77 64 85 64Z" fill="#20b9b1" fill-opacity=".4"></path><path d="M58 14V34" stroke="#5268d8" stroke-dasharray="3 2" stroke-width="1.6"></path><path d="M64 45V65" stroke="#10958e" stroke-dasharray="3 2" stroke-width="1.6"></path></svg></span><div class="card-copy"><p class="category">P-values &amp; critical values</p><h3>P-Values vs. Critical Values Explorer</h3></div></div>
+<p class="description">See how P-values and rejection regions compare.</p>
+<div class="card-footer"><span>Open explorer</span><span aria-hidden="true" class="arrow">↗</span></div>
+</a></div><h3 class="inner-heading real-title">Real-world statistics</h3><div class="real-grid"><a aria-label="Open Live Stats in its own page" class="live-teaser" href="./live-data/">
+<span aria-hidden="true" class="live-symbol">◉</span>
+<span class="live-copy"><span class="live-kicker">Real data · Scores, weather &amp; more</span><h3>Live Stats: Sports, Weather &amp; More</h3><p>Compare NFL, NBA, and MLB scores and seasons—or explore weather and earthquakes through real data.</p></span>
+<span class="live-today">Explore live data ↗</span>
+</a><section aria-labelledby="daily-stat-title" class="daily-stat">
+<div class="daily-stat-main">
+<p class="daily-kicker">📈 TODAY IN DATA <span id="daily-date"></span></p>
+<h2 id="daily-stat-title">One real number. One question.</h2>
+<p aria-live="polite" class="daily-context" id="daily-context" role="status">Checking the latest earthquake reports…</p>
+<p class="daily-question" id="daily-question">What can—and can't—we learn from one statistic?</p>
+<p class="daily-credit"><a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php" rel="noopener noreferrer" target="_blank">Source: USGS live feeds ↗</a> <span id="daily-updated"></span></p>
+</div>
+<div aria-label="Reported earthquakes magnitude 2.5 or greater in the past 24 hours" class="daily-number"><strong id="daily-count">—</strong><span>M2.5+ earthquakes<br/>in the past 24 hours</span></div>
+</section></div></div></details>
 
-   <a class="tool-card pvalue-compare" href="./pvalues-critical-values/" aria-label="Open P-Values vs. Critical Values Explorer">
-    <div class="card-head"><span class="card-art" aria-hidden="true"><svg viewBox="0 0 90 70" fill="none"><path d="M4 34H86M4 65H86" stroke="currentColor" stroke-opacity=".22" stroke-width="1.4"/><path d="M5 33C17 33 25 32 31 21C38 7 40 7 45 7C50 7 52 7 59 21C65 32 73 33 85 33" stroke="#567de0" stroke-width="2.3" stroke-linecap="round"/><path d="M58 33L58 21C65 32 73 33 85 33Z" fill="#4c8eed" fill-opacity=".4"/><path d="M5 64C17 64 25 63 31 52C38 38 40 38 45 38C50 38 52 38 59 52C65 63 73 64 85 64" stroke="#168f99" stroke-width="2.3" stroke-linecap="round"/><path d="M64 64L64 54C70 63 77 64 85 64Z" fill="#20b9b1" fill-opacity=".4"/><path d="M58 14V34" stroke="#5268d8" stroke-dasharray="3 2" stroke-width="1.6"/><path d="M64 45V65" stroke="#10958e" stroke-dasharray="3 2" stroke-width="1.6"/></svg></span><div class="card-copy"><p class="category">P-values &amp; critical values</p><h3>P-Values vs. Critical Values Explorer</h3></div></div>
-    <p class="description">Move the test statistic and significance level to see how the P-value and rejection regions lead to the same decision.</p>
-    <div class="card-footer"><span>Open explorer</span><span class="arrow" aria-hidden="true">↗</span></div>
-   </a>
-  </div>
-  <a class="live-teaser" href="./live-data/" aria-label="Open Live Stats in its own page">
-   <span class="live-symbol" aria-hidden="true">◉</span>
-   <span class="live-copy"><span class="live-kicker">Real data · Scores, weather &amp; more</span><h3>Live Stats: Sports, Weather &amp; More</h3><p>Compare NFL, NBA, and MLB scores and seasons—or explore weather and earthquakes through real data.</p></span>
-   <span class="live-today">Explore live data ↗</span>
-  </a>
- </section>
- <section class="daily-stat" aria-labelledby="daily-stat-title">
-  <div class="daily-stat-main">
-   <p class="daily-kicker">📈 TODAY IN DATA <span id="daily-date"></span></p>
-   <h2 id="daily-stat-title">One real number. One question.</h2>
-   <p class="daily-context" id="daily-context" role="status" aria-live="polite">Checking the latest earthquake reports…</p>
-   <p class="daily-question" id="daily-question">What can—and can't—we learn from one statistic?</p>
-   <p class="daily-credit"><a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php" target="_blank" rel="noopener noreferrer">Source: USGS live feeds ↗</a> <span id="daily-updated"></span></p>
-  </div>
-  <div class="daily-number" aria-label="Reported earthquakes magnitude 2.5 or greater in the past 24 hours"><strong id="daily-count">—</strong><span>M2.5+ earthquakes<br>in the past 24 hours</span></div>
- </section>
+
+</section>
+
 </main>
-<footer class="footer"><div class="wrap footer-inner"><span>Statistics Lab · Free educational tools</span><span><a href="./about.html" style="color:inherit">About &amp; Updates</a> · <a href="https://docs.google.com/forms/d/e/1FAIpQLSd-mz9VI9xyuN4fvbBEHsmrREJpUAB6G9ILjC0LUqe1R3Vsjw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" style="color:inherit">Share feedback</a></span></div><div class="wrap site-motto">Be kind. Be safe. Be weird. Make good choices. Explore stats!</div></footer>
+<footer class="footer"><div class="wrap footer-inner"><span>Statistics Lab · Free educational tools</span><span><a href="./about.html" style="color:inherit">About &amp; Updates</a> · <a href="https://docs.google.com/forms/d/e/1FAIpQLSd-mz9VI9xyuN4fvbBEHsmrREJpUAB6G9ILjC0LUqe1R3Vsjw/viewform?usp=publish-editor" rel="noopener noreferrer" style="color:inherit" target="_blank">Share feedback</a></span></div><div class="wrap site-motto">Be kind. Be safe. Be weird. Make good choices. Explore stats!</div></footer>
 <script>
 (function(){'use strict';var key='statistics-lab-theme',media=matchMedia('(prefers-color-scheme:dark)'),memoryPref='system';function preference(){try{var p=localStorage.getItem(key);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memoryPref}}function update(){var p=preference(),r=p==='system'?(media.matches?'dark':'light'):p;document.documentElement.dataset.theme=r;document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slTheme===p))});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=r==='dark'?'#111827':'#f7f8fc';}document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.addEventListener('click',function(){memoryPref=b.dataset.slTheme;try{localStorage.setItem(key,memoryPref)}catch(e){}update()})});if(media.addEventListener)media.addEventListener('change',update);else media.addListener(update);window.addEventListener('storage',function(e){if(e.key===key)update()});update();})();
 </script>
-
 <script>
 (function(){'use strict';
  const d=new Date(), localDay=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
