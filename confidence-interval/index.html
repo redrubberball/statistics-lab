@@ -4,337 +4,509 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#faf5ff">
-<meta name="description" content="Statistics Lab two-sample hypothesis tests: two proportions, two independent means, and paired means with summary statistics or raw observations.">
-<title>Two-Sample Hypothesis Tests | Statistics Lab</title>
-<script>(function(){try{var p=localStorage.getItem('statistics-lab-theme')||'system';var d=p==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;document.documentElement.setAttribute('data-theme',d)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();</script>
+<meta name="description" content="A student-friendly statistical confidence interval calculator with assumptions, distribution curves, reference values, and interval comparison.">
+<title>Confidence Interval Calculator | Statistics Lab</title>
+<script>
+(function(){try{var p=localStorage.getItem('statistics-lab-theme')||'system';var d=p==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;document.documentElement.setAttribute('data-theme',d)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();
+</script>
 <style>
-:root{font-family:Lato,"Segoe UI",Arial,sans-serif;--bg:#fff;--ink:#263147;--muted:#64748b;--heading:#3f215b;--violet:#ad14d7;--purple:#7131af;--blue:#2468c5;--teal:#07857f;--panel:#fff;--panel-soft:#faf7ff;--header:#f3f4f6;--line:#e3e6ed;--line2:#eee7f5;--track:#f5f3f9;--active:#f3ebff;--active-ink:#581c87;--input:#fff;--green-ink:#225c49;--green-bg:#f0f9f6;--green-line:#cceadf;--warning-ink:#865a16;--warning-bg:#fff9e9;--warning-line:#f5df9d;--shadow:0 8px 25px rgba(52,27,74,.055);--theme-border:#ded6e8;--theme-track:#f2edf7;--theme-active:#fff;--theme-active-text:#5e2590;--theme-muted:#5f5871;color:var(--ink);background:var(--bg);color-scheme:light}
-html[data-theme="dark"]{color-scheme:dark;--bg:#11141e;--ink:#f2eff8;--muted:#b6bfd2;--heading:#f0daff;--violet:#cf93f0;--purple:#9762d0;--blue:#80b5ff;--teal:#76d6d0;--panel:#1c2030;--panel-soft:#29243b;--header:#222536;--line:#404658;--line2:#4a405b;--track:#252437;--active:#3a3152;--active-ink:#f5e8ff;--input:#171b28;--green-ink:#b2f4da;--green-bg:#193c33;--green-line:#3b8067;--warning-ink:#ffdea0;--warning-bg:#473b20;--warning-line:#8f753f;--shadow:0 8px 25px #0004;--theme-border:#4c445d;--theme-track:#272537;--theme-active:#4b3b69;--theme-active-text:#f8ecff;--theme-muted:#c4bed5}
-*{box-sizing:border-box}body{margin:0;padding:17px 15px 30px;line-height:1.48;background:var(--bg);color:var(--ink)}main{max-width:1170px;margin:auto}h1,h2,h3,p{margin:0}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #58a5ef;outline-offset:2px}button:disabled{opacity:.5;cursor:not-allowed}.hidden{display:none!important}
-.home{display:inline-block;color:var(--active-ink);font-weight:750;font-size:12px;text-decoration:none;border:1px solid var(--theme-border);background:var(--theme-track);border-radius:8px;padding:7px 10px;margin-bottom:11px}.home:hover{text-decoration:underline}
-.header{background:var(--header);border-left:5px solid var(--violet);border-radius:11px;display:flex;gap:13px;justify-content:space-between;align-items:flex-start;padding:15px 18px}.header-copy{flex:1;min-width:0}.eyebrow{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}h1{font-size:clamp(22px,2.8vw,28px);color:var(--heading);line-height:1.18;letter-spacing:-.025em;margin:3px 0 5px}.header p:last-child{color:var(--muted);font-size:12px}.theme{display:flex;flex:none;align-items:center;gap:2px;border:1px solid var(--theme-border);border-radius:10px;background:var(--theme-track);padding:3px}.theme button{border:0;background:transparent;color:var(--theme-muted);font-size:11px;font-weight:750;padding:7px 9px;border-radius:7px;min-height:34px}.theme button[aria-pressed="true"]{background:var(--theme-active);color:var(--theme-active-text);box-shadow:0 1px 5px #0002}
-.source-hint{font-size:11px;color:var(--muted);margin:9px 0 12px;line-height:1.55}.method-guide{background:var(--panel-soft);color:var(--ink);border:1px solid var(--line2);border-left:4px solid var(--violet);border-radius:9px;padding:11px 13px;font-size:12px;line-height:1.55;margin:0 0 14px}.method-nav{padding:15px 0 13px;display:flex;flex-wrap:wrap;gap:18px;align-items:end}.method-set{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.method-name{font-size:11px;font-weight:820;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-right:1px}.method-btn{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:9px;min-height:40px;padding:8px 12px;font-size:12px;font-weight:750}.method-btn[aria-pressed="true"]{background:var(--active);color:var(--active-ink);border-color:var(--purple);box-shadow:inset 0 0 0 1px #935cb666}.method-btn .method-tag{font-size:10px;color:var(--purple);margin-left:4px}
-.layout{display:grid;grid-template-columns:minmax(290px,.91fr) minmax(0,1.09fr);gap:16px;align-items:start}.panel{border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden}.panelhead{padding:16px 17px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}.panelhead h2{font-size:18px;color:var(--heading);letter-spacing:-.025em}.caption{font-size:11px;color:var(--muted)}.badge{color:var(--purple);background:var(--panel-soft);padding:5px 7px;border-radius:5px;font-size:10px;font-weight:830;letter-spacing:.06em}.panelbody{padding:0 17px 17px}.section-title{font-size:12px;color:var(--heading);font-weight:830;margin:7px 0 9px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wide{grid-column:1/-1}label{display:block;font-size:12px;font-weight:780;margin:0 0 5px;color:var(--ink)}.input,.select,.textarea{background:var(--input);color:var(--ink);border:1px solid var(--line);border-radius:8px;min-height:43px;padding:8px 10px;width:100%;font-size:15px}.textarea{min-height:120px;resize:vertical;font-size:13px}.hint{font-size:11px;color:var(--muted);margin:5px 0 0}.sep{border:0;border-top:1px solid var(--line2);margin:16px 0 12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.segment{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:9px;background:var(--track)}.segment button{flex:1;border:0;background:transparent;border-radius:7px;color:var(--muted);padding:8px 10px;min-height:35px;font-size:12px;font-weight:780}.segment button[aria-pressed="true"]{background:var(--panel);color:var(--active-ink);box-shadow:0 1px 5px #0001}.alpha-group{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.small-btn{background:var(--panel);color:var(--active-ink);border:1px solid var(--line);border-radius:8px;min-height:35px;padding:7px 11px;font-weight:780;font-size:12px}.small-btn[aria-pressed="true"]{background:var(--purple);border-color:var(--purple);color:#fff}.alpha-input{max-width:90px;min-height:36px}.null-label{font-size:12px;font-weight:780;color:var(--ink);line-height:1.7;margin:5px 0 10px}.null-label strong{color:var(--purple)}.assumptions{margin-top:13px;background:var(--panel-soft);border:1px solid var(--line2);border-radius:10px}.assumptions summary{font-size:12px;font-weight:780;color:var(--heading);cursor:pointer;padding:11px 12px}.assumptions-body{padding:1px 12px 12px;border-top:1px solid var(--line2)}.checkline{display:flex;gap:9px;align-items:flex-start;margin-top:10px;font-size:12px;cursor:pointer;line-height:1.5}.checkline input{width:17px;height:17px;accent-color:var(--purple);flex:none}.checkline span{flex:1}.assump-note{font-size:11px;color:var(--muted);margin-top:10px}.actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}.primary,.secondary{min-height:42px;border-radius:9px;padding:9px 15px;font-size:13px;font-weight:820}.primary{border:1px solid var(--purple);background:var(--purple);color:#fff}.primary:hover{filter:brightness(.93)}.secondary{border:1px solid var(--line);color:var(--active-ink);background:var(--panel)}.secondary:hover{background:var(--active)}.error{font-size:12px;margin-top:10px;border-radius:9px;border:1px solid #fda4af;background:#fff1f2;color:#9f1239;padding:10px}.output-placeholder{padding:48px 25px 54px;text-align:center;color:var(--muted);background:var(--panel-soft)}.output-placeholder .symbol{border:1px solid var(--line2);border-radius:12px;width:45px;height:45px;display:grid;place-items:center;font-size:27px;margin:0 auto 14px;color:var(--purple)}.output-placeholder h3{font-size:17px;color:var(--heading);margin-bottom:5px}.output-placeholder p{max-width:330px;font-size:12px;margin:auto}.stale{background:var(--warning-bg);color:var(--warning-ink);border-bottom:1px solid var(--warning-line);padding:9px 16px;font-weight:730;font-size:12px}.output-title{padding:16px 17px 13px;background:var(--panel-soft);border-bottom:1px solid var(--line2)}.output-title .kicker{font-size:10px;letter-spacing:.08em;color:var(--purple);font-weight:830;text-transform:uppercase}.output-title h2{color:var(--heading);font-size:19px;margin:4px 0}.output-title p{font-size:12px;color:var(--muted)}.outputbody{padding:16px 17px}.outputsub{font-size:12px;color:var(--heading);font-weight:840;margin-bottom:9px}.output-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:12px}.output-table td{padding:8px 10px;border-bottom:1px solid var(--line2)}.output-table tr:last-child td{border-bottom:0}.output-table td:nth-child(even){font-weight:780;text-align:right;color:var(--heading);overflow-wrap:anywhere}.output-table tr:nth-child(odd){background:var(--panel-soft)}.result-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}.stat-card{padding:13px;border:1px solid var(--line2);background:var(--panel-soft);border-radius:10px;min-width:0}.stat-card .name{color:var(--muted);font-size:11px;font-weight:760}.stat-card .num{font-size:clamp(18px,2.25vw,27px);font-weight:870;letter-spacing:-.025em;font-variant-numeric:tabular-nums;margin-top:3px;word-break:break-word}.stat-card.pval .num{color:var(--blue)}.decision{border:1px solid var(--green-line);background:var(--green-bg);color:var(--green-ink);border-radius:10px;padding:12px 13px;margin-top:13px;font-size:12px}.decision strong{font-size:15px}.decision .why{margin-top:4px;line-height:1.5}.warning{border-radius:9px;background:var(--warning-bg);color:var(--warning-ink);border:1px solid var(--warning-line);padding:10px 12px;margin-top:12px;font-size:12px}.chart-stack{margin-top:13px;display:grid;gap:9px}.chartbox{border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--panel);min-width:0}.charttitle{font-weight:820;font-size:12px;margin:0 0 2px;display:flex;gap:7px;align-items:center;justify-content:space-between}.charttitle .method-label{font-size:10px;font-weight:750;color:var(--muted)}.chartbox svg{display:block;width:100%;height:auto;max-height:144px}.legend{color:var(--muted);font-size:10px;margin-top:1px}.dot{width:8px;height:8px;display:inline-block;border-radius:2px;vertical-align:middle;margin-right:5px}.dot.blue{background:#2b72da}.dot.teal{background:#129c96}.dot.purple{background:#ad14d7}
-.more{margin-top:12px;border:1px solid var(--line);background:var(--panel-soft);border-radius:9px}.more summary{font-size:12px;font-weight:780;color:var(--heading);padding:10px 12px;cursor:pointer}.morebody{padding:12px;border-top:1px solid var(--line2);font-size:12px;color:var(--ink);line-height:1.7}.morebody p+p{margin-top:8px}.formula{overflow-x:auto;background:var(--panel);padding:12px 9px;border:1px solid var(--line2);border-radius:8px;margin:10px 0;text-align:center;font-size:18px;color:var(--heading);font-family:Cambria,"Cambria Math","Times New Roman",serif;white-space:nowrap}.formula math{font-size:20px}.mono{font-variant-numeric:tabular-nums}.footer{font-size:11px;color:var(--muted);text-align:center;margin:20px 0}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.method-nav{gap:9px}.output-placeholder{padding:27px}.chart-stack{grid-template-columns:repeat(2,minmax(0,1fr))}.chartbox svg{max-height:155px}.method-set{gap:5px}}@media(max-width:610px){body{padding:9px 9px 20px}.header{flex-wrap:wrap;padding:13px}.theme{margin-left:auto}.method-nav{padding:12px 0}.method-set{width:100%}.method-name{width:100%}.method-btn{flex:1;padding:7px 5px;min-height:44px}.panelhead{padding:13px}.panelbody{padding:0 13px 15px}.output-title{padding:14px}.outputbody{padding:13px}.chart-stack{grid-template-columns:1fr}.chartbox svg{max-height:140px}.input,.select{font-size:16px;min-height:44px}.stat-card .num{font-size:23px}}@media(max-width:360px){.fields{grid-template-columns:1fr}.wide{grid-column:auto}.method-btn{font-size:11px;padding:7px 4px}.theme button{padding:6px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+:root{font-family:Lato,"Segoe UI",Arial,sans-serif;color:#263147;background:#fff;--ink:#263147;--muted:#64748b;--purple:#6d28d9;--violet:#ad14d7;--lilac:#f8f4ff;--border:#e9d5ff;--pink:#ed76b8;--shadow:0 8px 25px rgba(52,27,74,.055)}
+*{box-sizing:border-box}body{margin:0;padding:19px 15px 35px;line-height:1.5}main{max-width:1170px;margin:auto}h1,h2,h3,p{margin:0}button,input,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #58a5ef;outline-offset:2px}button:disabled{opacity:.45;cursor:not-allowed}
+.header{background:#f3f4f6;border-left:5px solid var(--violet);border-radius:11px;padding:18px 21px}.eyebrow{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.11em;color:#8950a6}.header h1{color:#581c87;font-size:clamp(22px,2.9vw,29px);letter-spacing:-.025em;margin:2px 0 3px}.header p:last-child{font-size:13px;color:#536174}.tabs{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}.tab{display:flex;gap:10px;align-items:center;border:1px solid #e3dcec;border-radius:10px;background:#fff;min-height:45px;padding:9px 15px;font-size:14px;font-weight:720;color:#566178}.tab[aria-pressed="true"]{background:#f3ebff;border-color:#a58ad9;color:#581c87;box-shadow:inset 0 0 0 1px #bca0ee}.tag{font-size:11px;background:#ece3ff;color:#6d28d9;font-weight:900;padding:2px 7px;border-radius:5px}.layout{display:grid;grid-template-columns:minmax(320px,.91fr) minmax(0,1.09fr);gap:16px;align-items:start}.panel{border:1px solid #e3e6ed;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);background:#fff}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 18px 13px}.panel h2{font-size:18px;color:#3f215b;letter-spacing:-.025em}.caption{font-size:12px;color:var(--muted)}.badge{font-size:10px;color:#81569d;background:#f4eaff;letter-spacing:.065em;border-radius:5px;padding:6px 8px;font-weight:800;white-space:nowrap}.panelbody{padding:0 18px 19px}.sep{border:0;border-top:1px solid #ede9f1;margin:17px 0 14px}.sectitle{font-size:12px;color:#5d2a85;font-weight:830;letter-spacing:.015em;margin-bottom:8px}.toggle{display:flex;align-items:center;gap:6px;padding:4px;border-radius:10px;border:1px solid #e0dfea;background:#f7f7fa;margin:9px 0 14px}.toggle button{flex:1;border:0;border-radius:7px;background:transparent;min-height:36px;color:#666579;font-size:12px;font-weight:750}.toggle button[aria-pressed="true"]{background:white;color:#5c228b;box-shadow:0 1px 6px #30104719}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.wide{grid-column:1/-1}label{display:block;font-size:12px;font-weight:780;color:#3e4a5c;margin-bottom:5px}.sym{color:#7c3aed}.input,textarea{width:100%;border:1px solid #d7d9e2;border-radius:8px;min-height:43px;padding:9px 11px;background:#fff;color:#263147;outline:none;font-size:15px}.input:focus,textarea:focus{border-color:#a78bfa;box-shadow:0 0 0 3px #ddd6fe88}textarea{resize:vertical;height:106px;font-size:13px}input[type="checkbox"]{width:17px;height:17px;accent-color:#7834ad;flex:none;margin:2px 0}.hint{font-size:11px;color:#69778b;margin-top:5px;line-height:1.5}.levels{display:flex;gap:7px;flex-wrap:wrap}.level{min-height:36px;padding:7px 12px;border:1px solid #ddd6e9;border-radius:7px;background:#fff;font-size:12px;font-weight:770;color:#67607a}.level[aria-pressed="true"]{background:#6930ad;border-color:#6930ad;color:#fff}.level-custom{display:flex;align-items:center;gap:8px;margin-top:9px;font-size:12px;color:#5d6471}.level-custom input{width:78px;min-height:36px}.assumptions{margin-top:13px;border:1px solid #e3e6eb;background:#fbfcfe;border-radius:10px;padding:12px 13px}.assumptions h3{font-size:13px;color:#334155;margin-bottom:9px}.checkrow{display:flex;align-items:start;gap:9px;font-size:12px;color:#334155;margin:8px 0;cursor:pointer}.checkrow span{line-height:1.5}.assumptions .note{font-size:11px;color:#6f7688;margin-top:7px}.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}.primary,.secondary{min-height:42px;padding:9px 15px;border-radius:9px;font-size:13px;font-weight:850}.primary{border:1px solid #7131af;background:#7131af;color:white}.primary:hover{background:#581c87}.secondary{background:white;color:#68349a;border:1px solid #ddd3e9}.secondary:hover{background:#faf5ff}.error{margin-top:10px;padding:10px 12px;border-radius:9px;background:#fff2f2;color:#9f1239;border:1px solid #fecdd3;font-size:12px}.notice{padding:9px 11px;border-radius:9px;font-size:12px;line-height:1.45}.notice.warning{color:#865a16;background:#fff9e9;border:1px solid #f5df9d}.notice.safe{background:#f2f9f6;color:#225c49;border:1px solid #cae9db}.notice.neutral{background:#f4f6f9;color:#4c5870;border:1px solid #e1e5ec}.hidden{display:none!important}.output-placeholder{padding:54px 26px;text-align:center;background:linear-gradient(180deg,#fdfaff,#fff);color:#6f7280}.empty-icon{width:47px;height:47px;border:1px solid #dfd2f3;border-radius:14px;background:#f7f1ff;display:grid;place-items:center;margin:0 auto 13px;color:#8650bd;font-size:24px}.output-placeholder h3{font-size:17px;color:#502b70;margin-bottom:6px}.output-placeholder p{font-size:12px;max-width:340px;margin:auto}.output-stale{border-bottom:1px solid #f3db9f;background:#fff8e5;color:#8a5514;padding:9px 17px;font-size:12px;font-weight:730}.outputhead{background:linear-gradient(105deg,#faf5ff,#fff);border-bottom:1px solid #eee4f6;padding:17px 18px}.outputmeta{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.095em;color:#7850a0}.outputhead h2{font-size:18px;line-height:1.3;color:#40215d;margin:6px 0 3px}.outputhead p{font-size:12px;color:#607086}.outputbody{padding:17px 18px 19px}.output-title{font-size:12px;font-weight:860;color:#473352;margin:0 0 8px}.resulttable{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:12px;overflow-wrap:anywhere}.resulttable th{padding:8px 10px;text-align:left;background:#f4f2f8;color:#5c5867;font-size:11px;font-weight:830;border-bottom:1px solid #e8e4ee}.resulttable td{padding:9px 10px;border-bottom:1px solid #f0edf5}.resulttable .v{font-weight:780;color:#351d4d;white-space:nowrap}.resulttable tr:last-child td{border-bottom:0}.resultbox{border:1px solid #e9d5ff;border-radius:11px;padding:12px 13px;margin-top:12px;background:#fdfbff}.resultbox .big{font-size:clamp(23px,3vw,29px);font-variant-numeric:tabular-nums;font-weight:880;color:#55228c;letter-spacing:-.03em;margin:2px 0;overflow-wrap:anywhere}.resultbox .small{font-size:11px;color:#667085}.chart-panel{margin-top:15px;border:1px solid #eae4f3;border-radius:10px;padding:10px 9px 8px;background:#fff}.chart-panel svg{display:block;width:100%;height:auto}.chart-panel .caption{text-align:center;margin-top:1px;font-size:11px}.under{margin-top:12px}.under .notice{margin-top:6px}.details{border:1px solid #e9e3ed;border-radius:9px;margin-top:14px;background:#fcfaff}.details summary{padding:10px 12px;font-weight:760;color:#633c8d;font-size:12px;cursor:pointer}.details-body{border-top:1px solid #eee7f5;padding:9px 12px 12px;font-size:12px;line-height:1.8;color:#455064}.details-body p+p{margin-top:4px}.compare-panel{margin-top:16px;border:1px solid #e9d5ff;border-radius:14px;box-shadow:var(--shadow);overflow:hidden}.comparehead{padding:16px 17px 12px;background:#faf7ff}.comparehead h2{font-size:16px;color:#4e2a69}.comparebody{padding:14px 17px 17px}.comparetext{font-size:12px;color:#64748b;margin-bottom:12px}.comp-actions{display:flex;gap:8px;flex-wrap:wrap}.tiny{min-height:36px;padding:7px 12px;border:1px solid #ded3ea;border-radius:8px;background:#fff;color:#5c2a8d;font-size:12px;font-weight:770}.tiny:hover{background:#faf5ff}.tiny:disabled{opacity:.48}.comparebar{border:1px solid #ede7f4;background:#fff;border-radius:10px;padding:10px;margin-top:13px}.comparebar svg{width:100%;height:auto;display:block}.compare-legend{font-size:11px;color:#687486;margin-top:10px}.save-row{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-top:11px}.save-row .name-field{flex:1;min-width:150px}.save-row input{min-height:36px}.saved-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.saved-chip{display:flex;align-items:center;gap:7px;border-radius:7px;border:1px solid #e6e1ec;background:#f8f7fb;color:#615879;padding:5px 6px 5px 8px;font-size:11px}.saved-chip button{font-size:14px;line-height:1;background:transparent;border:0;color:#7a6e87;padding:2px 3px}.footer{font-size:11px;color:#8892a4;text-align:center;margin:20px 0}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden;white-space:nowrap}.muted{color:#687488}.view{transition:opacity .15s}.view.stale{opacity:.59}
+@media(max-width:780px){body{padding:11px 10px 25px}.layout{grid-template-columns:1fr}.tab{flex:1;justify-content:center}.output-placeholder{padding:33px}.panelhead{padding:16px 16px 12px}.panelbody{padding:0 16px 17px}.outputhead{padding:15px 16px}.outputbody{padding:15px 16px}}
+@media(max-width:600px){.comparebar{overflow-x:auto}.comparebar svg{min-width:505px}.comparebar:after{content:"Swipe sideways to see the full interval comparison scale";display:block;font-size:10px;color:#6b7280;text-align:center;margin-top:5px}.chart-panel svg{min-height:164px}}
+@media(max-width:440px){.header{padding:13px 14px}.tabs{gap:6px}.tab{font-size:11px;padding:8px;min-height:44px;gap:6px}.tag{padding:2px 5px}.fields{gap:10px}.outputbody{padding:13px}.resulttable th,.resulttable td{padding:8px 7px}.comparebody{padding:12px}.resultbox .big{font-size:23px}.tab span:first-child{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 
-/* The two-sample lesson visual language matches the Week 13 Canvas notes.
-   Palette: #ad14d7 / #581c87, #0284c7 / #075985, #f3f4f6.
-   All existing calculator logic and form IDs are intentionally unchanged. */
-:root { --lesson-purple:#faf5ff; --lesson-purple-border:#e9d5ff; --lesson-purple-head:#f3e8ff; --lesson-blue:#eff6ff; --lesson-blue-head:#e0f2fe; --lesson-blue-border:#bae6fd; --lesson-blue-ink:#075985; --lesson-purple-ink:#581c87; }
-html:not([data-theme="dark"]){--bg:#fff;--ink:#1f2937;--muted:#526075;--heading:#581c87;--violet:#ad14d7;--purple:#ad14d7;--blue:#0284c7;--panel-soft:#faf5ff;--header:#f3f4f6;--line:#e2dfe9;--line2:#e9d5ff;--track:#faf5ff;--active:#f3e8ff;--active-ink:#581c87;--input:#fff;--green-ink:#1f2937;--green-bg:#f8fafc;--green-line:#dce3eb;--warning-bg:#fff8e9;--shadow:0 4px 13px #4b2f620a}
-html[data-theme="dark"]{--lesson-purple:#29243b;--lesson-purple-border:#59426e;--lesson-purple-head:#3a3152;--lesson-blue:#1a3246;--lesson-blue-head:#224054;--lesson-blue-border:#346b87;--lesson-blue-ink:#afdfff;--lesson-purple-ink:#f0daff;--green-ink:#e0eaf4;--green-bg:#262d3c;--green-line:#495166}
-body{line-height:1.65;padding:18px 16px 28px}
-main{max-width:1170px}
-.header{border-left:6px solid #ad14d7;border-radius:10px;padding:18px 20px;box-shadow:none}
-.header h1{color:var(--heading);font-size:clamp(22px,2.8vw,30px);margin:4px 0 7px;letter-spacing:-.02em}
-.header p:last-child{font-size:13px;color:var(--muted);line-height:1.5}
-.eyebrow{color:var(--purple);letter-spacing:.06em}
-.lesson-intro{background:var(--lesson-blue-head);color:var(--ink);border-left:5px solid #0284c7;border-radius:9px;padding:12px 15px;margin:13px 0 15px;font-size:13px;line-height:1.65}
-.lesson-intro strong{color:var(--lesson-blue-ink)}
-.section-marker{font-size:15px;color:var(--lesson-purple-ink);font-weight:850;padding:0 0 6px;margin:19px 0 2px;border-bottom:1px solid var(--lesson-purple-border)}
-.method-nav{padding:12px 0 12px;gap:10px}
-.method-set{gap:9px}
-.method-name{color:var(--muted);font-size:11px;letter-spacing:.06em}
-.method-btn{border:2px solid var(--lesson-purple-border);background:var(--lesson-purple);color:var(--lesson-purple-ink);border-radius:22px;padding:9px 14px;min-height:44px;font-size:13px;box-shadow:none}
-.method-btn .method-tag{color:inherit;opacity:.72}
-.method-btn[data-method="mean2"]{border-color:var(--lesson-blue-border);background:var(--lesson-blue);color:var(--lesson-blue-ink)}
-.method-btn[aria-pressed="true"]{background:var(--lesson-purple-head);border-color:#ad14d7;color:var(--lesson-purple-ink);box-shadow:0 0 0 1px #ad14d750 inset}
-.method-btn[data-method="mean2"][aria-pressed="true"]{background:var(--lesson-blue-head);border-color:#0284c7;color:var(--lesson-blue-ink);box-shadow:0 0 0 1px #0284c750 inset}
-.method-guide{background:var(--lesson-purple);color:var(--ink);border:0;border-left:5px solid #ad14d7;padding:12px 15px;margin:2px 0 17px;font-size:13px;line-height:1.65}
-.method-guide strong{color:var(--lesson-purple-ink)}
-.panel{border-color:var(--lesson-purple-border);border-radius:10px;box-shadow:none}
-.panelhead{padding:15px 17px 13px;border-bottom:1px solid var(--lesson-purple-border);background:var(--lesson-purple)}
-.panelhead h2{font-size:17px;color:var(--lesson-purple-ink)}
-.panel:nth-child(2){border-color:var(--lesson-blue-border)}
-.panel:nth-child(2) .panelhead{background:var(--lesson-blue);border-bottom-color:var(--lesson-blue-border)}
-.panel:nth-child(2) .panelhead h2{color:var(--lesson-blue-ink)}
-.panel:nth-child(2) .badge{background:var(--lesson-blue-head);color:var(--lesson-blue-ink)}
-.badge{background:var(--lesson-purple-head);color:var(--lesson-purple-ink);border-radius:7px;letter-spacing:.04em;padding:6px 8px}
-.panelbody{padding-top:13px}
-.section-title,.outputsub{font-size:13px;color:var(--lesson-purple-ink);font-weight:850;border-bottom:1px solid var(--lesson-purple-border);padding-bottom:5px;margin:5px 0 12px}
-.outputsub{color:var(--lesson-blue-ink);border-color:var(--lesson-blue-border)}
-.segment{border-color:var(--lesson-purple-border);background:var(--lesson-purple);border-radius:10px}
-.segment button[aria-pressed="true"]{background:var(--lesson-purple-head);color:var(--lesson-purple-ink);border:1px solid var(--lesson-purple-border);box-shadow:none}
-.segment button{min-height:37px}
-.input,.textarea,.select{border-color:var(--line);border-radius:8px}
-.input:focus,.textarea:focus,.select:focus{outline:2px solid #ad14d7;outline-offset:1px}
-.null-label{color:var(--lesson-purple-ink)}
-.small-btn{border-color:var(--lesson-purple-border);border-radius:8px;color:var(--lesson-purple-ink)}
-.small-btn[aria-pressed="true"]{background:#ad14d7;border-color:#ad14d7;color:white}
-.assumptions{border-color:var(--lesson-blue-border);background:var(--panel);border-radius:9px}
-.assumptions summary{background:var(--lesson-blue-head);color:var(--lesson-blue-ink);padding:13px}
-.assumptions-body{border-color:var(--lesson-blue-border)}
-.checkline input{accent-color:#ad14d7}
-.primary{background:#ad14d7;border-color:#ad14d7;border-radius:8px}
-.secondary{border-radius:8px;border-color:var(--lesson-purple-border)}
-.output-title{background:var(--lesson-blue);border-color:var(--lesson-blue-border)}
-.output-title .kicker,.output-title h2{color:var(--lesson-blue-ink)}
-.output-table tr:nth-child(odd){background:var(--lesson-blue)}
-.stat-card{background:var(--lesson-purple);border-color:var(--lesson-purple-border)}
-.stat-card.pval{background:var(--lesson-blue);border-color:var(--lesson-blue-border)}
-.stat-card .num{color:var(--lesson-purple-ink)}
-.stat-card.pval .num{color:var(--lesson-blue-ink)}
-.decision-step{font-size:13px;color:var(--lesson-purple-ink);font-weight:850;margin:15px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--lesson-purple-border)}
-.decision{background:var(--green-bg);border-color:var(--green-line);color:var(--green-ink);border-left:5px solid #ad14d7}
-.chart-stack{gap:12px}
-.chartbox{border:1px solid var(--lesson-purple-border);background:var(--lesson-purple);border-radius:9px;padding:11px}
-.chartbox:nth-child(2){border-color:var(--lesson-blue-border);background:var(--lesson-blue)}
-.chartbox .charttitle{color:var(--lesson-purple-ink)}
-.chartbox:nth-child(2) .charttitle{color:var(--lesson-blue-ink)}
-.interpret-guide{background:var(--lesson-blue);border-left:4px solid #0284c7;border-radius:8px;margin:14px 0 8px;padding:10px 13px;font-size:12px;line-height:1.65;color:var(--ink)}
-.interpret-guide strong{color:var(--lesson-blue-ink)}
-.more{border-color:var(--lesson-purple-border);background:var(--panel);border-radius:9px}
-.more summary{background:var(--lesson-purple-head);color:var(--lesson-purple-ink);padding:12px 13px}
-.morebody{border-color:var(--lesson-purple-border)}
-.footer{font-size:12px;color:var(--muted);text-align:center;margin:25px 0 0}
-.footer-rule{height:5px;background:#ad14d7;margin:13px 0 0}
-@media(max-width:610px){body{padding:10px}.header{padding:13px}.lesson-intro,.method-guide{font-size:12px}.method-set{width:100%}.method-btn{border-radius:12px;font-size:12px;flex:1}.panelhead{padding:13px}.panelbody{padding:13px}}
+/* Simplified two-view interface */
+.workspace-tabs{display:flex;gap:7px;margin:13px 0 8px;padding:4px;background:#f5f3f9;border:1px solid #ece7f3;border-radius:11px;max-width:455px}
+.workspace-tab{flex:1;border:0;background:transparent;color:#61566c;border-radius:8px;padding:10px;font-weight:830;font-size:13px;min-height:42px}
+.workspace-tab[aria-selected="true"]{background:#fff;color:#581c87;box-shadow:0 1px 6px #46296a1c}
+.workspace-tab .optional{color:#9485a4;font-size:10px;font-weight:650}
+#calculateView .tabs{margin:11px 0 13px}
+#exploreView{margin-top:14px}
+#exploreView .comparehead{background:#faf7ff}
+#exploreView .comparebody{padding-top:13px}
+.compare-reference{border:1px solid #ece6f0;background:#fcfbfe;border-radius:10px;padding:12px 13px;margin:12px 0 16px}
+.ref-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.compare-sectitle{margin-top:7px}
+.output-placeholder{padding:43px 24px}
+#calculateView .chart-panel svg{max-height:190px}
+#calculateView .chart-panel{padding:7px 9px 6px}
+#calculateView .chart-panel .caption{font-size:10px}
+.header{padding:14px 17px}
+.header h1{font-size:clamp(22px,2.7vw,27px)}
+#calculateView .fields{gap:11px}
+@media(max-width:440px){.workspace-tabs{max-width:none}.workspace-tab{padding:9px 5px;font-size:12px}.workspace-tab .optional{display:none}}
+
+/* Shared color-theme picker: consistently placed on every Statistics Lab page. */
+.sl-theme-switch{display:inline-flex;align-self:flex-start;gap:2px;align-items:center;flex:none;padding:3px;border:1px solid var(--theme-border,#ded6e8);border-radius:10px;background:var(--theme-track,#f2edf7);box-shadow:0 1px 3px #18122410}
+.sl-theme-switch>button{font-family:inherit;font-size:11px;font-weight:740;line-height:1.2;min-width:0;min-height:33px;white-space:nowrap;padding:7px 9px;border:0!important;border-radius:7px;background:transparent!important;color:var(--theme-muted,#5f5871)!important;box-shadow:none;cursor:pointer;touch-action:manipulation}
+.sl-theme-switch>button[aria-pressed="true"]{background:var(--theme-active,#ffffff)!important;color:var(--theme-active-text,#5e2590)!important;box-shadow:0 1px 5px #00000023}
+.sl-theme-switch>button:hover:not([aria-pressed="true"]){background:var(--theme-hover,#e9e1f2)!important}
+.sl-theme-switch>button:focus-visible{outline:3px solid #0ea5e9!important;outline-offset:2px}
+html[data-theme="dark"]{--theme-border:#4c445d;--theme-track:#272537;--theme-muted:#c4bed5;--theme-active:#4b3b69;--theme-active-text:#f8ecff;--theme-hover:#38334a}
+html[data-theme="light"]{--theme-border:#ded6e8;--theme-track:#f2edf7;--theme-muted:#5f5871;--theme-active:#fff;--theme-active-text:#5e2590;--theme-hover:#e9e1f2}
+@media(max-width:450px){.sl-theme-switch>button{font-size:10px;padding:7px 6px}}
 
 
-/* Group-wise numeric input: all three summary statistics stay together. */
-.sample-group{min-width:0;margin:0;padding:10px 11px 12px;border:1px solid var(--lesson-purple-border);border-radius:10px;background:var(--panel-soft)}
-.sample-group legend{font-weight:850;font-size:14px;line-height:1.4;padding:2px 7px;color:var(--lesson-purple-ink);background:var(--panel);border:1px solid var(--lesson-purple-border);border-radius:6px}
-.sample-group.group-two{border-color:var(--lesson-blue-border)}
-.sample-group.group-two legend{color:var(--lesson-blue-ink);border-color:var(--lesson-blue-border)}
-.group-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:11px}
-.group-fields>div{min-width:0}
-.group-fields label{font-size:12px;line-height:1.35;min-height:16px}
-.group-fields .input{width:100%;min-width:0}
-.decision-check{margin-top:10px;padding:12px 13px;border:1px solid var(--lesson-purple-border);background:var(--lesson-purple);border-radius:9px}
-.decision-check p{color:var(--ink);font-size:12px;line-height:1.55;margin-bottom:10px}
-.reveal-btn{border-color:#ad14d7;color:var(--lesson-purple-ink);font-size:13px;font-weight:850}
-#decision{margin-top:9px}
-@media(max-width:400px){#fields:has(.sample-group){grid-template-columns:minmax(0,1fr)}}
+/* Dark mode: input/output and comparison surfaces, with accessible text contrast. */
+html[data-theme="dark"]{color-scheme:dark;background:#11141e;color:#f3f0fa;--ink:#f1edfa;--muted:#b3bed1;--purple:#c9a9ff;--violet:#cf93f0;--lilac:#262039;--border:#50445d;--pink:#ec91c6;--shadow:0 8px 25px #00000024}
+html[data-theme="dark"] body{background:#11141e;color:#f2eff8}
+html[data-theme="dark"] .header{background:#222536;border-left-color:#cf93f0}
+html[data-theme="dark"] .header h1{color:#e9cafa}
+html[data-theme="dark"] .eyebrow{color:#d6a9ee}
+html[data-theme="dark"] .header p:last-child{color:#bdc6d8}
+html[data-theme="dark"] .panel,html[data-theme="dark"] .compare-panel{background:#1c2030;border-color:#3c4254}
+html[data-theme="dark"] .panel h2,html[data-theme="dark"] .comparehead h2{color:#f2ddff}
+html[data-theme="dark"] .caption,html[data-theme="dark"] .hint,html[data-theme="dark"] .assumptions .note,html[data-theme="dark"] .comparetext,html[data-theme="dark"] .compare-legend,html[data-theme="dark"] .footer,html[data-theme="dark"] .muted{color:#afbacd}
+html[data-theme="dark"] .badge,html[data-theme="dark"] .tag{background:#413450;color:#e3c3ff}
+html[data-theme="dark"] .tab,html[data-theme="dark"] .level,html[data-theme="dark"] .secondary,html[data-theme="dark"] .tiny{background:#29283a;color:#dfd4f1;border-color:#544b68}
+html[data-theme="dark"] .tab[aria-pressed="true"],html[data-theme="dark"] .workspace-tab[aria-selected="true"]{background:#3a3152;color:#f5e8ff;border-color:#987ab8;box-shadow:inset 0 0 0 1px #684a8a}
+html[data-theme="dark"] .level[aria-pressed="true"],html[data-theme="dark"] .primary{background:#8552c6;border-color:#8552c6;color:#fff}
+html[data-theme="dark"] .primary:hover{background:#7440b4}
+html[data-theme="dark"] .secondary:hover,html[data-theme="dark"] .tiny:hover,html[data-theme="dark"] .tab:hover,html[data-theme="dark"] .level:hover{background:#403750}
+html[data-theme="dark"] .input,html[data-theme="dark"] textarea{background:#171b28;color:#f8f4ff;border-color:#5b5770}
+html[data-theme="dark"] .input::placeholder,html[data-theme="dark"] textarea::placeholder{color:#a0a6b8}
+html[data-theme="dark"] label,html[data-theme="dark"] .sectitle,html[data-theme="dark"] .output-title{color:#e5d7f4}
+html[data-theme="dark"] .sym{color:#c7a5ff}
+html[data-theme="dark"] .toggle,html[data-theme="dark"] .workspace-tabs{background:#252437;border-color:#484258}
+html[data-theme="dark"] .toggle button,html[data-theme="dark"] .workspace-tab{color:#c4bad3}
+html[data-theme="dark"] .toggle button[aria-pressed="true"]{background:#413650;color:#f3dcff}
+html[data-theme="dark"] .workspace-tab .optional{color:#b9afc9}
+html[data-theme="dark"] .level-custom{color:#b7bbca}
+html[data-theme="dark"] .assumptions{background:#222839;border-color:#424a5f}
+html[data-theme="dark"] .assumptions h3,html[data-theme="dark"] .checkrow{color:#e3e7f1}
+html[data-theme="dark"] .sep{border-top-color:#3c4155}
+html[data-theme="dark"] .error{color:#ffc2d2;background:#482431;border-color:#a34a67}
+html[data-theme="dark"] .notice.warning{color:#ffdea0;background:#473b20;border-color:#8f753f}
+html[data-theme="dark"] .notice.safe{color:#b2f4da;background:#193c33;border-color:#3b8067}
+html[data-theme="dark"] .notice.neutral{color:#d3dceb;background:#252b3b;border-color:#495268}
+html[data-theme="dark"] .output-placeholder{background:linear-gradient(180deg,#211e31,#1c2030);color:#b8bdc9}
+html[data-theme="dark"] .empty-icon{background:#3c3156;border-color:#6a5886;color:#e3c4ff}
+html[data-theme="dark"] .output-placeholder h3{color:#eee0fd}
+html[data-theme="dark"] .output-stale{color:#ffdf9d;background:#48391e;border-bottom-color:#765d2e}
+html[data-theme="dark"] .outputhead{background:linear-gradient(105deg,#2b243d,#1c2030);border-bottom-color:#494258}
+html[data-theme="dark"] .outputmeta{color:#d5aeed}
+html[data-theme="dark"] .outputhead h2{color:#f2d9ff}
+html[data-theme="dark"] .outputhead p{color:#c4c7d7}
+html[data-theme="dark"] .resulttable th{background:#29283c;color:#dbd8e7;border-color:#464156}
+html[data-theme="dark"] .resulttable td{border-color:#38394e}
+html[data-theme="dark"] .resulttable .v{color:#e9d3ff}
+html[data-theme="dark"] .resultbox{background:#28223a;border-color:#584474}
+html[data-theme="dark"] .resultbox .big{color:#e8caff}
+html[data-theme="dark"] .resultbox .small{color:#bbc2d2}
+html[data-theme="dark"] .chart-panel,html[data-theme="dark"] .comparebar{background:#1a1d2c;border-color:#4a425b}
+html[data-theme="dark"] #tailfill{fill:#363b4d}
+html[data-theme="dark"] #middlefill{fill:#8e70d5}
+html[data-theme="dark"] #curveline{stroke:#ceacf9}
+html[data-theme="dark"] #curve>line{stroke:#a4aabd}
+html[data-theme="dark"] #centerlabel{fill:#f0d9ff}
+html[data-theme="dark"] #axislabel{fill:#b4c2d3}
+html[data-theme="dark"] #cutlines line{stroke:#c8a4fa}
+html[data-theme="dark"] #cutlines text{fill:#e7c6ff}
+html[data-theme="dark"] #cutlines circle{fill:#c09af4}
+html[data-theme="dark"] .details{background:#252235;border-color:#51445f}
+html[data-theme="dark"] .details summary{color:#e7c8fb}
+html[data-theme="dark"] .details-body{color:#d4dbea;border-color:#4b405b}
+html[data-theme="dark"] .comparehead,html[data-theme="dark"] #exploreView .comparehead{background:#29243b}
+html[data-theme="dark"] .compare-reference{background:#232536;border-color:#484259}
+html[data-theme="dark"] .saved-chip{background:#2a283c;color:#dcd6ea;border-color:#544c62}
+html[data-theme="dark"] .saved-chip button{color:#e4d7f2}
+html[data-theme="dark"] #comparesvg line[stroke="#eef0f4"]{stroke:#3e4353}
+html[data-theme="dark"] #comparesvg line[stroke="#8d99a8"]{stroke:#9ca7be}
+html[data-theme="dark"] #comparesvg text[fill="#64748b"]{fill:#b1bdd1}
+html[data-theme="dark"] #comparesvg text[fill="#a42c67"]{fill:#f2a9cd}
+html[data-theme="dark"] #comparesvg line[stroke="#cf668e"]{stroke:#eda7cb}
+/* Consistent theme-picker position outside the calculations. */
+.header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.header-copy{flex:1;min-width:0}
+@media(max-width:540px){.header{flex-wrap:wrap}.header .sl-theme-switch{margin-left:auto}}
 
+
+/* Consistent navigation for Home Screen / standalone browsing. */
+.sl-home-nav{margin:0 0 12px;display:flex;align-items:center}
+.sl-home-link{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid var(--theme-border,#d9d1e4);border-radius:9px;background:var(--theme-track,#f2edf7);color:var(--theme-active-text,#5e2590);font:700 13px/1.3 Lato,"Segoe UI",Arial,sans-serif;text-decoration:none}
+.sl-home-link:hover,.sl-home-link:focus-visible{outline:2px solid #a66de4;outline-offset:1px}
+html[data-theme="dark"] .sl-home-link{color:#e9d5ff;background:#302941;border-color:#655174}
+
+/* Updated mobile input and output ergonomics. Desktop appearance remains unchanged. */
+@media(max-width:780px){
+body{padding:8px 7px 21px}.header{padding:12px 14px}.header h1{font-size:23px}.header p:last-child{font-size:12px}
+.workspace-tabs{margin:10px 0 7px}.tabs{margin:9px 0 10px}.layout{gap:11px}.panelhead{padding:12px 13px 9px}
+.panelbody{padding:0 13px 14px}.outputbody{padding:12px 13px 14px}.outputhead{padding:12px 13px}
+.input,textarea{font-size:16px;min-height:44px}textarea{font-size:16px}.level-custom input{width:86px}
+.tab,.workspace-tab,.level,.toggle button,.primary,.secondary,.tiny,.sl-theme-switch>button{min-height:44px}
+.levels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.level{padding:8px 1px}
+.resultbox .big{font-size:clamp(21px,5.4vw,29px)}
+}
+@media(max-width:530px){
+.header{flex-direction:column;align-items:stretch;gap:7px}.header .sl-theme-switch{align-self:flex-end;margin-left:0}.header-copy{width:100%}
+.tabs{gap:4px}.tab{font-size:12px;gap:4px;padding:8px 5px;min-width:0}.tag{font-size:10px}
+.resulttable:has(#sampletable) thead{display:none}
+#sampletable tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:5px 0;border-bottom:1px solid #ddd8e8}
+#sampletable tr:last-child{border-bottom:0}
+#sampletable td{padding:5px 7px;min-width:0;border-bottom:0;font-size:12px}
+#sampletable td:nth-child(even){text-align:right;font-weight:760}
+.resulttable th{font-size:11px}.resulttable td{font-size:12px}
+#calculateView .chart-panel svg{max-height:none;min-height:0}
+.comparebar{overflow:visible}.comparebar svg{min-width:0;width:100%;height:auto}
+.comparebar:after{display:none}
+}
+.compare-summary{display:grid;gap:6px;margin-top:9px}
+.compare-summary-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px 10px;padding:8px 10px;background:#f8f6fc;border:1px solid #eee7f4;border-radius:8px;font-size:12px}
+.compare-summary-row strong{font-size:12px;color:#55228c}.compare-summary-row span{font-variant-numeric:tabular-nums}
+html[data-theme="dark"] .compare-summary-row{background:#2b263d;border-color:#574866}
+html[data-theme="dark"] .compare-summary-row strong{color:#ebd2ff}
 </style>
 </head>
-<body><main>
-<a class="home" href="../">← Statistics Lab</a>
-<header class="header"><div class="header-copy"><div class="eyebrow">Statistics Lab · Inference tools</div><h1>📖 Two-Sample Hypothesis Tests</h1><p>Choose two proportions, two independent means, or paired means. Enter summary statistics or paste your own sample observations.</p></div><div class="theme" role="group" aria-label="Color theme"><button type="button" data-sl-theme="light" aria-pressed="false">☀ Light</button><button type="button" data-sl-theme="dark" aria-pressed="false">☾ Dark</button><button type="button" data-sl-theme="system" aria-pressed="false">◐ Auto</button></div></header>
-<div class="lesson-intro"><strong>Same six steps, new comparison:</strong> Define the populations, choose the appropriate test, check conditions, calculate, evaluate the evidence, and write a conclusion in context.</div>
-<div class="section-marker">STEP 1 · Choose the test</div>
-<nav class="method-nav" aria-label="Choose two-sample hypothesis test">
- <div class="method-set"><span class="method-name">Choose your test</span><button class="method-btn" data-method="prop2" aria-pressed="true">Two proportions <span class="method-tag">z-test</span></button><button class="method-btn" data-method="mean2" aria-pressed="false">Two independent means <span class="method-tag">Welch t</span></button><button class="method-btn" data-method="paired" aria-pressed="false">Paired means <span class="method-tag">paired t</span></button></div>
+<body>
+<main>
+<nav class="sl-home-nav" aria-label="Back to Statistics Lab"><a class="sl-home-link" href="../" aria-label="Return to Statistics Lab homepage">← Statistics Lab</a></nav>
+<header class="header"><div class="header-copy"><p class="eyebrow">Statistics Lab · Inference tools</p><h1>Confidence Interval Calculator</h1><p>Choose a procedure, review assumptions, then Compute. Compare intervals in the optional Explore tab.</p></div><div class="sl-theme-switch" role="group" aria-label="Color theme">
+<button type="button" data-sl-theme="light" aria-pressed="false" title="Use light appearance">☀ <span>Light</span></button>
+<button type="button" data-sl-theme="dark" aria-pressed="false" title="Use dark appearance">☾ <span>Dark</span></button>
+<button type="button" data-sl-theme="system" aria-pressed="false" title="Follow device appearance">◐ <span>Auto</span></button>
+</div></header>
+<nav class="workspace-tabs" aria-label="Calculator views" role="tablist">
+<button type="button" class="workspace-tab" id="viewCalc" role="tab" aria-selected="true" aria-controls="calculateView">Calculate</button>
+<button type="button" class="workspace-tab" id="viewExplore" role="tab" aria-selected="false" aria-controls="exploreView">Explore &amp; Compare <span class="optional">optional</span></button>
 </nav>
-<div class="method-guide" role="note"><strong>Recognize the problem:</strong> Two independent groups with a <strong>yes/no outcome</strong> → two proportions (z). Two independent groups with a <strong>numerical outcome</strong> → two independent means (Welch t). The <strong>same people measured twice</strong>, or deliberately matched pairs → paired means (t).</div>
+<div id="calculateView" role="tabpanel" aria-labelledby="viewCalc">
+<nav class="tabs" aria-label="Select a confidence interval procedure">
+<button type="button" class="tab" data-mode="t" aria-pressed="true">One mean <span class="tag">t</span></button>
+<button type="button" class="tab" data-mode="zmean" aria-pressed="false">One mean <span class="tag">z</span></button>
+<button type="button" class="tab" data-mode="prop" aria-pressed="false">One proportion <span class="tag">z</span></button>
+</nav>
 <div class="layout">
-<section class="panel" aria-labelledby="inputtitle"><div class="panelhead"><div><h2 id="inputtitle">Set Up &amp; Calculate</h2><p class="caption" id="methodhint">Two independent proportions · pooled z-test</p></div><span class="badge">STEPS 1–3</span></div><div class="panelbody">
-<div class="section-title">STEP 1 · Sample information</div><div id="dataSource" class="segment" role="group" aria-label="Data entry format"><button type="button" data-source="summary" aria-pressed="true">Summary statistics</button><button type="button" data-source="raw" aria-pressed="false">Sample data (raw)</button></div><p class="source-hint" id="sourceHint">Enter counts and sample sizes, or switch to raw data to paste observations.</p>
-<div id="fields" class="fields"></div>
-<hr class="sep"><div class="section-title">STEP 1 · Hypotheses</div><p class="null-label" id="nulltext">H₀: p₁ − p₂ = 0</p><div class="segment" role="group" aria-label="Alternative hypothesis direction"><button type="button" data-tail="left" aria-pressed="false">Left-tailed &lt;</button><button type="button" data-tail="two" aria-pressed="false">Two-tailed ≠</button><button type="button" data-tail="right" aria-pressed="true">Right-tailed &gt;</button></div><p class="hint" id="alttext">Hₐ: p₁ − p₂ ≠ 0</p>
-<hr class="sep"><div class="section-title">STEP 1 · Significance level <span aria-label="alpha">α</span></div><div class="alpha-group"><button class="small-btn" data-alpha="0.01" aria-pressed="false">0.01</button><button class="small-btn" data-alpha="0.05" aria-pressed="true">0.05</button><button class="small-btn" data-alpha="0.10" aria-pressed="false">0.10</button><label for="alpha" style="margin:0;font-size:11px">Or enter</label><input class="input alpha-input" id="alpha" type="number" min="0.0001" max="0.9999" step="any" value="0.05" aria-label="Significance level alpha"></div>
-<details class="assumptions" id="assumptions"><summary>STEP 2 · Choose the Test &amp; Check Conditions</summary><div class="assumptions-body"><label class="checkline"><input type="checkbox" id="randomCheck"><span id="randomLabel">Random sample or appropriate randomized process.</span></label><label class="checkline"><input type="checkbox" id="indCheck"><span id="indLabel">Observations are reasonably independent (including the 10% condition when sampling without replacement).</span></label><label class="checkline"><input type="checkbox" id="shapeCheck"><span id="shapeLabel">Expected successes and failures under H₀ are both at least 10.</span></label><p class="assump-note" id="assumpNote">This calculator can check expected counts but cannot verify how the sample was selected.</p></div></details>
-<div class="actions"><button class="primary" id="calculate" type="button">STEP 3 · Compute Test</button><button class="secondary" id="reset" type="button">Reset example</button></div><div class="error hidden" role="alert" id="error"></div>
+<section class="panel" aria-labelledby="inputheading">
+<div class="panelhead"><div><h2 id="inputheading">Sample information</h2><p class="caption" id="methodhint">Population SD unknown · t-interval</p></div><span class="badge">INPUT</span></div>
+<div class="panelbody">
+<div id="meanform"><div class="sectitle">Data entry</div><div class="toggle" role="group" aria-label="Data format"><button type="button" class="msource" data-msource="summary" aria-pressed="true">Summary statistics</button><button type="button" class="msource" data-msource="raw" aria-pressed="false">Raw observations</button></div>
+<div id="meansummary" class="fields"><div><label for="mn">Sample size <span class="sym">n</span></label><input class="input" type="number" id="mn" value="25" min="1" step="1"></div><div><label for="mx">Sample mean <span class="sym">x̄</span></label><input class="input" type="number" id="mx" value="172.5" step="any"></div><div class="wide"><label for="ms" id="mlabel">Sample standard deviation <span class="sym">s</span></label><input class="input" type="number" id="ms" value="11.7" min="0" step="any"><p class="hint" id="shelp">Use the sample standard deviation because population σ is unknown.</p></div></div>
+<div id="meanraw" class="hidden"><label for="rawdata">Sample observations</label><textarea id="rawdata" placeholder="12.1, 13.0, 14.6, 12.8, ...">20.6, 21.5, 20.6, 21.2</textarea><p class="hint">Separate observations with commas, spaces, or new lines. The calculator finds n, x̄, and s.</p><div id="rawsigma" class="hidden" style="margin-top:10px"><label for="sigma">Known population standard deviation σ</label><input class="input" type="number" id="sigma" value="11.7" min="0" step="any"></div></div></div>
+<div id="propform" class="hidden"><div class="sectitle">Data entry</div><div class="toggle" role="group" aria-label="Proportion data format"><button type="button" class="psource" data-psource="counts" aria-pressed="true">Successes / n</button><button type="button" class="psource" data-psource="phat" aria-pressed="false">p̂ / n</button></div><div class="fields"><div><label for="pn">Sample size <span class="sym">n</span></label><input class="input" type="number" id="pn" value="800" min="1" step="1"></div><div id="successfield"><label for="px">Number of successes</label><input class="input" type="number" id="px" value="320" min="0" step="1"></div><div id="phatfield" class="hidden"><label for="pp">Sample proportion <span class="sym">p̂</span></label><input class="input" type="number" id="pp" value="0.4" min="0" max="1" step="any"></div></div><p class="hint">Uses the introductory one-proportion z interval (Wald method).</p></div>
+<hr class="sep"><div class="sectitle">Confidence level</div><div class="levels" role="group" aria-label="Common confidence levels"><button class="level" data-level="80" aria-pressed="false" type="button">80%</button><button class="level" data-level="90" aria-pressed="false" type="button">90%</button><button class="level" data-level="95" aria-pressed="true" type="button">95%</button><button class="level" data-level="98" aria-pressed="false" type="button">98%</button><button class="level" data-level="99" aria-pressed="false" type="button">99%</button></div><div class="level-custom"><label for="cl" style="margin:0">Or enter</label><input class="input" type="number" id="cl" value="95" min="1" max="99.9" step="any"><span>%</span></div>
+<hr class="sep"><div class="assumptions" aria-labelledby="assumptions-title"><h3 id="assumptions-title">Check assumptions</h3><label class="checkrow"><input type="checkbox" id="randomcheck"><span>Randomness and independence are reasonable (including the 10% condition when relevant).</span></label><label class="checkrow"><input type="checkbox" id="shapecheck"><span id="shapelabel">The population is approximately Normal, or the sample is sufficiently large without severe skew or outliers.</span></label><p class="note" id="checknote">Summary statistics cannot verify how the sample was selected or whether the population shape is appropriate.</p></div>
+<div class="actions"><button type="button" class="primary" id="compute">Compute</button><button type="button" class="secondary" id="reset">Reset example</button></div><div class="error hidden" id="error" role="alert"></div>
 </div></section>
-<section class="panel" aria-labelledby="outputheading"><div class="panelhead"><div><h2 id="outputheading">Evaluate the Evidence</h2><p class="caption">Results appear after you click Compute.</p></div><span class="badge">STEPS 3–6</span></div>
-<div id="placeholder" class="output-placeholder"><div class="symbol" aria-hidden="true">∿</div><h3>Ready to test</h3><p>Choose a procedure, enter the data and null value, then click <strong>Compute test</strong>.</p></div>
-<div id="results" class="hidden" aria-live="polite"><div id="stale" class="stale hidden" role="status">Inputs changed. These are the previous results. Click Compute test to update.</div><div class="output-title"><div class="kicker">Hypothesis test output</div><h2 id="testName">Two-Proportion z-Test</h2><p id="hypothesisText">H₀: p₁ − p₂ = 0 · Hₐ: p₁ − p₂ ≠ 0</p></div><div class="outputbody">
-<div class="outputsub">STEP 3 · Test statistic &amp; sample results</div><table class="output-table" aria-label="Sample statistics and test settings"><tbody id="outputRows"></tbody></table>
-<div class="result-cards"><div class="stat-card"><div class="name" id="statName">Test statistic</div><div class="num" id="statValue">—</div></div><div class="stat-card pval"><div class="name">P-value</div><div class="num" id="pValue">—</div></div></div>
-<div id="warnings" class="warning hidden" role="note"></div>
-<div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>STEP 4 · P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>STEP 4 · Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
-<div class="decision-step">STEP 5 · Make the Decision</div>
-<div class="decision-check" id="decisionCheck">
-  <p>Before revealing the decision, compare the <strong>P-value to α</strong> or check whether the observed statistic falls in the shaded rejection region above.</p>
-  <button class="secondary reveal-btn" id="decisionToggle" type="button" aria-expanded="false" aria-controls="decision">Reveal Decision</button>
+<section class="panel" aria-labelledby="output-title"><div class="panelhead"><div><h2 id="output-title">Statistical output</h2><p class="caption">Results appear after you click Compute.</p></div><span class="badge">OUTPUT</span></div>
+<div class="output-placeholder" id="placeholder"><div class="empty-icon" aria-hidden="true">∿</div><h3>Ready to calculate</h3><p>Enter your sample information, review the assumptions, and click <strong>Compute</strong> to generate results.</p></div>
+<div id="output" class="hidden view" aria-live="polite"><div id="staleBanner" class="output-stale hidden" role="status">Inputs changed. These are previous results. Click Compute to update.</div><div class="outputhead"><div class="outputmeta" id="result-kicker">95% · confidence interval</div><h2 id="output-method">One-Sample t Interval</h2><p id="output-sub">For population mean μ · sample statistics</p></div><div class="outputbody"><div class="output-title">Sample statistics</div><table class="resulttable"><thead><tr><th scope="col">Statistic</th><th scope="col">Value</th><th scope="col">Statistic</th><th scope="col">Value</th></tr></thead><tbody id="sampletable"></tbody></table><div class="resultbox"><div class="sectitle" id="interval-title" style="margin:0">95% CONFIDENCE INTERVAL</div><div class="big" id="interval">—</div><div class="small" id="interval-sub">Lower limit and upper limit for the population mean</div></div><div class="under"><div class="output-title">Interval estimates</div><table class="resulttable"><thead><tr><th scope="col">Critical value</th><th scope="col">Standard error</th><th scope="col">Margin of error</th></tr></thead><tbody><tr><td class="v" id="outcrit">—</td><td class="v" id="outse">—</td><td class="v" id="outmoe">—</td></tr></tbody></table></div>
+<div class="chart-panel"><div class="output-title" style="margin:0 0 3px">Critical values on the reference distribution</div><svg id="curve" viewBox="0 0 520 217" role="img" aria-labelledby="curvetitle curvedesc"><title id="curvetitle">Reference distribution and central area</title><desc id="curvedesc">Central confidence area and its symmetric critical values.</desc><defs><clipPath id="bellclip"><path id="bellshape" /></clipPath></defs><path id="tailfill" fill="#e6e7ed"/><rect id="middlefill" y="9" height="160" fill="#b699ec" fill-opacity=".82" clip-path="url(#bellclip)"/><path id="curveline" fill="none" stroke="#7536b4" stroke-width="2.9"/><line x1="25" x2="495" y1="170" y2="170" stroke="#8b94a4"/><g id="cutlines"></g><text x="260" y="105" id="centerlabel" text-anchor="middle" fill="#6f34aa" font-size="23" font-weight="850">95%</text><text id="axislabel" x="260" y="210" text-anchor="middle" font-size="11" fill="#64748b"></text></svg><p class="caption">This curve uses standardized t or z values, not the original measurement units.</p></div>
+<div id="autoWarning" class="notice warning under hidden"></div><div id="manualWarning" class="notice neutral under"></div>
+<details class="details"><summary>Show calculations</summary><div id="steps" class="details-body"></div></details><div class="actions"><button class="secondary" type="button" id="copy">Copy output</button><span id="copyStatus" class="hint" role="status"></span></div></div></div>
+</section>
 </div>
-<div class="decision hidden" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
-<div class="interpret-guide"><strong>STEP 6 · Write the conclusion:</strong> Use the decision to explain whether there is sufficient evidence for the claim about the <em>population</em> proportions, independent means, or mean paired difference. Do not confuse statistical significance with practical importance or causation.</div>
-<details class="more" id="calculations"><summary>🔎 Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
-<div class="actions"><button class="secondary" id="copy" type="button">Copy output</button><span class="hint" id="copyStatus" role="status"></span></div>
-</div></div></section></div>
-<footer class="footer">Statistics Lab · Technology finds the numbers. You select the test, verify conditions, and interpret the evidence.<div class="footer-rule"></div></footer>
+</div>
+<section class="compare-panel hidden" id="exploreView" role="tabpanel" aria-labelledby="viewExplore" aria-labelledby="compareheading"><div class="comparehead"><h2 id="compareheading">Explore &amp; Compare</h2><p class="caption">Compare confidence levels or samples on a shared scale. You can also display a reference value.</p></div><div class="comparebody"><p class="comparetext">First calculate an interval in the <strong>Calculate</strong> tab. To compare different samples, compute and save each interval. Only compare intervals estimating the same parameter in the same units.</p><div class="compare-reference"><div class="sectitle">Compare with a reference value</div>
+<div class="fields">
+<div><label for="reference">Reference value (optional)</label><input class="input" type="number" step="any" id="reference" placeholder="e.g., 170 or 0.5"></div>
+<div><label for="units">Units (optional)</label><input class="input" type="text" maxlength="24" id="units" placeholder="e.g., cm"></div>
+</div>
+<div class="ref-actions"><button id="applyreference" type="button" class="tiny" disabled>Show reference on plot</button><span id="referenceStatus" class="hint" role="status">Compute an interval first.</span></div>
+</div>
+<div class="sectitle compare-sectitle">Compare intervals</div>
+<div class="comp-actions"><button class="tiny" id="comparelevels" type="button" disabled>Compare 90%, 95%, 99%</button><button class="tiny" id="clearcompare" type="button" disabled>Clear comparisons</button></div><div class="save-row"><div class="name-field"><label for="compname">Label this interval (optional)</label><input class="input" id="compname" type="text" placeholder="e.g., Group A or n = 25" maxlength="40"></div><button type="button" class="secondary" id="save" disabled>+ Add current interval</button></div><div id="compareempty" class="notice neutral" style="margin-top:13px">A shared interval plot will appear here after you calculate.</div><div id="compareviz" class="comparebar hidden"><svg viewBox="0 0 560 150" id="comparesvg" role="img" aria-label="Intervals displayed as horizontal segments on a common axis"></svg><p id="refresult" class="compare-legend"></p><p class="compare-legend" id="comparenote">Bars show confidence intervals, and dots show sample estimates.</p></div><div id="compareSummary" class="compare-summary" aria-label="Readable confidence interval endpoints"></div><div id="savedlist" class="saved-list"></div></div></section>
+<footer class="footer">Statistics Lab · The software does the arithmetic. You choose the method, check conditions, and interpret the result.</footer>
 </main>
 <script>
-(function(){'use strict';
+(()=>{'use strict';
 const $=id=>document.getElementById(id);
-const defaults={
- prop2:{x1:'132',n1:'180',x2:'108',n2:'180',tail:'two',alpha:'0.05',source:'summary',raw1:'1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0',raw2:'1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0'},
- mean2:{n1:'35',xbar1:'78.4',s1:'12.1',n2:'32',xbar2:'72.3',s2:'13.4',delta0:'0',tail:'two',alpha:'0.05',source:'summary',raw1:'72,75,81,78,83',raw2:'69,73,75,71,68'},
- paired:{n:'8',dbar:'1.5',sd:'0.92582',delta0:'0',tail:'two',alpha:'0.05',source:'summary',rawpairs:'8, 6\n10, 7\n12, 10\n9, 8\n7, 7\n11, 9\n10, 9\n9, 8'}
-};
-let mode='prop2',data=structuredClone(defaults),last=null;
-function field(id,label,extra='',wide=false,type='number'){return `<div class="${wide?'wide':''}"><label for="${id}">${label}</label><input class="input" id="${id}" data-field="${id}" type="${type}" value="${escapeHTML(data[mode][id]??'')}" step="${type==='number'?'any':'1'}" ${extra}></div>`}
-function textArea(id,label,help='Paste numbers separated by commas, spaces, or new lines.'){
-return `<div class="wide"><label for="${id}">${label}</label><textarea class="textarea" id="${id}" data-field="${id}" placeholder="Paste your observations here">${escapeHTML(data[mode][id]??'')}</textarea><p class="hint">${help}</p></div>`;
+const colors=['#7838b6','#d36b9c','#288f9b','#bf8032','#4c76b9','#619652'];
+const logGammaCoeffs=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.6150291621406,12.507343278686905,-.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+function logGamma(z){if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=logGammaCoeffs[0];for(let i=1;i<logGammaCoeffs.length;i++)x+=logGammaCoeffs[i]/(z+i);const t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);}
+function betaFraction(a,b,x){const EPS=2e-14,FPMIN=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<FPMIN)d=FPMIN;d=1/d;let h=d;for(let m=1;m<=250;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<FPMIN)d=FPMIN;c=1+aa/c;if(Math.abs(c)<FPMIN)c=FPMIN;d=1/d;const v=d*c;h*=v;if(Math.abs(v-1)<EPS)break;}return h;}
+function incBeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return Math.min(1,Math.max(0,x<(a+1)/(a+b+2)?bt*betaFraction(a,b,x)/a:1-bt*betaFraction(b,a,1-x)/b));}
+function tCDF(t,df){if(t===0)return .5;const half=.5*incBeta(df/(df+t*t),df/2,.5);return t>=0?1-half:half;}
+function invT(p,df){if(!(p>0&&p<1))throw Error('Confidence level must be between 0 and 100%.');if(p<.5)return -invT(1-p,df);let lo=0,hi=1;while(tCDF(hi,df)<p&&hi<1e14)hi*=2;for(let i=0;i<64;i++){let mid=(lo+hi)/2;if(tCDF(mid,df)<p)lo=mid;else hi=mid;}return (lo+hi)/2;}
+function invNorm(p){if(!(p>0&&p<1))throw Error('Confidence level must be between 0 and 100%.');const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239],b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],c=[-.007784894002430293,-.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],d=[.007784695709041462,.3224671290700398,2.445134137142996,3.754408661907416];let x,q,r;if(p<.02425){q=Math.sqrt(-2*Math.log(p));x=(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}else if(p>1-.02425){q=Math.sqrt(-2*Math.log1p(-p));x=-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}else{q=p-.5;r=q*q;x=(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}return x;}
+const fixed=(v,d=3)=>Number(v).toFixed(d);
+const close=(a,b)=>Math.abs(a-b)<=Math.max(1e-11,Math.abs(a)*1e-11);
+let mode='t',meanSource='summary',propSource='counts',last=null,saved=[],dirty=false;
+function num(id){const raw=$(id).value.trim();if(!raw)throw Error('Enter all required numerical values.');const v=Number(raw);if(!Number.isFinite(v))throw Error('Please enter finite numerical values.');return v;}
+function integer(id,min){const x=num(id);if(!Number.isInteger(x)||x<min||x>100000)throw Error('Sample size and counts must be whole numbers between '+min+' and 100,000.');return x;}
+function stats(values){let n=0,mean=0,m2=0;for(const x of values){n++;const d=x-mean;mean+=d/n;m2+=d*(x-mean);}return {n,mean,s:n>1?Math.sqrt(Math.max(0,m2/(n-1))):NaN};}
+function readData(){if(mode==='prop'){const n=integer('pn',1);let x,p;if(propSource==='counts'){x=integer('px',0);if(x>n)throw Error('Successes cannot exceed the sample size.');p=x/n;}else{p=num('pp');if(p<0||p>1)throw Error('The sample proportion must be between 0 and 1.');x=p*n;}return {n,x,p};}
+ let n,mean,s;if(meanSource==='raw'){const raw=$('rawdata').value.trim();if(!raw)throw Error('Enter sample observations.');const tokens=raw.split(/[\s,;]+/).filter(Boolean);if(tokens.length>100000)throw Error('Raw data entry supports up to 100,000 observations.');const vals=tokens.map(v=>Number(v));if(vals.some((x,i)=>!Number.isFinite(x)||tokens[i]===''))throw Error('Raw observations must be valid numbers separated by commas, spaces, or new lines.');({n,mean,s}=stats(vals));if(mode==='zmean')s=num('sigma');}else{n=integer('mn',mode==='t'?2:1);mean=num('mx');s=num('ms');}if(n<(mode==='t'?2:1))throw Error('A one-sample t interval requires at least two observations.');if(!(s>0))throw Error('The standard deviation must be positive.');return {n,mean,s};}
+function confidence(){const conf=num('cl');if(conf<1||conf>99.9)throw Error('Enter a confidence level between 1% and 99.9%.');return conf;}
+function calculate(modeValue,source,conf,reference,units){const df=modeValue==='t'?source.n-1:null;const crit=df!==null?invT((1+conf/100)/2,df):invNorm((1+conf/100)/2);const center=modeValue==='prop'?source.p:source.mean;const se=modeValue==='prop'?Math.sqrt(source.p*(1-source.p)/source.n):source.s/Math.sqrt(source.n);const E=crit*se;const lower=center-E,upper=center+E;if(![crit,center,se,E,lower,upper].every(Number.isFinite))throw Error('These inputs produced a non-finite result. Check your data.');return {method:modeValue,data:{...source},df,crit,center,se,E,lower,upper,conf,reference,units};}
+function f(x,d=3){return fixed(x,d);}function valueFmt(x,method){return f(x,method==='prop'?4:3);}function intervalFmt(r){return '('+valueFmt(r.lower,r.method)+', '+valueFmt(r.upper,r.method)+')';}
+function updateLevels(){const conf=Number($('cl').value);document.querySelectorAll('.level').forEach(b=>b.setAttribute('aria-pressed',String(close(Number(b.dataset.level),conf))));}
+function markDirty(){window.StatsLabExporter?.markStale();if(!last)return;dirty=true;$('staleBanner').classList.remove('hidden');$('output').classList.add('stale');$('save').disabled=true;$('comparelevels').disabled=true;$('applyreference').disabled=true;$('referenceStatus').textContent='Inputs changed. Return to Calculate and click Compute first.';$('copy').disabled=true;$('compareviz').classList.add('stale');}
+function updateMode(){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));document.querySelectorAll('.msource').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.msource===meanSource)));document.querySelectorAll('.psource').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.psource===propSource)));$('meanform').classList.toggle('hidden',mode==='prop');$('propform').classList.toggle('hidden',mode!=='prop');$('meansummary').classList.toggle('hidden',meanSource!=='summary');$('meanraw').classList.toggle('hidden',meanSource!=='raw');$('successfield').classList.toggle('hidden',propSource!=='counts');$('phatfield').classList.toggle('hidden',propSource!=='phat');$('rawsigma').classList.toggle('hidden',mode!=='zmean');$('mlabel').innerHTML=mode==='zmean'?'Known population standard deviation <span class="sym">σ</span>':'Sample standard deviation <span class="sym">s</span>';$('shelp').textContent=mode==='zmean'?'Only choose this method when population σ is known, not estimated from the sample.':'Use the sample standard deviation because population σ is unknown.';$('methodhint').textContent=mode==='prop'?'One population proportion · z interval':mode==='zmean'?'Population σ known · z interval':'Population σ unknown · t interval';$('shapelabel').textContent=mode==='prop'?'The sample has at least 10 observed successes and 10 failures (checked when computing).':mode==='zmean'?'Population σ is known; population is approximately Normal, or n is sufficiently large without extreme skew or outliers.':'Population is approximately Normal, or n is sufficiently large without extreme skew or outliers.';$('checknote').textContent=mode==='prop'?'Success/failure counts can be checked by the calculator. Randomness, independence, and the population size still require context.':'Summary statistics cannot verify sampling conditions, skewness, or outliers. Check the problem context (and a plot, when available).';}
+function renderRows(r){const rows=[['n',r.data.n,'Point estimate',valueFmt(r.center,r.method)]];if(r.method==='prop'){rows.push(['Successes',r.data.x===Math.round(r.data.x)?String(r.data.x):f(r.data.x,2),'Failures',r.data.n-r.data.x===Math.round(r.data.n-r.data.x)?String(r.data.n-r.data.x):f(r.data.n-r.data.x,2)]);}else{rows.push([r.method==='t'?'Sample SD (s)':'Known σ',f(r.data.s),r.df===null?'Procedure':'df',r.df===null?'z':String(r.df)]);}const target=$('sampletable');target.replaceChildren();for(const row of rows){const tr=document.createElement('tr');row.forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i%2)td.className='v';tr.append(td);});target.append(tr);}}
+function drawCurve(r){const svg=$('curve'),mid=260,L=25,R=495,base=170;const spread=Math.max(3.65,r.crit*1.23),scale=(R-L)/(2*spread);const xpos=x=>mid+x*scale;const ypos=x=>base-133*(r.df!==null?Math.pow(1+x*x/r.df,-(r.df+1)/2):Math.exp(-x*x/2));let line='';for(let i=0;i<=320;i++){const x=-spread+2*spread*i/320;line+=(i?'L':'M')+f(xpos(x),2)+','+f(ypos(x),2);}const closed=`M${L},${base} ${line.replace(/^M/,'L')} L${R},${base} Z`;$('bellshape').setAttribute('d',closed);$('tailfill').setAttribute('d',closed);$('curveline').setAttribute('d',line);$('middlefill').setAttribute('x',xpos(-r.crit));$('middlefill').setAttribute('width',2*scale*r.crit);$('centerlabel').textContent=f(r.conf,Number.isInteger(r.conf)?0:1)+'%';$('axislabel').textContent=r.df!==null?'t-score · df = '+r.df:'z-score';$('cutlines').replaceChildren();const ns='http://www.w3.org/2000/svg';const add=(tag,attrs,text)=>{let e=document.createElementNS(ns,tag);for(const [key,val] of Object.entries(attrs))e.setAttribute(key,String(val));if(text!==undefined)e.textContent=text;$('cutlines').append(e);};for(const sign of [-1,1]){const x=sign*r.crit,px=xpos(x);add('line',{x1:px,x2:px,y1:ypos(x),y2:base,stroke:'#7838b6','stroke-width':1.8,'stroke-dasharray':'4 3'});add('circle',{cx:px,cy:base,r:4,fill:'#7838b6'});add('text',{x:px,y:192,'text-anchor':'middle','font-size':12,'font-weight':750,fill:'#5b2791'},(sign<0?'−':'+')+f(r.crit));}$('curvedesc').textContent=`Central ${r.conf}% of ${r.df!==null?'t with '+r.df+' degrees of freedom':'standard Normal'} distribution between critical values minus ${f(r.crit)} and plus ${f(r.crit)}.`;}
+function addStep(label,value){const p=document.createElement('p'),strong=document.createElement('strong');strong.textContent=label+' ';p.append(strong,document.createTextNode(value));$('steps').append(p);}
+function details(r){$('steps').replaceChildren();const a=1-r.conf/100;addStep('Confidence level:',f(r.conf,1)+'%; α = '+f(a,4)+', α/2 = '+f(a/2,4));if(r.method==='prop'){addStep('Point estimate:', 'p̂ = '+f(r.center,5)+(propSource==='counts'?' = '+r.data.x+' / '+r.data.n:''));addStep('Standard error:','√(p̂(1−p̂)/n) = '+f(r.se,6));}else{addStep('Point estimate:','x̄ = '+f(r.center,5));if(r.df!==null)addStep('Degrees of freedom:','df = n − 1 = '+r.df);addStep('Standard error:',(r.df!==null?'s':'σ')+'/√n = '+f(r.se,6));}addStep('Critical value:',(r.df!==null?'t*':'z*')+' = '+f(r.crit,5));addStep('Margin of error:','E = '+f(r.crit,5)+' × '+f(r.se,6)+' = '+f(r.E,6));addStep('Confidence interval:','Point estimate ± E = '+valueFmt(r.center,r.method)+' ± '+valueFmt(r.E,r.method)+' = '+intervalFmt(r));}
+function assumptions(r){const problems=[];if(!r.reviewed.random||!r.reviewed.shape)problems.push('Some assumptions remain unchecked. The calculator cannot verify the sampling design from summary statistics.');if(r.method==='prop'){if(r.data.x<10||r.data.n-r.data.x<10)problems.push('The usual one-proportion z interval may be unreliable: there are '+f(r.data.x,2)+' observed successes and '+f(r.data.n-r.data.x,2)+' failures. Aim for at least 10 of each; another interval method may be needed.');if(r.lower<0||r.upper>1)problems.push('The Wald interval extends beyond the possible proportion range [0, 1]; do not interpret it as a reliable proportion interval.');}else if(r.method==='t'&&r.data.n<30)problems.push('Small-sample t method: strong skewness or outliers can make the interval unreliable. Check a graph or the problem’s Normality assumption.');if(r.method==='zmean'&&r.data.n<30)problems.push('Small sample: check that a Normal population is plausible.');$('autoWarning').classList.toggle('hidden',!problems.length);$('autoWarning').textContent=problems.join(' ');$('manualWarning').className='notice '+(r.reviewed.random&&r.reviewed.shape?'safe':'neutral')+' under';$('manualWarning').textContent=r.reviewed.random&&r.reviewed.shape?'You marked the assumptions as reviewed. This is a student check, not a software verification.':'Review randomness, independence, and distribution conditions before interpreting the output.';}
+function render(r){$('placeholder').classList.add('hidden');$('output').classList.remove('hidden','stale');$('staleBanner').classList.add('hidden');$('result-kicker').textContent=f(r.conf,Number.isInteger(r.conf)?0:1)+'% confidence interval';$('output-method').textContent=r.method==='t'?'One-Sample t Interval':r.method==='zmean'?'One-Sample z Interval':'One-Proportion z Interval';$('output-sub').textContent=(r.method==='prop'?'Population proportion p':'Population mean μ')+' · '+(r.method==='zmean'?'known population standard deviation':'sample-based estimate');renderRows(r);$('interval-title').textContent=f(r.conf,Number.isInteger(r.conf)?0:1)+'% CONFIDENCE INTERVAL';$('interval').textContent=intervalFmt(r);$('interval-sub').textContent='Lower and upper confidence limits for the '+(r.method==='prop'?'population proportion p':'population mean μ');$('outcrit').textContent=(r.df!==null?'t*':'z*')+' = '+f(r.crit);$('outse').textContent=f(r.se,r.method==='prop'?5:4);$('outmoe').textContent=f(r.E,r.method==='prop'?4:3);drawCurve(r);details(r);assumptions(r);$('comparelevels').disabled=false;$('save').disabled=false;$('applyreference').disabled=false;$('referenceStatus').textContent='Enter a reference value to mark it on the comparison plot.';$('copy').disabled=false;}
+function compute(){try{$('error').classList.add('hidden');const r=calculate(mode,readData(),confidence(),$('reference').value.trim()?num('reference'):null,$('units').value.trim());r.reviewed={random:$('randomcheck').checked,shape:$('shapecheck').checked};if(last&&last.method!==r.method){saved=[];}if(last&&last.units!==r.units){saved=[];}last=r;dirty=false;render(r);window.StatsLabExporter?.setResult(r);$('copyStatus').textContent='';renderCompare();if(window.matchMedia('(max-width: 780px)').matches){requestAnimationFrame(()=>{$('output').scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});}}catch(e){$('error').textContent=e.message;$('error').classList.remove('hidden');markDirty();}}
+function remember(r,label){const ix=saved.findIndex(x=>x.label===label);if(ix>=0)saved.splice(ix,1);saved.push({...r,label});if(saved.length>6)saved.shift();}
+function compareLevels(){if(!last||dirty)return;const r=last;saved=[];for(const conf of [90,95,99]){const v=calculate(r.method,r.data,conf,r.reference,r.units);remember(v,conf+'% CI');}renderCompare();}
+function save(){if(!last||dirty)return;const text=$('compname').value.trim(),label=text||f(last.conf,Number.isInteger(last.conf)?0:1)+'% · '+(last.method==='prop'?'n='+last.data.n:'n='+last.data.n+', x̄='+f(last.center,2));remember(last,label);$('compname').value='';renderCompare();}
+function svgNode(name,attrs={},text){const e=document.createElementNS('http://www.w3.org/2000/svg',name);for(const [key,value] of Object.entries(attrs))e.setAttribute(key,String(value));if(text!==undefined)e.textContent=text;return e;}
+function niceTick(step){const mag=10**Math.floor(Math.log10(step));const x=step/mag;return (x<=1?1:x<=2?2:x<=2.5?2.5:x<=5?5:10)*mag;}
+function smart(x,step){const decimals=step<1?Math.min(6,Math.max(1,Math.ceil(-Math.log10(step))+1)):step<10?1:0;return Number(x.toFixed(decimals)).toLocaleString('en-US',{maximumFractionDigits:decimals});}
+function renderCompare(){const exists=!!last,items=[];if(exists){for(const s of saved){if(s.method===last.method&&s.units===last.units)items.push(s);}const duplicate=items.some(x=>x.method===last.method&&close(x.lower,last.lower)&&close(x.upper,last.upper)&&close(x.center,last.center)&&close(x.conf,last.conf));if(!duplicate)items.push({...last,label:'Current · '+f(last.conf,Number.isInteger(last.conf)?0:1)+'%'});}
+$('clearcompare').disabled=!saved.length;$('compareempty').classList.toggle('hidden',exists);$('compareviz').classList.toggle('hidden',!exists);$('compareviz').classList.toggle('stale',dirty);$('savedlist').replaceChildren();for(let i=0;i<saved.length;i++){const el=document.createElement('div');el.className='saved-chip';el.append(document.createTextNode(saved[i].label+' · '+intervalFmt(saved[i])));const btn=document.createElement('button');btn.type='button';btn.textContent='×';btn.setAttribute('aria-label','Remove '+saved[i].label);const j=i;btn.addEventListener('click',()=>{saved.splice(j,1);renderCompare();});el.append(btn);$('savedlist').append(el);}
+const summary=$('compareSummary');summary.replaceChildren();for(const r of items){const row=document.createElement('div');row.className='compare-summary-row';const label=document.createElement('strong');label.textContent=r.label;const values=document.createElement('span');values.textContent=intervalFmt(r);row.append(label,values);summary.append(row);}
+if(!exists)return;const ref=last.reference;let lo=Math.min(...items.map(x=>x.lower)),hi=Math.max(...items.map(x=>x.upper));if(ref!==null){lo=Math.min(lo,ref);hi=Math.max(hi,ref);}let range=hi-lo;if(!(range>0))range=Math.max(1,Math.abs(lo)*.03);const margin=range*.11;lo-=margin;hi+=margin;range=hi-lo;
+const left=112,right=532,W=560,H=70+items.length*35,axisY=H-28;const sx=x=>left+(x-lo)/range*(right-left);const svg=$('comparesvg');svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('aria-label',`Comparison of ${items.length} confidence interval${items.length===1?'':'s'} on a shared scale${ref===null?'':', with reference '+smart(ref,range/6)}`);
+const target=range/5,step=niceTick(target),start=Math.ceil(lo/step)*step;for(let val=start,i=0;val<=hi+1e-10&&i<25;val+=step,i++){const x=sx(val);svg.append(svgNode('line',{x1:x,x2:x,y1:18,y2:axisY,stroke:'#eef0f4','stroke-width':1}));svg.append(svgNode('text',{x,y:axisY+18,'text-anchor':'middle',fill:'#64748b','font-size':11},smart(val,step)));}
+svg.append(svgNode('line',{x1:left,y1:axisY,x2:right,y2:axisY,stroke:'#8d99a8','stroke-width':1.25}));if(ref!==null){const x=sx(ref);svg.append(svgNode('line',{x1:x,y1:11,x2:x,y2:axisY,stroke:'#cf668e','stroke-width':2,'stroke-dasharray':'5 4'}));svg.append(svgNode('text',{x:Math.min(right-7,Math.max(left+7,x)),y:10,'text-anchor':'middle',fill:'#a42c67','font-size':10,'font-weight':800},'reference'));}
+items.forEach((r,i)=>{const y=30+i*35,col=colors[i%colors.length],x1=sx(r.lower),x2=sx(r.upper),xc=sx(r.center);let name=r.label;if(name.length>15)name=name.slice(0,13)+'…';svg.append(svgNode('text',{x:5,y:y+4,fill:'#455166','font-size':11,'font-weight':760},name));svg.append(svgNode('line',{x1:x1,x2:x2,y1:y,y2:y,stroke:col,'stroke-width':5,'stroke-linecap':'round'}));for(const px of [x1,x2])svg.append(svgNode('line',{x1:px,x2:px,y1:y-7,y2:y+7,stroke:col,'stroke-width':2}));svg.append(svgNode('circle',{cx:xc,cy:y,r:4.6,fill:col,stroke:'white','stroke-width':1.3}));svg.append(svgNode('title',{},r.label+' '+intervalFmt(r)));});
+if(ref!==null){const inside=items.filter(x=>ref>=x.lower-1e-12&&ref<=x.upper+1e-12).map(x=>x.label);$('refresult').textContent=`Reference ${smart(ref,range/10)}${last.units?' '+last.units:''}: inside ${inside.length} of ${items.length} displayed interval${items.length===1?'':'s'}. This is a descriptive comparison, not a formal hypothesis-test conclusion.`;}else{$('refresult').textContent='No reference value shown. Enter one above and click Show reference on plot.';}$('comparenote').textContent='Horizontal segments = confidence intervals · dots = point estimates · all values share the same measurement scale. Compare intervals estimating the same kind of parameter in the same units; overlapping intervals are not a formal two-group test.';}
+function reset(){window.StatsLabExporter?.reset();mode='t';meanSource='summary';propSource='counts';$('mn').value='25';$('mx').value='172.5';$('ms').value='11.7';$('sigma').value='11.7';$('pn').value='800';$('px').value='320';$('pp').value='0.4';$('cl').value='95';$('reference').value='';$('units').value='';$('rawdata').value='20.6, 21.5, 20.6, 21.2';$('randomcheck').checked=false;$('shapecheck').checked=false;last=null;saved=[];dirty=false;$('error').classList.add('hidden');$('placeholder').classList.remove('hidden');$('output').classList.add('hidden');$('comparelevels').disabled=true;$('save').disabled=true;$('applyreference').disabled=true;$('referenceStatus').textContent='Compute an interval first.';$('copy').disabled=true;$('copyStatus').textContent='';$('compname').value='';updateMode();updateLevels();renderCompare();}
+for(const b of document.querySelectorAll('.tab'))b.addEventListener('click',()=>{if(mode===b.dataset.mode)return;mode=b.dataset.mode;updateMode();markDirty();});for(const b of document.querySelectorAll('.msource'))b.addEventListener('click',()=>{meanSource=b.dataset.msource;updateMode();markDirty();});for(const b of document.querySelectorAll('.psource'))b.addEventListener('click',()=>{propSource=b.dataset.psource;updateMode();markDirty();});for(const b of document.querySelectorAll('.level'))b.addEventListener('click',()=>{$('cl').value=b.dataset.level;updateLevels();markDirty();});$('cl').addEventListener('input',()=>{updateLevels();markDirty();});for(const input of document.querySelectorAll('input:not(#compname):not(#reference):not(#units),textarea')){input.addEventListener('input',markDirty);input.addEventListener('change',markDirty);}$('compute').addEventListener('click',compute);$('reset').addEventListener('click',reset);$('comparelevels').addEventListener('click',compareLevels);$('save').addEventListener('click',save);$('clearcompare').addEventListener('click',()=>{saved=[];renderCompare();});$('copy').addEventListener('click',async()=>{if(!last||dirty)return;const msg=`${last.conf}% ${last.method==='prop'?'one-proportion z':last.method==='t'?'one-mean t':'one-mean z'} confidence interval: ${intervalFmt(last)}. n=${last.data.n}, point estimate=${valueFmt(last.center,last.method)}, SE=${f(last.se,5)}, ${last.df!==null?'t*':'z*'}=${f(last.crit)}, margin of error=${valueFmt(last.E,last.method)}.`;try{await navigator.clipboard.writeText(msg);$('copyStatus').textContent='Copied.';}catch(e){$('copyStatus').textContent='Copy unavailable in this browser.';}});
+
+function showView(name){const explore=name==='explore';$('calculateView').classList.toggle('hidden',explore);$('exploreView').classList.toggle('hidden',!explore);$('viewCalc').setAttribute('aria-selected',String(!explore));$('viewExplore').setAttribute('aria-selected',String(explore));}
+$('viewCalc').addEventListener('click',()=>showView('calculate'));
+$('viewExplore').addEventListener('click',()=>showView('explore'));
+$('applyreference').addEventListener('click',()=>{if(!last||dirty){$('referenceStatus').textContent='Return to Calculate and click Compute first.';return;}try{const raw=$('reference').value.trim(),reference=raw===''?null:num('reference');const units=$('units').value.trim();if(units!==last.units)saved=[];last={...last,reference,units};$('referenceStatus').textContent=reference===null?'Reference line cleared.':'Reference value added to the plot.';renderCompare();}catch(e){$('referenceStatus').textContent=e.message;}});
+
+const urlParams = new URLSearchParams(window.location.search);
+const importedData = urlParams.get('data');
+if (importedData) {
+  const values = importedData.split(/[\s,;]+/).filter(Boolean);
+  if (values.length >= 2 && values.length <= 1000 &&
+      values.every(v => Number.isFinite(Number(v)))) {
+    mode = 't';
+    meanSource = 'raw';
+    $('rawdata').value = values.join(', ');
+  }
 }
-function escapeHTML(v){return String(v).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));}
-function isMean(){return ['mean2','paired'].includes(mode)}
-function source(){return data[mode].source||'summary'}
-function renderInput(){
- document.querySelectorAll('[data-method]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.method===mode)));
- $('dataSource').classList.remove('hidden');
- document.querySelectorAll('[data-source]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.source===source())));
- const d=data[mode];let html='';const raw=source()==='raw';
- if(mode==='prop2'){
-  html=raw?
-    textArea('raw1','Group 1 outcomes','Enter one result per person: 1/0, yes/no, success/failure, or true/false. Separate with commas, spaces, or lines.')+
-    textArea('raw2','Group 2 outcomes','Use the same success category in both groups. Group sizes may differ.'):
-    field('x1','Group 1 successes x₁')+field('n1','Group 1 sample size n₁')+field('x2','Group 2 successes x₂')+field('n2','Group 2 sample size n₂');
-  html+='<p class="hint wide">Success = 1 / yes. The two-proportion z-test pools the proportions under H₀: p₁ − p₂ = 0.</p>';
-  $('methodhint').textContent='Two independent proportions · pooled z-test';
-  $('sourceHint').textContent=raw?'Paste individual yes/no or 0/1 outcomes for each independent group.':'Enter counts of successes and total sample sizes, or select Sample data (raw).';
- }
- if(mode==='mean2'){
-  html=raw?
-   textArea('raw1','Group 1 numerical observations','Enter one number per observation. Groups may have different sample sizes.')+
-   textArea('raw2','Group 2 numerical observations','Paste numbers from your second independent group.'):
-   '<fieldset class="sample-group group-one"><legend>Group 1</legend><div class="group-fields">'+
-   field('n1','Sample size n₁')+field('xbar1','Sample mean x̄₁')+field('s1','Sample SD s₁')+
-   '</div></fieldset>'+
-   '<fieldset class="sample-group group-two"><legend>Group 2</legend><div class="group-fields">'+
-   field('n2','Sample size n₂')+field('xbar2','Sample mean x̄₂')+field('s2','Sample SD s₂')+
-   '</div></fieldset>';
-  html+=field('delta0','Null mean difference Δ₀','',true);
-  $('methodhint').textContent='Two independent means · Welch t-test';
-  $('sourceHint').textContent=raw?'Paste the numerical sample values for each independent group.':'Enter n, sample mean, and sample standard deviation for each independent group.';
- }
- if(mode==='paired'){
-  html=raw?
-   textArea('rawpairs','Matched pairs: Measurement 1, Measurement 2', 'Paste TWO numbers per line, separated by a comma, space, or tab. Copy two columns from Excel, with no headers. Each row is one person or matched pair; differences are Measurement 1 minus Measurement 2.'):
-   field('n','Number of complete pairs n')+field('dbar','Mean of paired differences d̄')+field('sd','SD of paired differences sᵈ','min="0"');
-  html+=field('delta0','Null mean difference Δ₀','',true);
-  html+='<p class="hint wide">Paired data are analyzed using the differences within each pair, not as two independent samples.</p>';
-  $('methodhint').textContent='Paired means · paired t-test';
-  $('sourceHint').textContent=raw?'Keep each matched pair on one row. The calculator computes every difference, d̄, and sᵈ.':'Use statistics for the differences between paired measurements—not the two separate sample standard deviations.';
- }
-$('fields').innerHTML=html;
-$('fields').querySelectorAll('[data-field]').forEach(el=>el.addEventListener('input',()=>{data[mode][el.dataset.field]=el.value;updateHyp();markStale()}));
-document.querySelectorAll('[data-tail]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tail===d.tail)));
-$('alpha').value=d.alpha;document.querySelectorAll('[data-alpha]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.alpha)===Number(d.alpha))));
-$('shapeLabel').textContent=mode==='prop2'?'Each group has at least 10 expected successes and 10 expected failures under H₀.':mode==='paired'?'The distribution of paired DIFFERENCES is approximately Normal, or there are enough pairs without extreme skew/outliers.':'Each group is approximately Normal, or both samples are large without severe skew/outliers.';
-$('assumpNote').textContent=mode==='prop2'?'The calculator checks expected counts. Randomness, independence, and population sizes require context.':mode==='paired'?'The calculator uses n−1 degrees of freedom. It cannot verify how pairs were sampled or the shape of the differences.':'The calculator cannot verify random sampling, outliers, population shape, or independence. Two groups must be independent for Welch t.';
- $('randomLabel').textContent=mode==='paired'?'Pairs are randomly sampled or appropriately randomly assigned.':'Random samples or an appropriate randomized design.';
- $('indLabel').textContent=mode==='paired'?'Different pairs are independent (and satisfy the 10% condition if sampled without replacement).':'The two groups and observations are independent (check the 10% condition when relevant).';
-$('randomCheck').checked=false;$('indCheck').checked=false;$('shapeCheck').checked=false;$('assumptions').open=false;updateHyp();}
-function hypothesisStrings(){const d=data[mode];const sign=({left:'<',right:'>',two:'≠'})[d.tail],v=mode==='prop1'?'p':mode==='mean1t'||mode==='mean1z'?'μ':mode==='prop2'?'p₁ − p₂':mode==='paired'?'μ_d':'μ₁ − μ₂';const value=mode==='prop1'?d.p0:mode==='mean1t'||mode==='mean1z'?d.mu0:mode==='prop2'?'0':d.delta0;return {h0:`H₀: ${v} = ${value}`,ha:`Hₐ: ${v} ${sign} ${value}`};}
-function updateHyp(){const h=hypothesisStrings();$('nulltext').textContent=h.h0;$('alttext').textContent=h.ha;}
-function hideDecision(){
- $('decision').classList.add('hidden');
- $('decisionToggle').setAttribute('aria-expanded','false');
- $('decisionToggle').textContent='Reveal Decision';
-}
-function markStale(){hideDecision();if(last){$('stale').classList.remove('hidden');$('copy').disabled=true;}}
-function resetOutput(){hideDecision();last=null;$('placeholder').classList.remove('hidden');$('results').classList.add('hidden');$('error').classList.add('hidden');$('copyStatus').textContent='';}
-document.querySelectorAll('[data-method]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.method;resetOutput();renderInput()}));
-document.querySelectorAll('[data-source]').forEach(b=>b.addEventListener('click',()=>{data[mode].source=b.dataset.source;markStale();renderInput()}));
-document.querySelectorAll('[data-tail]').forEach(b=>b.addEventListener('click',()=>{data[mode].tail=b.dataset.tail;document.querySelectorAll('[data-tail]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));updateHyp();markStale();}));
-document.querySelectorAll('[data-alpha]').forEach(b=>b.addEventListener('click',()=>{data[mode].alpha=b.dataset.alpha;$('alpha').value=b.dataset.alpha;document.querySelectorAll('[data-alpha]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));markStale();}));
-$('alpha').addEventListener('input',()=>{data[mode].alpha=$('alpha').value;document.querySelectorAll('[data-alpha]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.alpha)===Number(data[mode].alpha))));markStale();});
-$('reset').addEventListener('click',()=>{data[mode]=structuredClone(defaults[mode]);resetOutput();renderInput()});
-function number(id,label){const raw=data[mode][id];if(raw===undefined||String(raw).trim()==='')throw Error('Enter '+label+'.');const n=Number(raw);if(!Number.isFinite(n))throw Error(label+' must be a valid number.');return n;}
-function int(id,label,min){let x=number(id,label);if(!Number.isInteger(x)||x<min||x>1000000)throw Error(label+' must be a whole number from '+min+' to 1,000,000.');return x;}
-function positive(id,label){let x=number(id,label);if(!(x>0))throw Error(label+' must be greater than 0.');return x;}
-function prop(x,n,name){if(x>n)throw Error(name+' cannot exceed its sample size.');return x/n;}
-function rawBinary(id,label){
- const val=(data[mode][id]||'').trim();
- const tokens=val.split(/[\s,;]+/).filter(Boolean);
- if(!tokens.length)throw Error('Enter at least one outcome for '+label+'.');
- if(tokens.length>100000)throw Error('Each group supports up to 100,000 outcomes.');
- const success=new Set(['1','yes','y','success','true']);
- const failure=new Set(['0','no','n','failure','false']);
- let x=0;
- for(const token of tokens){
-  const v=token.replace(/^['"]|['"]$/g,'').toLowerCase();
-  if(success.has(v))x++;
-  else if(!failure.has(v))throw Error(label+': use 1/0, yes/no, success/failure, or true/false. Invalid value: '+token);
- }
- return {x,n:tokens.length};
-}
-function pairStats(){
- const lines=(data[mode].rawpairs||'').trim().split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
- if(lines.length<2)throw Error('Enter at least two matched pairs, with two measurements per line.');
- if(lines.length>100000)throw Error('Paired data supports up to 100,000 pairs.');
- const diffs=[],a=[],b=[];
- for(let i=0;i<lines.length;i++){
-  const tokens=lines[i].split(/[\t,; ]+/).filter(Boolean);
-  if(tokens.length!==2)throw Error('Pair '+(i+1)+': enter exactly two numbers (Measurement 1, Measurement 2).');
-  const left=Number(tokens[0]),right=Number(tokens[1]);
-  if(!Number.isFinite(left)||!Number.isFinite(right))throw Error('Pair '+(i+1)+': both measurements must be numbers.');
-  a.push(left);b.push(right);diffs.push(left-right);
- }
- let n=0,mean=0,M2=0;
- for(const v of diffs){n++;const delta=v-mean;mean+=delta/n;M2+=delta*(v-mean);}
- return {n,mean,s:Math.sqrt(Math.max(0,M2/(n-1))),mean1:a.reduce((x,y)=>x+y,0)/n,mean2:b.reduce((x,y)=>x+y,0)/n};
-}
-function rawStats(id){const val=data[mode][id]||'',tokens=val.trim().split(/[\s,;]+/).filter(Boolean);if(tokens.length<2)throw Error('Enter at least two observations for '+id+'.');if(tokens.length>100000)throw Error('Raw data supports at most 100,000 observations.');const arr=tokens.map(Number);if(arr.some(x=>!Number.isFinite(x)))throw Error('Raw observations must be numbers.');let n=0,mean=0,M2=0;for(const v of arr){n++;let delta=v-mean;mean+=delta/n;M2+=delta*(v-mean);}return {n,mean,s:Math.sqrt(Math.max(0,M2/(n-1)))};}
-// Standard Normal tail: rational approximation, absolute error below 8e-8.
-function normSF(z){if(z<0)return 1-normSF(-z);if(z>12)return 0;const t=1/(1+0.2316419*z);const density=Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);return Math.max(0,Math.min(1,density*(0.319381530*t-0.356563782*t*t+1.781477937*t*t*t-1.821255978*t**4+1.330274429*t**5)));}
-function normCDF(z){return 1-normSF(z)}
-function normInv(p){if(!(p>0&&p<1))throw Error('Probability must be between 0 and 1.');const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239],b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],c=[-.007784894002430293,-.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],d=[.007784695709041462,.3224671290700398,2.445134137142996,3.754408661907416];let x,q,r;if(p<.02425){q=Math.sqrt(-2*Math.log(p));x=(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}else if(p>1-.02425){q=Math.sqrt(-2*Math.log1p(-p));x=-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}else{q=p-.5;r=q*q;x=(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}return x;}
-const gammaCoeffs=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.6150291621406,12.507343278686905,-.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
-function logGamma(z){if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z--;let x=gammaCoeffs[0];for(let i=1;i<gammaCoeffs.length;i++)x+=gammaCoeffs[i]/(z+i);let t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);}
-function betacf(a,b,x){const EPS=2e-14,TINY=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<TINY)d=TINY;d=1/d;let h=d;for(let m=1;m<=260;m++){let m2=2*m,aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<TINY)d=TINY;c=1+aa/c;if(Math.abs(c)<TINY)c=TINY;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<TINY)d=TINY;c=1+aa/c;if(Math.abs(c)<TINY)c=TINY;d=1/d;let del=d*c;h*=del;if(Math.abs(del-1)<EPS)break;}return h;}
-function incBeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return Math.max(0,Math.min(1,x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b));}
-function tSF(x,df){if(!Number.isFinite(df)||df<=0)throw Error('Invalid degrees of freedom.');if(x<0)return 1-tSF(-x,df);return 0.5*incBeta(df/(df+x*x),df/2,0.5);}
-function invT(p,df){if(p<.5)return -invT(1-p,df);if(!(p>0&&p<1))throw Error('Probability out of range.');let lo=0,hi=1;while(1-tSF(hi,df)<p&&hi<1e12)hi*=2;for(let i=0;i<75;i++){let mid=(lo+hi)/2;if(1-tSF(mid,df)<p)lo=mid;else hi=mid;}return (lo+hi)/2;}
-function test(){const tail=data[mode].tail,alpha=number('alpha','the significance level');if(!(alpha>0&&alpha<1))throw Error('Significance level α must be strictly between 0 and 1.');let r={mode,tail,alpha,rows:[],notes:[],pieces:{},df:null,dist:'z'};
-if(mode==='prop1'){const n=int('n','sample size',1),x=int('x','successes',0),p0=number('p0','null proportion');if(!(p0>0&&p0<1))throw Error('Null proportion p₀ must be strictly between 0 and 1.');const phat=prop(x,n,'Successes');const se=Math.sqrt(p0*(1-p0)/n);r.stat=(phat-p0)/se;r.title='One-Proportion z-Test';r.rows=[['Sample size (n)',n],['Successes (x)',x],['Sample proportion (p̂)',fmt(phat,5)],['Null proportion (p₀)',fmt(p0,5)],['Null standard error',fmt(se,6)]];r.pieces={phat,p0,n,se};const a=n*p0,b=n*(1-p0);if(a<10||b<10)r.notes.push('Expected counts under H₀: '+fmt(a,2)+' successes and '+fmt(b,2)+' failures. The usual z approximation may not be appropriate (aim for at least 10 each).');}
-if(mode==='mean1t'||mode==='mean1z'){const d=source()==='raw'?rawStats('raw'):null,n=d?d.n:int('n','sample size',mode==='mean1t'?2:1),xbar=d?d.mean:number('xbar','sample mean'),mu0=number('mu0','null mean'),s=mode==='mean1t'?(d?d.s:positive('s','sample standard deviation')):positive('sigma','known population standard deviation');if(mode==='mean1t'&&n<2)throw Error('A t-test needs at least two observations.');if(!(s>0))throw Error('The standard deviation must be positive.');const se=s/Math.sqrt(n);r.stat=(xbar-mu0)/se;r.df=mode==='mean1t'?n-1:null;r.dist=mode==='mean1t'?'t':'z';r.title=mode==='mean1t'?'One-Mean t-Test':'One-Mean z-Test (σ Known)';r.rows=[['Sample size (n)',n],['Sample mean (x̄)',fmt(xbar,5)],[mode==='mean1t'?'Sample SD (s)':'Population SD (σ)',fmt(s,5)],['Null mean (μ₀)',fmt(mu0,5)],['Standard error',fmt(se,6)]];if(r.df!==null)r.rows.push(['Degrees of freedom',r.df]);r.pieces={n,xbar,mu0,s,se};if(n<30)r.notes.push('Small sample: examine the population shape or raw observations for severe skew and outliers. A large-sample condition cannot be assumed.');}
-if(mode==='prop2'){
- const g1=source()==='raw'?rawBinary('raw1','Group 1'):null;
- const g2=source()==='raw'?rawBinary('raw2','Group 2'):null;
- const n1=g1?g1.n:int('n1','group 1 sample size',1),n2=g2?g2.n:int('n2','group 2 sample size',1);
- const x1=g1?g1.x:int('x1','group 1 successes',0),x2=g2?g2.x:int('x2','group 2 successes',0);
- const p1=prop(x1,n1,'Group 1 successes'),p2=prop(x2,n2,'Group 2 successes'),pool=(x1+x2)/(n1+n2);
- if(!(pool>0&&pool<1))throw Error('Pooled success rate must be between 0 and 1; the usual pooled z-test is not applicable.');
- const se=Math.sqrt(pool*(1-pool)*(1/n1+1/n2));r.stat=(p1-p2)/se;r.title='Two-Proportion z-Test';
- r.rows=[['Group 1: successes / n',x1+' / '+n1],['Group 2: successes / n',x2+' / '+n2],['Sample proportion (p̂₁)',fmt(p1,5)],['Sample proportion (p̂₂)',fmt(p2,5)],['Observed difference (p̂₁−p̂₂)',fmt(p1-p2,5)],['Pooled proportion (p̂ₚ)',fmt(pool,5)],['Null standard error',fmt(se,6)]];
- r.pieces={x1,n1,x2,n2,p1,p2,pool,se};
- for(const [label,n] of [['Group 1',n1],['Group 2',n2]]){
-  if(n*pool<10||n*(1-pool)<10)r.notes.push(label+' expected successes/failures under H₀ are '+fmt(n*pool,2)+' / '+fmt(n*(1-pool),2)+'. The Normal approximation may not be appropriate.');
- }
-}
-if(mode==='mean2'){const g1=source()==='raw'?rawStats('raw1'):null,g2=source()==='raw'?rawStats('raw2'):null;const n1=g1?g1.n:int('n1','group 1 sample size',2),n2=g2?g2.n:int('n2','group 2 sample size',2),m1=g1?g1.mean:number('xbar1','group 1 sample mean'),m2=g2?g2.mean:number('xbar2','group 2 sample mean'),s1=g1?g1.s:positive('s1','group 1 sample standard deviation'),s2=g2?g2.s:positive('s2','group 2 sample standard deviation'),delta0=number('delta0','null mean difference');if(!(s1>0&&s2>0))throw Error('Sample standard deviations must be positive for this Welch test.');const a=s1*s1/n1,b=s2*s2/n2,se=Math.sqrt(a+b),df=(a+b)**2/(a*a/(n1-1)+b*b/(n2-1));r.stat=((m1-m2)-delta0)/se;r.dist='t';r.df=df;r.title='Two-Independent-Means t-Test (Welch)';r.rows=[['Group 1: n, x̄, s',`${n1}, ${fmt(m1,4)}, ${fmt(s1,4)}`],['Group 2: n, x̄, s',`${n2}, ${fmt(m2,4)}, ${fmt(s2,4)}`],['Observed difference (x̄₁−x̄₂)',fmt(m1-m2,5)],['Null difference (Δ₀)',fmt(delta0,5)],['Standard error',fmt(se,6)],['Welch degrees of freedom',fmt(df,3)]];r.pieces={n1,n2,m1,m2,s1,s2,delta0,se,df};if(n1<30||n2<30)r.notes.push('At least one sample is small. Check for strong skewness or outliers in the groups. The two groups must be independent.');}
-if(mode==='paired'){
- const d=source()==='raw'?pairStats():null;
- const n=d?d.n:int('n','number of paired observations',2);
- const dbar=d?d.mean:number('dbar','mean paired difference');
- const sd=d?d.s:positive('sd','SD of paired differences');
- const delta0=number('delta0','null mean difference');
- if(!(sd>0))throw Error('The paired differences have zero variation, so the usual t statistic is undefined.');
- const se=sd/Math.sqrt(n);r.stat=(dbar-delta0)/se;r.dist='t';r.df=n-1;
- r.title='Paired-Samples t-Test';
- r.rows=[['Number of complete pairs (n)',n],['Mean of differences (d̄)',fmt(dbar,5)],['SD of differences (sᵈ)',fmt(sd,5)],['Null mean difference (Δ₀)',fmt(delta0,5)],['Standard error of differences',fmt(se,6)],['Degrees of freedom',r.df]];
- if(d){r.rows.splice(1,0,['Measurement 1 mean',fmt(d.mean1,5)],['Measurement 2 mean',fmt(d.mean2,5)]);}
- r.pieces={n,dbar,sd,delta0,se};
- if(n<30)r.notes.push('Fewer than 30 pairs: check the distribution of paired DIFFERENCES for strong skew or outliers.');
-}
-if(!Number.isFinite(r.stat))throw Error('This data produced an invalid test statistic. Check the inputs.');const sf=r.dist==='z'?normSF:t=>tSF(t,r.df);let p=(tail==='right'?sf(r.stat):tail==='left'?sf(-r.stat):2*sf(Math.abs(r.stat)));r.p=Math.min(1,Math.max(0,p));let c=(r.dist==='z'?normInv:prob=>invT(prob,r.df));r.critical=tail==='two'?[-c(1-alpha/2),c(1-alpha/2)]:[tail==='right'?c(1-alpha):c(alpha)];r.reject=r.p<=alpha;r.statLabel=(r.dist==='z'?'z':'t');r.h=hypothesisStrings();r.checks={random:$('randomCheck').checked,ind:$('indCheck').checked,shape:$('shapeCheck').checked};if(!r.checks.random||!r.checks.ind||!r.checks.shape)r.notes.push('Some conditions are not marked as reviewed. A numerical result alone does not establish that the test is valid.');return r;
-}
-function fmt(n,d=3){if(Math.abs(n)<1e-12)n=0;return Number(n).toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d,useGrouping:false})}
-function pvfmt(p){return p<0.0001?'P < 0.0001':fmt(p,4)}
-function svgEl(tag,attrs={},txt){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(txt!==undefined)e.textContent=txt;return e;}
-function draw(id,r,kind){const svg=$(id);svg.replaceChildren();const ns='http://www.w3.org/2000/svg',left=25,right=495,baseline=136,center=260,width=right-left;const ext=Math.max(3.6,Math.abs(r.stat)*1.17,...r.critical.map(x=>Math.abs(x)*1.22));const scale=width/(2*ext),toX=x=>center+x*scale,toY=x=>baseline-104*(r.dist==='z'?Math.exp(-x*x/2):Math.pow(1+x*x/r.df,-(r.df+1)/2));const poly=[],n=640;for(let i=0;i<=n;i++){const x=-ext+2*ext*i/n;poly.push({x,y:toY(x),px:toX(x)});}svg.append(svgEl('line',{x1:left,y1:baseline,x2:right,y2:baseline,stroke:'var(--muted)','stroke-width':1,opacity:.75}));
-function shaded(x){if(kind==='p'){const z=r.stat;return r.tail==='right'?x>=z:r.tail==='left'?x<=z:Math.abs(x)>=Math.abs(z);}const c=r.critical;return r.tail==='right'?x>=c[0]:r.tail==='left'?x<=c[0]:x<=c[0]||x>=c[1];}
-// Draw area in narrow trapezoids so boundaries stay precise for any tail direction.
-const fill=kind==='p'?'#2b72da':'#129c96';for(let i=0;i<n;i++){const a=poly[i],b=poly[i+1],mid=(a.x+b.x)/2;if(shaded(mid)){svg.append(svgEl('path',{d:`M${a.px.toFixed(2)},${baseline} L${a.px.toFixed(2)},${a.y.toFixed(2)} L${b.px.toFixed(2)},${b.y.toFixed(2)} L${b.px.toFixed(2)},${baseline} Z`,fill,opacity:'.34'}));}}
-let d='';for(let i=0;i<=n;i++){const q=poly[i];d+=(i?' L':'M')+q.px.toFixed(2)+' '+q.y.toFixed(2)}svg.append(svgEl('path',{d,fill:'none',stroke:'var(--purple)','stroke-width':'2.8','stroke-linejoin':'round'}));const nums=[-Math.floor(ext),0,Math.floor(ext)];for(const num of nums){const px=toX(num);svg.append(svgEl('line',{x1:px,x2:px,y1:baseline,y2:baseline+4,stroke:'var(--muted)'}));svg.append(svgEl('text',{x:px,y:158,'font-size':11,fill:'var(--muted)','text-anchor':'middle'},String(num)))}
-const markerX=toX(r.stat);svg.append(svgEl('line',{x1:markerX,x2:markerX,y1:Math.max(11,toY(r.stat)-14),y2:baseline,stroke:'#d443c3','stroke-width':2.4,'stroke-dasharray':'4 4'}));svg.append(svgEl('circle',{cx:markerX,cy:baseline,r:3.3,fill:'#d443c3'}));const labelX=Math.max(40,Math.min(480,markerX));svg.append(svgEl('text',{x:labelX,y:11,'font-size':12,'font-weight':800,fill:'var(--purple)','text-anchor':'middle'},`${r.statLabel} = ${fmt(r.stat,3)}`));
-if(kind==='critical'){for(const v of r.critical){const x=toX(v);svg.append(svgEl('line',{x1:x,x2:x,y1:Math.max(15,toY(v)-12),y2:baseline,stroke:'#129c96','stroke-width':2.2}));svg.append(svgEl('text',{x:Math.max(25,Math.min(495,x)),y:173,'font-size':11,'font-weight':780,fill:'var(--teal)','text-anchor':'middle'},fmt(v,3)));}}
-let desc=kind==='p'?`The ${r.dist==='z'?'Normal':'t'} distribution. The blue shaded area is the ${r.tail}-tailed P-value of ${pvfmt(r.p)} for observed ${r.statLabel} ${fmt(r.stat,3)}.`:`The ${r.dist==='z'?'Normal':'t'} distribution. Teal regions mark the ${r.tail}-tailed rejection region at alpha ${fmt(r.alpha,4)}. Critical ${r.statLabel} values: ${r.critical.map(v=>fmt(v,3)).join(' and ')}.`;
-svg.insertBefore(svgEl('title',{},kind==='p'?'P-value graph':'Critical-value graph'),svg.firstChild);svg.insertBefore(svgEl('desc',{},desc),svg.childNodes[1]);}
-function math(tag,children,attrs=''){return '<'+tag+(attrs?' '+attrs:'')+'>'+children+'</'+tag+'>'}const mn=x=>math('mn',escapeHTML(String(x))),mi=x=>math('mi',escapeHTML(x)),mo=x=>math('mo',escapeHTML(x)),mrow=x=>math('mrow',x),frac=(a,b)=>math('mfrac',a+b),sqrt=x=>math('msqrt',x),sub=(a,b)=>math('msub',a+b);const xbar=math('mover',mi('x')+mo('¯'),'accent="true"'),phat=math('mover',mi('p')+mo('ˆ'),'accent="true"');function mathBlock(body){return `<div class="formula"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">${mrow(body)}</math></div>`}
-function calculation(r){const p=r.pieces;let formula='',values='',intro='';if(r.mode==='prop1'){intro='The null standard error uses p₀, not p̂.';formula=mathBlock(mi('z')+mo('=')+frac(phat+mo('−')+sub(mi('p'),mn('0')),sqrt(frac(sub(mi('p'),mn('0'))+mo('(')+mn('1')+mo('−')+sub(mi('p'),mn('0'))+mo(')'),mi('n')))));values=`z = (${fmt(p.phat,5)} − ${fmt(p.p0,5)}) / √(${fmt(p.p0,5)} × ${fmt(1-p.p0,5)} / ${p.n}) = ${fmt(r.stat,5)}`;}
-if(r.mode==='mean1t'||r.mode==='mean1z'){intro=r.mode==='mean1t'?'Use the sample standard deviation s and t with df = n − 1.':'Use the known population standard deviation σ and the Normal distribution.';const sd=r.mode==='mean1t'?mi('s'):mi('σ');formula=mathBlock((r.mode==='mean1t'?mi('t'):mi('z'))+mo('=')+frac(xbar+mo('−')+sub(mi('μ'),mn('0')),frac(sd,sqrt(mi('n')))));values=`${r.statLabel} = (${fmt(p.xbar,5)} − ${fmt(p.mu0,5)}) / (${fmt(p.s,5)} / √${p.n}) = ${fmt(r.stat,5)}`;}
-if(r.mode==='prop2'){intro='The pooled proportion is used under H₀: p₁ = p₂.';formula=mathBlock(mi('z')+mo('=')+frac(sub(phat,mn('1'))+mo('−')+sub(phat,mn('2')),sqrt(sub(phat,mi('pool'))+mo('(')+mn('1')+mo('−')+sub(phat,mi('pool'))+mo(')')+mo('(')+frac(mn('1'),sub(mi('n'),mn('1')))+mo('+')+frac(mn('1'),sub(mi('n'),mn('2')))+mo(')'))));values=`p̂_pool = (${p.x1} + ${p.x2}) / (${p.n1} + ${p.n2}) = ${fmt(p.pool,5)}; z = (${fmt(p.p1,5)} − ${fmt(p.p2,5)}) / ${fmt(p.se,6)} = ${fmt(r.stat,5)}`;}
-if(r.mode==='mean2'){intro='Welch’s method does not assume equal population variances; it uses approximate degrees of freedom.';formula=mathBlock(mi('t')+mo('=')+frac(mrow(sub(xbar,mn('1'))+mo('−')+sub(xbar,mn('2'))+mo('−')+sub(mi('Δ'),mn('0'))),sqrt(frac(math('msup',sub(mi('s'),mn('1'))+mn('2')),sub(mi('n'),mn('1')))+mo('+')+frac(math('msup',sub(mi('s'),mn('2'))+mn('2')),sub(mi('n'),mn('2'))))));values=`t = ((${fmt(p.m1,5)} − ${fmt(p.m2,5)}) − ${fmt(p.delta0,5)}) / ${fmt(p.se,6)} = ${fmt(r.stat,5)}; Welch df ≈ ${fmt(r.df,3)}`;}
-if(r.mode==='paired'){intro='A paired t-test is a one-mean t-test of the WITHIN-PAIR differences d = Measurement 1 − Measurement 2. Do not treat these as independent samples.';formula=mathBlock(mi('t')+mo('=')+frac(mrow(math('mover',mi('d')+mo('¯'),'accent="true"')+mo('−')+sub(mi('Δ'),mn('0'))),frac(sub(mi('s'),mi('d')),sqrt(mi('n')))));values=`t = (${fmt(p.dbar,5)} − ${fmt(p.delta0,5)}) / (${fmt(p.sd,5)} / √${p.n}) = ${fmt(r.stat,5)}; df = ${r.df}`;}
-const tailText=r.tail==='two'?`2 × P(${r.dist==='z'?'Z':'T'} ≥ |${fmt(r.stat,3)}|)`:`P(${r.dist==='z'?'Z':'T'} ${r.tail==='left'?'≤':'≥'} ${fmt(r.stat,3)})`;const ctext=r.critical.map(v=>fmt(v,4)).join(', ');return `<p>${intro}</p>${formula}<p class="mono">${escapeHTML(values)}</p><p><strong>P-value:</strong> ${escapeHTML(tailText)} = ${pvfmt(r.p)}. This is the probability of a test statistic at least as extreme as the observed one in the direction specified by Hₐ, assuming H₀ is true.</p><p><strong>Critical value(s):</strong> ${ctext}. The rejection region is set by α = ${fmt(r.alpha,4)} and the alternative hypothesis direction.</p><p><strong>Decision rule:</strong> Reject H₀ when P ≤ α; otherwise fail to reject H₀. The critical-value method gives the same decision.</p>`;}
-function renderResult(r){hideDecision();$('placeholder').classList.add('hidden');$('results').classList.remove('hidden');$('stale').classList.add('hidden');$('copy').disabled=false;$('copyStatus').textContent='';$('testName').textContent=r.title;$('hypothesisText').textContent=r.h.h0+'   ·   '+r.h.ha;
-const tbody=$('outputRows');tbody.replaceChildren();for(const [key,val] of r.rows){let tr=document.createElement('tr');const a=document.createElement('td'),b=document.createElement('td');a.textContent=key;b.textContent=val;tr.append(a,b);tbody.append(tr)}$('statName').textContent=(r.dist==='t'?'t-statistic':'z-statistic');$('statValue').textContent=r.statLabel+' = '+fmt(r.stat,3);$('pValue').textContent=pvfmt(r.p);$('pAreaLabel').textContent=r.tail+'-tailed';$('criticalText').textContent=r.critical.map(x=>fmt(x,3)).join(', ');$('decisionTitle').textContent=r.reject?'Reject H₀':'Do not reject H₀';$('decisionReason').textContent=(r.p<0.0001?'P < 0.0001':`P = ${fmt(r.p,4)}`)+(r.reject?' ≤ ':' > ')+`α = ${fmt(r.alpha,4)}. `+(r.reject?'The result is statistically significant at the chosen level.':'The evidence is not sufficiently strong to reject H₀ at the chosen level.');$('warnings').classList.toggle('hidden',r.notes.length===0);$('warnings').textContent=r.notes.join(' ');draw('pGraph',r,'p');draw('cGraph',r,'critical');$('calculationDetails').innerHTML=calculation(r);$('calculations').open=false;}
-$('decisionToggle').addEventListener('click',()=>{
- if(!last || !$('stale').classList.contains('hidden')) return;
- const revealed=$('decision').classList.contains('hidden');
- $('decision').classList.toggle('hidden',!revealed);
- $('decisionToggle').setAttribute('aria-expanded',String(revealed));
- $('decisionToggle').textContent=revealed?'Hide Decision':'Reveal Decision';
-});
-$('calculate').addEventListener('click',()=>{try{$('error').classList.add('hidden');const r=test();last=r;renderResult(r);if(matchMedia('(max-width: 850px)').matches){requestAnimationFrame(()=>{$('outputheading').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}}catch(e){$('error').textContent=e.message;$('error').classList.remove('hidden');markStale()}});
-$('copy').addEventListener('click',async()=>{if(!last)return;const r=last,text=[r.title,r.h.h0,r.h.ha,...r.rows.map(x=>x.join(': ')),r.statLabel+' = '+fmt(r.stat,5),'P-value = '+pvfmt(r.p),'Critical value(s) = '+r.critical.map(x=>fmt(x,4)).join(', '),'α = '+fmt(r.alpha,4),...($('decision').classList.contains('hidden')?[]:[r.reject?'Reject H0':'Do not reject H0'])].join('\n');try{await navigator.clipboard.writeText(text);$('copyStatus').textContent='Copied.'}catch(e){$('copyStatus').textContent='Copy is not available in this browser.'}});
-// Same appearance preference key and light/dark/auto controls as the CI Calculator.
-const themeKey='statistics-lab-theme',media=matchMedia('(prefers-color-scheme: dark)');let memory='system';function pref(){try{const p=localStorage.getItem(themeKey);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memory}}function renderTheme(){const p=pref(),actual=p==='system'?(media.matches?'dark':'light'):p;document.documentElement.dataset.theme=actual;document.querySelectorAll('[data-sl-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.slTheme===p)));document.querySelector('meta[name="theme-color"]').content=actual==='dark'?'#14151f':'#faf5ff'}document.querySelectorAll('[data-sl-theme]').forEach(b=>b.addEventListener('click',()=>{memory=b.dataset.slTheme;try{localStorage.setItem(themeKey,memory)}catch(e){}renderTheme()}));if(media.addEventListener)media.addEventListener('change',renderTheme);window.addEventListener('storage',e=>{if(e.key===themeKey)renderTheme()});renderTheme();renderInput();
+
+      updateMode();updateLevels();renderCompare();
 })();
-</script></body></html>
+</script>
+<script>
+(function(){'use strict';
+var key='statistics-lab-theme',media=window.matchMedia('(prefers-color-scheme: dark)'),memoryPref='system';
+function preference(){try{var p=localStorage.getItem(key);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memoryPref}}
+function render(){var p=preference(),resolved=p==='system'?(media.matches?'dark':'light'):p;
+document.documentElement.setAttribute('data-theme',resolved);
+document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.slTheme===p))});
+var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',resolved==='dark'?'#14151f':'#fbfafc');}
+document.querySelectorAll('[data-sl-theme]').forEach(function(b){b.addEventListener('click',function(){memoryPref=b.dataset.slTheme;try{localStorage.setItem(key,memoryPref)}catch(e){};render()})});
+if(media.addEventListener)media.addEventListener('change',render);else if(media.addListener)media.addListener(render);
+window.addEventListener('storage',function(e){if(e.key===key)render()});
+render();
+})();
+</script>
+
+<script>window.STATS_LAB_EXPORT_CONFIG={kind:"ci"};</script>
+<script>
+/* Statistics Lab — standalone export/report enhancement. No third-party libraries. */
+(function(){'use strict';
+const CFG = window.STATS_LAB_EXPORT_CONFIG || {kind:'one'};
+const kind = CFG.kind;
+const $ = id => document.getElementById(id);
+const cardStyle = `
+#copy,#copyStatus{display:none!important}
+.sl-export-wrap{margin-top:16px;border:1px solid #d9cae9;border-radius:11px;overflow:hidden;background:var(--panel,#fff);color:var(--ink,#263147)}
+.sl-export-head{padding:13px 14px;background:var(--panel-soft,#faf5ff);border-bottom:1px solid var(--line,#eadcf5)}
+.sl-export-head h3{margin:0;font-size:15px;color:var(--heading,#581c87)}
+.sl-export-head p{margin:3px 0 0;font-size:11px;color:var(--muted,#64748b)}
+.sl-export-area{padding:13px 14px}.sl-export-label{display:block;font-size:12px;font-weight:800;margin:0 0 8px;color:var(--heading,#581c87)}
+.sl-export-modes{display:flex;gap:5px;padding:4px;border:1px solid var(--line,#ddd);background:var(--track,#f5f3f9);border-radius:9px;max-width:410px}
+.sl-export-modes button{min-height:36px;flex:1;border:0;background:transparent;color:var(--muted,#64748b);font-weight:760;font-size:12px;border-radius:7px;cursor:pointer}
+.sl-export-modes button[aria-pressed=true]{background:var(--panel,#fff);color:var(--heading,#581c87);box-shadow:0 1px 4px #0002}
+.sl-export-custom{margin:12px 0;padding:10px 11px;border:1px solid var(--line,#e5e7eb);border-radius:8px;background:var(--panel-soft,#faf5ff);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 14px}
+.sl-export-custom[hidden],.sl-export-wrap[hidden]{display:none!important}
+.sl-export-custom label{margin:0;display:flex;gap:7px;align-items:start;font-size:11px;font-weight:570;line-height:1.4;cursor:pointer;color:var(--ink,#263147)}
+.sl-export-custom input{width:15px;height:15px;min-height:0;accent-color:#7131af;flex:none}
+.sl-export-preview{margin:12px 0;border:1px solid #e3e0e9;border-radius:7px;background:#fff;overflow:hidden;max-height:380px;overflow-y:auto;color:#202836}
+.sl-export-preview svg{display:block;width:100%;height:auto;background:#fff}
+.sl-export-buttons,.sl-graph-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.sl-export-buttons button,.sl-graph-actions button{min-height:35px;padding:7px 10px;border-radius:7px;border:1px solid var(--line,#e0d6ed);background:var(--panel,#fff);color:var(--heading,#581c87);font-weight:780;font-size:11px;cursor:pointer}
+.sl-export-buttons button:first-child{background:#7131af;color:#fff;border-color:#7131af}
+.sl-export-buttons button:hover,.sl-graph-actions button:hover{filter:brightness(.94)}
+.sl-export-buttons button:disabled,.sl-graph-actions button:disabled{opacity:.45;cursor:not-allowed}
+.sl-export-foot{font-size:10px;color:var(--muted,#64748b);margin-top:8px;line-height:1.5}
+.sl-export-graphs{margin:13px 0 0;border-top:1px solid var(--line,#e4e4e7);padding-top:12px}
+.sl-graph-row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line2,#eee)}
+.sl-graph-row:last-child{border:0}.sl-graph-row strong{font-size:11px}
+.sl-export-status{font-size:11px;color:var(--muted,#64748b);margin-left:5px;line-height:1.6}
+.sl-export-status[role=alert]{color:#be123c}
+html[data-theme=dark] .sl-export-wrap{border-color:#584767}
+html[data-theme=dark] .sl-export-preview{border-color:#62536b}
+@media(max-width:480px){.sl-export-custom{grid-template-columns:1fr}.sl-export-area{padding:11px}.sl-graph-row{align-items:flex-start}}
+`;
+const st=document.createElement('style');st.textContent=cardStyle;document.head.appendChild(st);
+let result=null, stale=false, mode='standard';
+let custom={sample:true,hypotheses:true,details:false,critical:true,conditions:false,reference:false,decision:false};
+let reportSvg='', reportPlain='';
+const host=(kind==='ci'? $('output'): $('results'));
+if(!host) return;
+const body=(kind==='ci'? host.querySelector('.outputbody') : host.querySelector('.outputbody')) || host;
+const exporter=document.createElement('section'); exporter.className='sl-export-wrap';exporter.hidden=true;exporter.setAttribute('aria-label','Export statistical output');
+exporter.innerHTML=`<div class="sl-export-head"><h3>Export Statistical Output</h3><p>Compact, slide-ready statistical software output. Results only; interpret the evidence yourself.</p></div><div class="sl-export-area">
+  <span class="sl-export-label">Output detail</span><div class="sl-export-modes" role="group" aria-label="Output detail"><button type="button" data-sl-mode="standard" aria-pressed="true">Standard</button><button type="button" data-sl-mode="full" aria-pressed="false">Full</button><button type="button" data-sl-mode="custom" aria-pressed="false">Custom</button></div>
+  <div id="sl-export-custom" class="sl-export-custom" hidden>
+  <label><input type="checkbox" data-sl-option="sample" checked>Sample / group statistics</label>
+  <label class="sl-hypothesis-only"><input type="checkbox" data-sl-option="hypotheses" checked>Hypotheses</label>
+  <label><input type="checkbox" data-sl-option="details">Extra calculation details</label>
+  <label class="sl-hypothesis-only"><input type="checkbox" data-sl-option="critical" checked>Critical value(s)</label>
+  <label><input type="checkbox" data-sl-option="conditions">Conditions reviewed (self-reported)</label>
+  <label class="sl-ci-only"><input type="checkbox" data-sl-option="reference">Reference value (if supplied)</label>
+  <label class="sl-hypothesis-only"><input type="checkbox" data-sl-option="decision">Revealed decision (optional)</label>
+  </div>
+  <div class="sl-export-preview" id="sl-export-preview" aria-label="Statistical output preview"></div>
+  <div class="sl-export-buttons"><button type="button" data-sl-action="copy-image">Copy image</button><button type="button" data-sl-action="png">Download PNG</button><button type="button" data-sl-action="svg">Download SVG</button><button type="button" data-sl-action="text">Copy text</button></div>
+  <p class="sl-export-foot">Values are rounded for display only; calculations use full precision. Exported reports do not include an automatic interpretation. You can paste the PNG into Google Slides.</p>
+  <div class="sl-export-graphs"><span class="sl-export-label">Export Graphs Separately</span><div id="sl-export-graph-rows"></div><p class="sl-export-foot">The confidence-interval curve shows the reference distribution and critical values; hypothesis-test graphs show P-value or rejection-region shading.</p></div>
+  <div id="sl-export-status" class="sl-export-status" role="status" aria-live="polite"></div>
+</div>`;
+body.appendChild(exporter);
+if(kind==='ci')exporter.querySelectorAll('.sl-hypothesis-only').forEach(e=>e.remove());
+else exporter.querySelectorAll('.sl-ci-only').forEach(e=>e.remove());
+const status=(message,error)=>{const el=$('sl-export-status');el.textContent=message;el.setAttribute('role',error?'alert':'status');};
+const options=()=>mode==='standard'?{sample:true,hypotheses:true,details:false,critical:true,conditions:false,reference:false,decision:false}:
+  mode==='full'?{sample:true,hypotheses:true,details:true,critical:true,conditions:true,reference:true,decision:false}:custom;
+function num(n,d=3){if(!Number.isFinite(Number(n)))return '—';let v=Number(n);if(Object.is(v,-0)||Math.abs(v)<Math.pow(10,-(d+3)))v=0;return v.toFixed(d);}
+function trim(n,d=3){return Number.isInteger(Number(n))?String(n):num(n,d);}
+function pformat(p,a){if(p<.0001)return 'P < 0.0001';let digits=4;
+ if(Number.isFinite(a)&&p!==a){while(digits<11&&Number(p.toFixed(digits))===Number(a.toFixed(digits)))digits++;}
+ return num(p,digits);
+}
+function criticalFmt(x,stat){let digits=3;if(Number.isFinite(stat)&&x!==stat){while(digits<9&&Number(x.toFixed(digits))===Number(stat.toFixed(digits)))digits++;}return num(x,digits);}
+function statFmt(r){let d=3;for(const c of r.critical||[]){if(c!==r.stat){while(d<10&&Number(c.toFixed(d))===Number(r.stat.toFixed(d)))d++;}}return num(r.stat,d);}
+function ciFmt(n,prop,ref,edge){let d=prop?4:3;
+ if(Number.isFinite(ref)&&Number.isFinite(edge)&&ref!==edge){while(d<10&&Number(ref.toFixed(d))===Number(edge.toFixed(d)))d++;}
+ return num(n,d);
+}
+function makeReport(r){const o=options(); const sections=[];
+ const add=(title,cols,rows)=>{if(rows&&rows.length)sections.push({title,cols,rows});};
+ const addNote=(title,text)=>sections.push({title,note:text});
+ if(kind==='ci'){
+  const prop=r.method==='prop';const name=prop?'One-Proportion z Interval':r.method==='zmean'?'One-Mean z Interval (σ known)':'One-Mean t Interval';
+  const methodDetail=prop?'Wald (normal-approximation) method':r.method==='zmean'?'Known population standard deviation':'Student t method; σ unknown';
+  if(o.sample){
+    let rows=[['Sample size (n)',trim(r.data.n)],[prop?'Sample proportion (p̂)':'Sample mean (x̄)',prop?num(r.data.p,4):num(r.data.mean,3)]];
+    if(prop)rows.splice(1,0,['Successes (x)',trim(r.data.x,3)]);
+    else rows.push([r.method==='zmean'?'Known population SD (σ)':'Sample SD (s)',num(r.data.s,3)]);
+    add('Sample Statistics',['Statistic','Value'],rows);
+  }
+  add('Confidence Interval',['Confidence','Lower limit','Upper limit'],[[num(r.conf,Number.isInteger(r.conf)?0:1)+'%',ciFmt(r.lower,prop,r.reference,r.lower),ciFmt(r.upper,prop,r.reference,r.upper)]]);
+  add('Interval Summary',['Point estimate','Standard error','Margin of error'],[[num(r.center,prop?4:3),num(r.se,prop?5:4),num(r.E,prop?4:3)]]);
+  if(o.details){add('Calculation Details',['Statistic','Value'],[['Point estimate',num(r.center,prop?4:3)],['Critical value ('+(r.df===null?'z*':'t*')+')',num(r.crit,3)],...(r.df===null?[]:[['Degrees of freedom',trim(r.df)]]),['Standard error',num(r.se,prop?5:4)],['Margin of error',num(r.E,prop?4:3)]]);}
+  if(o.reference && Number.isFinite(r.reference))add('Reference Value',['Reference','Position relative to interval'],[[ciFmt(r.reference,prop,r.reference,r.lower),r.reference>=r.lower&&r.reference<=r.upper?'Inside interval':'Outside interval']]);
+  if(o.conditions)addNote('Student-Reviewed Conditions',`Random sampling / independence: ${r.reviewed?.random?'Marked reviewed':'Not marked reviewed'} · Distribution / counts: ${r.reviewed?.shape?'Marked reviewed':'Not marked reviewed'}. These checks are self-reported, not software-verified.`);
+  return {title:name,subtitle:num(r.conf,Number.isInteger(r.conf)?0:1)+'% confidence interval · '+methodDetail+(r.units?' · Units: '+r.units:''),sections};
+ }
+ const p=r.pieces||{},rows=[];
+ if(r.mode==='prop1')rows.push(['n',trim(p.n)],['Successes (x)',trim(p.phat*p.n)],['p̂',num(p.phat,4)],['Null proportion p₀',num(p.p0,4)]);
+ else if(r.mode==='mean1t'||r.mode==='mean1z')rows.push(['n',trim(p.n)],['x̄',num(p.xbar,3)],[r.mode==='mean1t'?'Sample SD (s)':'Known population SD (σ)',num(p.s,3)],['Null mean μ₀',num(p.mu0,3)]);
+ else if(r.mode==='prop2')rows.push(['Group 1 successes / n',trim(p.x1)+' / '+trim(p.n1)],['Group 1 proportion (p̂₁)',num(p.p1,4)],['Group 2 successes / n',trim(p.x2)+' / '+trim(p.n2)],['Group 2 proportion (p̂₂)',num(p.p2,4)]);
+ else if(r.mode==='mean2')rows.push(['Group 1 n / mean / SD',`${trim(p.n1)} / ${num(p.m1,3)} / ${num(p.s1,3)}`],['Group 2 n / mean / SD',`${trim(p.n2)} / ${num(p.m2,3)} / ${num(p.s2,3)}`],['Null difference Δ₀',num(p.delta0,3)]);
+ else if(r.mode==='paired')rows.push(['Complete pairs (n)',trim(p.n)],['Mean difference (d̄)',num(p.dbar,3)],['SD of differences (sᵈ)',num(p.sd,3)],['Null difference Δ₀',num(p.delta0,3)]);
+ if(o.hypotheses)add('Hypotheses',['Hypothesis','Statement'],[['H₀',r.h.h0.replace(/^H₀:\s*/, '')],['Hₐ',r.h.ha.replace(/^Hₐ:\s*/, '')]]);
+ if(o.sample){
+  if(r.mode==='prop1')add('Sample Statistics',['n','Successes (x)','Sample p̂','Null p₀'],[[trim(p.n),trim(p.phat*p.n),num(p.phat,4),num(p.p0,4)]]);
+  else if(r.mode==='mean1t'||r.mode==='mean1z')add('Sample Statistics',['n','Mean (x̄)',r.mode==='mean1t'?'Sample SD (s)':'Known SD (σ)','Null μ₀'],[[trim(p.n),num(p.xbar,3),num(p.s,3),num(p.mu0,3)]]);
+  else if(r.mode==='prop2')add('Group Statistics',['Group','n','Successes','Sample p̂'],[['Group 1',trim(p.n1),trim(p.x1),num(p.p1,4)],['Group 2',trim(p.n2),trim(p.x2),num(p.p2,4)]]);
+  else if(r.mode==='mean2')add('Group Statistics',['Group','n','Mean (x̄)','SD (s)'],[['Group 1',trim(p.n1),num(p.m1,3),num(p.s1,3)],['Group 2',trim(p.n2),num(p.m2,3),num(p.s2,3)]]);
+  else if(r.mode==='paired')add('Paired Difference Statistics',['Complete pairs','Mean d̄','SD of d','Null Δ₀'],[[trim(p.n),num(p.dbar,3),num(p.sd,3),num(p.delta0,3)]]);
+ }
+ const tail=r.tail==='two'?'Two-tailed':r.tail==='left'?'Left-tailed':'Right-tailed';
+ let res=[['Test statistic',r.statLabel+' = '+statFmt(r)],...(r.df===null?[]:[['df',Number.isInteger(r.df)?trim(r.df):num(r.df,2)]]),['P-value',pformat(r.p,r.alpha)],['Significance level (α)',num(r.alpha,Math.abs(r.alpha)>=.0001?4:7)]];
+ if(o.critical)res.push(['Critical value(s)',r.critical.map(x=>criticalFmt(x,r.stat)).join(', ')]);
+ add('Hypothesis Test Results',['Statistic','Value'],res);
+ if(o.details){let details=[];
+ if(Number.isFinite(p.se))details.push(['Standard error',num(p.se,6)]);
+ if(Number.isFinite(p.pool))details.push(['Pooled proportion (p̂pool)',num(p.pool,5)]);
+ if(Number.isFinite(p.phat))details.push(['Observed proportion (p̂)',num(p.phat,5)]);
+ if(Number.isFinite(p.p1)&&Number.isFinite(p.p2))details.push(['Observed difference (p̂₁ − p̂₂)',num(p.p1-p.p2,5)]);
+ if(Number.isFinite(p.m1)&&Number.isFinite(p.m2))details.push(['Observed difference (x̄₁ − x̄₂)',num(p.m1-p.m2,4)]);
+ if(r.mode==='paired')details.push(['Difference defined as','Measurement 1 − Measurement 2']);
+ if(r.tail==='two')details.push(['Tail direction','Two-tailed (≠)']);
+ else details.push(['Tail direction',r.tail==='left'?'Left-tailed (<)':'Right-tailed (>)']);
+ add('Additional Details',['Statistic','Value'],details);
+ }
+ if(o.conditions)addNote('Student-Reviewed Conditions',`Random sampling: ${r.checks?.random?'Marked reviewed':'Not marked reviewed'} · Independence: ${r.checks?.ind?'Marked reviewed':'Not marked reviewed'} · Shape / expected counts: ${r.checks?.shape?'Marked reviewed':'Not marked reviewed'}. Self-reported only; verify assumptions from the data and context.`);
+ if(o.decision){const decisionEl=$('decision');const shown=decisionEl&&!decisionEl.classList.contains('hidden');
+ if(shown)add('Decision (Student-Requested)',['At α = '+num(r.alpha,4),'Decision'],[['P '+(r.reject?'≤':'>')+' α',r.reject?'Reject H₀':'Fail to reject H₀']]);
+ else addNote('Decision Not Revealed','Use the calculator’s Reveal Decision button first if you want to include this check.');
+ }
+ return {title:r.title,subtitle:tail+' · α = '+num(r.alpha,4)+(r.mode==='paired'?' · Differences: Measurement 1 − Measurement 2':r.mode==='mean2'?' · Welch unequal-variance method':''),sections};
+}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
+function wrapText(text,maxChars){let out=[],line='';for(const word of String(text).split(/\s+/)){if(!word)continue;if((line+' '+word).trim().length>maxChars&&line){out.push(line);line=word;}else line=(line+' '+word).trim();}if(line)out.push(line);return out.length?out:[''];}
+function textAt(x,y,content,size=14,weight=400,fill='#303243',anchor='start'){
+ return `<text x="${x}" y="${y}" fill="${fill}" font-family="Lato,Segoe UI,Arial,sans-serif" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}">${esc(content)}</text>`;
+}
+function svgReport(report){const W=680,L=34,R=646;let y=0,s=[];
+ s.push(`<rect x="0" y="0" width="${W}" height="100%" fill="#ffffff"/>`);
+ s.push('<rect x="0" y="0" width="680" height="7" fill="#ad14d7"/>');
+ s.push(textAt(L,37,'STATISTICS LAB  /  STATISTICAL OUTPUT',11,800,'#7b359f'));
+ s.push(textAt(L,71,report.title,23,750,'#35194d'));
+ let subtitleLines=wrapText(report.subtitle,87);
+ subtitleLines.forEach((l,i)=>s.push(textAt(L,95+i*17,l,12,500,'#657184')));
+ y=112+Math.max(0,subtitleLines.length-1)*17;
+ for(const section of report.sections){y+=12;
+  s.push(`<rect x="${L}" y="${y}" width="${R-L}" height="26" rx="3" fill="#f6f2fa"/>`);
+  s.push(textAt(L+12,y+18,section.title.toUpperCase(),12,750,'#522976'));y+=30;
+  if(section.note){const ll=wrapText(section.note,99);for(const l of ll){s.push(textAt(L+9,y+18,l,11,400,'#5e6779'));y+=18;}y+=3;continue;}
+  const cols=section.cols||['Statistic','Value'];const multi=cols.length>2;
+  const xBounds=multi?cols.map((_,i)=>L+i*(R-L)/cols.length):[L,L+245];
+  const widths=multi?cols.map(()=> (R-L)/cols.length):[245,(R-L)-245];
+  s.push(`<rect x="${L}" y="${y}" width="${R-L}" height="27" fill="#f8f9fb"/>`);
+  cols.forEach((c,i)=>s.push(textAt(xBounds[i]+9,y+18,c,11,750,'#69738a')));y+=27;
+  for(const row of section.rows){const cellLines=row.map((x,i)=>wrapText(x,Math.floor(widths[i]/(i===0?7.5:7.1))));
+   const lines=Math.max(1,...cellLines.map(x=>x.length)),height=Math.max(29,lines*16+10);
+   s.push(`<rect x="${L}" y="${y+height-1}" width="${R-L}" height="1" fill="#ececf1"/>`);
+   for(let i=0;i<row.length;i++)cellLines[i].forEach((txt,j)=>s.push(textAt(xBounds[i]+9,y+20+j*16,txt,12,i===row.length-1?660:450,i===row.length-1?'#3d2455':'#404856')));
+   y+=height;
+  }
+ }
+ y+=26;s.push(`<rect x="${L}" y="${y}" width="${R-L}" height="1" fill="#e9ddeb"/>`);
+ s.push(textAt(L,y+20,'Calculated from user-entered data · Rounded for display · Interpret results in context',10,400,'#8791a0'));
+ y+=45;
+ // Replace the full-height background with an exact height for reliable standalone SVG rasterization.
+ s[0]=`<rect x="0" y="0" width="${W}" height="${y}" fill="#ffffff"/>`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${y}" viewBox="0 0 ${W} ${y}" role="img" aria-label="${esc(report.title)} statistical output">${s.join('')}</svg>`;
+}
+function toText(report){let lines=['Statistics Lab — '+report.title,report.subtitle];for(const s of report.sections){lines.push('',s.title);if(s.note)lines.push(s.note);else{lines.push(s.cols.join('\t'));s.rows.forEach(r=>lines.push(r.join('\t')));}}lines.push('','Display values rounded; calculations used full precision.');return lines.join('\n');}
+function setMode(m){mode=m;exporter.querySelectorAll('[data-sl-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.slMode===m)));$('sl-export-custom').hidden=m!=='custom';renderExport();}
+function renderExport(){if(!result||stale){exporter.hidden=true;return;}exporter.hidden=false;
+ const r=makeReport(result);reportSvg=svgReport(r);reportPlain=toText(r);$('sl-export-preview').innerHTML=reportSvg;renderGraphs();}
+const graphNames=kind==='ci'?[['curve','CI reference distribution']]:[['pGraph','P-value graph'],['cGraph','Critical-value graph']];
+function renderGraphs(){const cont=$('sl-export-graph-rows');cont.replaceChildren();for(const [id,title] of graphNames){if(!$(id))continue;const row=document.createElement('div');row.className='sl-graph-row';const name=document.createElement('strong');name.textContent=title;const btns=document.createElement('div');btns.className='sl-graph-actions';for(const [action,label] of [['copy','Copy'],['png','PNG'],['svg','SVG']]){const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.addEventListener('click',()=>exportGraph(id,action));btns.append(btn);}row.append(name,btns);cont.append(row);}}
+function makeGraphSVG(id){const origin=$(id);if(!origin)throw Error('Graph not found');const rect=origin.viewBox.baseVal;
+ const width=rect&&rect.width?rect.width:520,height=rect&&rect.height?rect.height:180;
+ const title=id==='curve'?'Confidence Interval Reference Distribution':id==='pGraph'?'P-Value Area':'Critical-Value Rejection Region';
+ const clone=origin.cloneNode(true);
+ // Resolve CSS variable colors before serializing into an independent file.
+ const originals=[origin,...origin.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];
+ originals.forEach((node,i)=>{const c=copies[i],sty=getComputedStyle(node);['stroke','fill'].forEach(attr=>{const current=c.getAttribute(attr);if(current&&current.includes('var('))c.setAttribute(attr,sty.getPropertyValue(attr))});if(c.tagName.toLowerCase()==='text'&&!c.getAttribute('font-family'))c.setAttribute('font-family','Arial, sans-serif');});
+ clone.setAttribute('xmlns','http://www.w3.org/2000/svg');clone.setAttribute('x','0');clone.setAttribute('y','43');clone.setAttribute('width',String(width));clone.setAttribute('height',String(height));
+ clone.removeAttribute('style');
+ const legend=id==='curve'?'Central confidence area and standardized critical values':id==='pGraph'?'Blue: P-value area   ·   Purple: observed statistic':'Teal: rejection region   ·   Purple: observed statistic';
+ const h=height+85;
+ return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${h}" viewBox="0 0 ${width} ${h}"><rect x="0" y="0" width="${width}" height="${h}" fill="#ffffff"/>${textAt(13,26,title,15,750,'#581c87')}${new XMLSerializer().serializeToString(clone)}${textAt(13,height+68,legend,10,450,'#596374')}</svg>`;
+}
+function fileName(label,ext){return 'StatisticsLab_'+label+'_'+(kind==='ci'?'CI':kind==='one'?'OneSampleHT':'TwoSampleHT')+'.'+ext;}
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function svgBlob(source){return new Blob([source],{type:'image/svg+xml;charset=utf-8'});}
+function raster(source,scale=2){return new Promise((resolve,reject)=>{const b=svgBlob(source),url=URL.createObjectURL(b);const im=new Image();im.onload=()=>{try{const canvas=document.createElement('canvas');canvas.width=Math.round(im.naturalWidth*scale);canvas.height=Math.round(im.naturalHeight*scale);const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas is unavailable.');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(Error('Could not convert SVG to PNG.'))},'image/png');}catch(err){URL.revokeObjectURL(url);reject(err);}};im.onerror=()=>{URL.revokeObjectURL(url);reject(Error('Graph could not be rasterized.'))};im.src=url;});}
+async function copyBlob(blob){if(!navigator.clipboard||!window.ClipboardItem)throw Error('Image clipboard is not supported in this browser. Use Download PNG instead.');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);}
+async function exportGraph(id,action){try{if(stale||!result)throw Error('Recompute first to export up-to-date results.');const source=makeGraphSVG(id);const label=id==='curve'?'CI_Graph':id==='pGraph'?'PValue_Graph':'CriticalValue_Graph';if(action==='svg'){download(svgBlob(source),fileName(label,'svg'));status('Graph SVG downloaded.');return;}const png=await raster(source);if(action==='png'){download(png,fileName(label,'png'));status('Graph PNG downloaded.');}else{await copyBlob(png);status('Graph image copied. Paste it into Google Slides.');}}
+catch(e){status(e.message,true);}}
+exporter.querySelectorAll('[data-sl-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.slMode)));
+exporter.querySelectorAll('[data-sl-option]').forEach(c=>c.addEventListener('change',()=>{custom[c.dataset.slOption]=c.checked;renderExport();}));
+exporter.querySelectorAll('[data-sl-action]').forEach(b=>b.addEventListener('click',async()=>{try{if(!result||stale)throw Error('Recompute before exporting.');const action=b.dataset.slAction;
+ if(action==='text'){await navigator.clipboard.writeText(reportPlain);status('Statistical output copied as text.');}
+ else if(action==='svg'){download(svgBlob(reportSvg),fileName('Statistical_Output','svg'));status('Statistical output SVG downloaded.');}
+ else{const png=await raster(reportSvg);if(action==='png'){download(png,fileName('Statistical_Output','png'));status('Statistical output PNG downloaded.');}else{await copyBlob(png);status('Statistical output image copied. Paste it into Google Slides.');}}
+ }catch(e){status(e.message,true);}}));
+window.StatsLabExporter={
+ setResult(r){result=r;stale=false;status('');renderExport();},
+ markStale(){stale=true;exporter.hidden=true;status('Inputs changed. Compute again to export updated results.');},
+ reset(){result=null;stale=false;exporter.hidden=true;status('');}
+};
+})();
+
+</script>
+</body>
+</html>
