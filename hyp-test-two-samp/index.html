@@ -18,36 +18,113 @@ html[data-theme="dark"]{color-scheme:dark;--bg:#11141e;--ink:#f2eff8;--muted:#b6
 .more{margin-top:12px;border:1px solid var(--line);background:var(--panel-soft);border-radius:9px}.more summary{font-size:12px;font-weight:780;color:var(--heading);padding:10px 12px;cursor:pointer}.morebody{padding:12px;border-top:1px solid var(--line2);font-size:12px;color:var(--ink);line-height:1.7}.morebody p+p{margin-top:8px}.formula{overflow-x:auto;background:var(--panel);padding:12px 9px;border:1px solid var(--line2);border-radius:8px;margin:10px 0;text-align:center;font-size:18px;color:var(--heading);font-family:Cambria,"Cambria Math","Times New Roman",serif;white-space:nowrap}.formula math{font-size:20px}.mono{font-variant-numeric:tabular-nums}.footer{font-size:11px;color:var(--muted);text-align:center;margin:20px 0}
 @media(max-width:850px){.layout{grid-template-columns:1fr}.method-nav{gap:9px}.output-placeholder{padding:27px}.chart-stack{grid-template-columns:repeat(2,minmax(0,1fr))}.chartbox svg{max-height:155px}.method-set{gap:5px}}@media(max-width:610px){body{padding:9px 9px 20px}.header{flex-wrap:wrap;padding:13px}.theme{margin-left:auto}.method-nav{padding:12px 0}.method-set{width:100%}.method-name{width:100%}.method-btn{flex:1;padding:7px 5px;min-height:44px}.panelhead{padding:13px}.panelbody{padding:0 13px 15px}.output-title{padding:14px}.outputbody{padding:13px}.chart-stack{grid-template-columns:1fr}.chartbox svg{max-height:140px}.input,.select{font-size:16px;min-height:44px}.stat-card .num{font-size:23px}}@media(max-width:360px){.fields{grid-template-columns:1fr}.wide{grid-column:auto}.method-btn{font-size:11px;padding:7px 4px}.theme button{padding:6px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* The two-sample lesson visual language matches the Week 13 Canvas notes.
+   Palette: #ad14d7 / #581c87, #0284c7 / #075985, #f3f4f6.
+   All existing calculator logic and form IDs are intentionally unchanged. */
+:root { --lesson-purple:#faf5ff; --lesson-purple-border:#e9d5ff; --lesson-purple-head:#f3e8ff; --lesson-blue:#eff6ff; --lesson-blue-head:#e0f2fe; --lesson-blue-border:#bae6fd; --lesson-blue-ink:#075985; --lesson-purple-ink:#581c87; }
+html:not([data-theme="dark"]){--bg:#fff;--ink:#1f2937;--muted:#526075;--heading:#581c87;--violet:#ad14d7;--purple:#ad14d7;--blue:#0284c7;--panel-soft:#faf5ff;--header:#f3f4f6;--line:#e2dfe9;--line2:#e9d5ff;--track:#faf5ff;--active:#f3e8ff;--active-ink:#581c87;--input:#fff;--green-ink:#1f2937;--green-bg:#f8fafc;--green-line:#dce3eb;--warning-bg:#fff8e9;--shadow:0 4px 13px #4b2f620a}
+html[data-theme="dark"]{--lesson-purple:#29243b;--lesson-purple-border:#59426e;--lesson-purple-head:#3a3152;--lesson-blue:#1a3246;--lesson-blue-head:#224054;--lesson-blue-border:#346b87;--lesson-blue-ink:#afdfff;--lesson-purple-ink:#f0daff;--green-ink:#e0eaf4;--green-bg:#262d3c;--green-line:#495166}
+body{line-height:1.65;padding:18px 16px 28px}
+main{max-width:1170px}
+.header{border-left:6px solid #ad14d7;border-radius:10px;padding:18px 20px;box-shadow:none}
+.header h1{color:var(--heading);font-size:clamp(22px,2.8vw,30px);margin:4px 0 7px;letter-spacing:-.02em}
+.header p:last-child{font-size:13px;color:var(--muted);line-height:1.5}
+.eyebrow{color:var(--purple);letter-spacing:.06em}
+.lesson-intro{background:var(--lesson-blue-head);color:var(--ink);border-left:5px solid #0284c7;border-radius:9px;padding:12px 15px;margin:13px 0 15px;font-size:13px;line-height:1.65}
+.lesson-intro strong{color:var(--lesson-blue-ink)}
+.section-marker{font-size:15px;color:var(--lesson-purple-ink);font-weight:850;padding:0 0 6px;margin:19px 0 2px;border-bottom:1px solid var(--lesson-purple-border)}
+.method-nav{padding:12px 0 12px;gap:10px}
+.method-set{gap:9px}
+.method-name{color:var(--muted);font-size:11px;letter-spacing:.06em}
+.method-btn{border:2px solid var(--lesson-purple-border);background:var(--lesson-purple);color:var(--lesson-purple-ink);border-radius:22px;padding:9px 14px;min-height:44px;font-size:13px;box-shadow:none}
+.method-btn .method-tag{color:inherit;opacity:.72}
+.method-btn[data-method="mean2"]{border-color:var(--lesson-blue-border);background:var(--lesson-blue);color:var(--lesson-blue-ink)}
+.method-btn[aria-pressed="true"]{background:var(--lesson-purple-head);border-color:#ad14d7;color:var(--lesson-purple-ink);box-shadow:0 0 0 1px #ad14d750 inset}
+.method-btn[data-method="mean2"][aria-pressed="true"]{background:var(--lesson-blue-head);border-color:#0284c7;color:var(--lesson-blue-ink);box-shadow:0 0 0 1px #0284c750 inset}
+.method-guide{background:var(--lesson-purple);color:var(--ink);border:0;border-left:5px solid #ad14d7;padding:12px 15px;margin:2px 0 17px;font-size:13px;line-height:1.65}
+.method-guide strong{color:var(--lesson-purple-ink)}
+.panel{border-color:var(--lesson-purple-border);border-radius:10px;box-shadow:none}
+.panelhead{padding:15px 17px 13px;border-bottom:1px solid var(--lesson-purple-border);background:var(--lesson-purple)}
+.panelhead h2{font-size:17px;color:var(--lesson-purple-ink)}
+.panel:nth-child(2){border-color:var(--lesson-blue-border)}
+.panel:nth-child(2) .panelhead{background:var(--lesson-blue);border-bottom-color:var(--lesson-blue-border)}
+.panel:nth-child(2) .panelhead h2{color:var(--lesson-blue-ink)}
+.panel:nth-child(2) .badge{background:var(--lesson-blue-head);color:var(--lesson-blue-ink)}
+.badge{background:var(--lesson-purple-head);color:var(--lesson-purple-ink);border-radius:7px;letter-spacing:.04em;padding:6px 8px}
+.panelbody{padding-top:13px}
+.section-title,.outputsub{font-size:13px;color:var(--lesson-purple-ink);font-weight:850;border-bottom:1px solid var(--lesson-purple-border);padding-bottom:5px;margin:5px 0 12px}
+.outputsub{color:var(--lesson-blue-ink);border-color:var(--lesson-blue-border)}
+.segment{border-color:var(--lesson-purple-border);background:var(--lesson-purple);border-radius:10px}
+.segment button[aria-pressed="true"]{background:var(--lesson-purple-head);color:var(--lesson-purple-ink);border:1px solid var(--lesson-purple-border);box-shadow:none}
+.segment button{min-height:37px}
+.input,.textarea,.select{border-color:var(--line);border-radius:8px}
+.input:focus,.textarea:focus,.select:focus{outline:2px solid #ad14d7;outline-offset:1px}
+.null-label{color:var(--lesson-purple-ink)}
+.small-btn{border-color:var(--lesson-purple-border);border-radius:8px;color:var(--lesson-purple-ink)}
+.small-btn[aria-pressed="true"]{background:#ad14d7;border-color:#ad14d7;color:white}
+.assumptions{border-color:var(--lesson-blue-border);background:var(--panel);border-radius:9px}
+.assumptions summary{background:var(--lesson-blue-head);color:var(--lesson-blue-ink);padding:13px}
+.assumptions-body{border-color:var(--lesson-blue-border)}
+.checkline input{accent-color:#ad14d7}
+.primary{background:#ad14d7;border-color:#ad14d7;border-radius:8px}
+.secondary{border-radius:8px;border-color:var(--lesson-purple-border)}
+.output-title{background:var(--lesson-blue);border-color:var(--lesson-blue-border)}
+.output-title .kicker,.output-title h2{color:var(--lesson-blue-ink)}
+.output-table tr:nth-child(odd){background:var(--lesson-blue)}
+.stat-card{background:var(--lesson-purple);border-color:var(--lesson-purple-border)}
+.stat-card.pval{background:var(--lesson-blue);border-color:var(--lesson-blue-border)}
+.stat-card .num{color:var(--lesson-purple-ink)}
+.stat-card.pval .num{color:var(--lesson-blue-ink)}
+.decision-step{font-size:13px;color:var(--lesson-purple-ink);font-weight:850;margin:15px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--lesson-purple-border)}
+.decision{background:var(--green-bg);border-color:var(--green-line);color:var(--green-ink);border-left:5px solid #ad14d7}
+.chart-stack{gap:12px}
+.chartbox{border:1px solid var(--lesson-purple-border);background:var(--lesson-purple);border-radius:9px;padding:11px}
+.chartbox:nth-child(2){border-color:var(--lesson-blue-border);background:var(--lesson-blue)}
+.chartbox .charttitle{color:var(--lesson-purple-ink)}
+.chartbox:nth-child(2) .charttitle{color:var(--lesson-blue-ink)}
+.interpret-guide{background:var(--lesson-blue);border-left:4px solid #0284c7;border-radius:8px;margin:14px 0 8px;padding:10px 13px;font-size:12px;line-height:1.65;color:var(--ink)}
+.interpret-guide strong{color:var(--lesson-blue-ink)}
+.more{border-color:var(--lesson-purple-border);background:var(--panel);border-radius:9px}
+.more summary{background:var(--lesson-purple-head);color:var(--lesson-purple-ink);padding:12px 13px}
+.morebody{border-color:var(--lesson-purple-border)}
+.footer{font-size:12px;color:var(--muted);text-align:center;margin:25px 0 0}
+.footer-rule{height:5px;background:#ad14d7;margin:13px 0 0}
+@media(max-width:610px){body{padding:10px}.header{padding:13px}.lesson-intro,.method-guide{font-size:12px}.method-set{width:100%}.method-btn{border-radius:12px;font-size:12px;flex:1}.panelhead{padding:13px}.panelbody{padding:13px}}
+
 </style>
 </head>
 <body><main>
 <a class="home" href="../">← Statistics Lab</a>
-<header class="header"><div class="header-copy"><div class="eyebrow">Statistics Lab · Comparing two populations</div><h1>Two-Sample Hypothesis Tests</h1><p>Choose two proportions, two independent means, or paired means. Enter summary statistics or paste your own sample observations.</p></div><div class="theme" role="group" aria-label="Color theme"><button type="button" data-sl-theme="light" aria-pressed="false">☀ Light</button><button type="button" data-sl-theme="dark" aria-pressed="false">☾ Dark</button><button type="button" data-sl-theme="system" aria-pressed="false">◐ Auto</button></div></header>
+<header class="header"><div class="header-copy"><div class="eyebrow">Statistics Lab · Inference tools</div><h1>📖 Two-Sample Hypothesis Tests</h1><p>Choose two proportions, two independent means, or paired means. Enter summary statistics or paste your own sample observations.</p></div><div class="theme" role="group" aria-label="Color theme"><button type="button" data-sl-theme="light" aria-pressed="false">☀ Light</button><button type="button" data-sl-theme="dark" aria-pressed="false">☾ Dark</button><button type="button" data-sl-theme="system" aria-pressed="false">◐ Auto</button></div></header>
+<div class="lesson-intro"><strong>Same six steps, new comparison:</strong> Define the populations, choose the appropriate test, check conditions, calculate, evaluate the evidence, and write a conclusion in context.</div>
+<div class="section-marker">STEP 1 · Choose the test</div>
 <nav class="method-nav" aria-label="Choose two-sample hypothesis test">
  <div class="method-set"><span class="method-name">Choose your test</span><button class="method-btn" data-method="prop2" aria-pressed="true">Two proportions <span class="method-tag">z-test</span></button><button class="method-btn" data-method="mean2" aria-pressed="false">Two independent means <span class="method-tag">Welch t</span></button><button class="method-btn" data-method="paired" aria-pressed="false">Paired means <span class="method-tag">paired t</span></button></div>
 </nav>
-<div class="method-guide" role="note"><strong>Choose the right comparison:</strong> Two independent groups with a <strong>yes/no outcome</strong> → two proportions (z). Two independent groups with a <strong>numerical outcome</strong> → two independent means (Welch t). The <strong>same people measured twice</strong>, or deliberately matched pairs → paired means (t).</div>
+<div class="method-guide" role="note"><strong>Recognize the problem:</strong> Two independent groups with a <strong>yes/no outcome</strong> → two proportions (z). Two independent groups with a <strong>numerical outcome</strong> → two independent means (Welch t). The <strong>same people measured twice</strong>, or deliberately matched pairs → paired means (t).</div>
 <div class="layout">
-<section class="panel" aria-labelledby="inputtitle"><div class="panelhead"><div><h2 id="inputtitle">Sample information</h2><p class="caption" id="methodhint">Two independent proportions · pooled z-test</p></div><span class="badge">INPUT</span></div><div class="panelbody">
-<div class="section-title">Data entry</div><div id="dataSource" class="segment" role="group" aria-label="Data entry format"><button type="button" data-source="summary" aria-pressed="true">Summary statistics</button><button type="button" data-source="raw" aria-pressed="false">Sample data (raw)</button></div><p class="source-hint" id="sourceHint">Enter counts and sample sizes, or switch to raw data to paste observations.</p>
+<section class="panel" aria-labelledby="inputtitle"><div class="panelhead"><div><h2 id="inputtitle">Set Up &amp; Calculate</h2><p class="caption" id="methodhint">Two independent proportions · pooled z-test</p></div><span class="badge">STEPS 1–3</span></div><div class="panelbody">
+<div class="section-title">STEP 1 · Sample information</div><div id="dataSource" class="segment" role="group" aria-label="Data entry format"><button type="button" data-source="summary" aria-pressed="true">Summary statistics</button><button type="button" data-source="raw" aria-pressed="false">Sample data (raw)</button></div><p class="source-hint" id="sourceHint">Enter counts and sample sizes, or switch to raw data to paste observations.</p>
 <div id="fields" class="fields"></div>
-<hr class="sep"><div class="section-title">Hypotheses</div><p class="null-label" id="nulltext">H₀: p₁ − p₂ = 0</p><div class="segment" role="group" aria-label="Alternative hypothesis direction"><button type="button" data-tail="left" aria-pressed="false">Left-tailed &lt;</button><button type="button" data-tail="two" aria-pressed="false">Two-tailed ≠</button><button type="button" data-tail="right" aria-pressed="true">Right-tailed &gt;</button></div><p class="hint" id="alttext">Hₐ: p₁ − p₂ ≠ 0</p>
-<hr class="sep"><div class="section-title">Significance level <span aria-label="alpha">α</span></div><div class="alpha-group"><button class="small-btn" data-alpha="0.01" aria-pressed="false">0.01</button><button class="small-btn" data-alpha="0.05" aria-pressed="true">0.05</button><button class="small-btn" data-alpha="0.10" aria-pressed="false">0.10</button><label for="alpha" style="margin:0;font-size:11px">Or enter</label><input class="input alpha-input" id="alpha" type="number" min="0.0001" max="0.9999" step="any" value="0.05" aria-label="Significance level alpha"></div>
-<details class="assumptions" id="assumptions"><summary>Check assumptions &amp; conditions</summary><div class="assumptions-body"><label class="checkline"><input type="checkbox" id="randomCheck"><span id="randomLabel">Random sample or appropriate randomized process.</span></label><label class="checkline"><input type="checkbox" id="indCheck"><span id="indLabel">Observations are reasonably independent (including the 10% condition when sampling without replacement).</span></label><label class="checkline"><input type="checkbox" id="shapeCheck"><span id="shapeLabel">Expected successes and failures under H₀ are both at least 10.</span></label><p class="assump-note" id="assumpNote">This calculator can check expected counts but cannot verify how the sample was selected.</p></div></details>
-<div class="actions"><button class="primary" id="calculate" type="button">Compute test</button><button class="secondary" id="reset" type="button">Reset example</button></div><div class="error hidden" role="alert" id="error"></div>
+<hr class="sep"><div class="section-title">STEP 1 · Hypotheses</div><p class="null-label" id="nulltext">H₀: p₁ − p₂ = 0</p><div class="segment" role="group" aria-label="Alternative hypothesis direction"><button type="button" data-tail="left" aria-pressed="false">Left-tailed &lt;</button><button type="button" data-tail="two" aria-pressed="false">Two-tailed ≠</button><button type="button" data-tail="right" aria-pressed="true">Right-tailed &gt;</button></div><p class="hint" id="alttext">Hₐ: p₁ − p₂ ≠ 0</p>
+<hr class="sep"><div class="section-title">STEP 1 · Significance level <span aria-label="alpha">α</span></div><div class="alpha-group"><button class="small-btn" data-alpha="0.01" aria-pressed="false">0.01</button><button class="small-btn" data-alpha="0.05" aria-pressed="true">0.05</button><button class="small-btn" data-alpha="0.10" aria-pressed="false">0.10</button><label for="alpha" style="margin:0;font-size:11px">Or enter</label><input class="input alpha-input" id="alpha" type="number" min="0.0001" max="0.9999" step="any" value="0.05" aria-label="Significance level alpha"></div>
+<details class="assumptions" id="assumptions"><summary>STEP 2 · Choose the Test &amp; Check Conditions</summary><div class="assumptions-body"><label class="checkline"><input type="checkbox" id="randomCheck"><span id="randomLabel">Random sample or appropriate randomized process.</span></label><label class="checkline"><input type="checkbox" id="indCheck"><span id="indLabel">Observations are reasonably independent (including the 10% condition when sampling without replacement).</span></label><label class="checkline"><input type="checkbox" id="shapeCheck"><span id="shapeLabel">Expected successes and failures under H₀ are both at least 10.</span></label><p class="assump-note" id="assumpNote">This calculator can check expected counts but cannot verify how the sample was selected.</p></div></details>
+<div class="actions"><button class="primary" id="calculate" type="button">STEP 3 · Compute Test</button><button class="secondary" id="reset" type="button">Reset example</button></div><div class="error hidden" role="alert" id="error"></div>
 </div></section>
-<section class="panel" aria-labelledby="outputheading"><div class="panelhead"><div><h2 id="outputheading">Statistical output</h2><p class="caption">Results appear after you click Compute.</p></div><span class="badge">OUTPUT</span></div>
+<section class="panel" aria-labelledby="outputheading"><div class="panelhead"><div><h2 id="outputheading">Evaluate the Evidence</h2><p class="caption">Results appear after you click Compute.</p></div><span class="badge">STEPS 3–6</span></div>
 <div id="placeholder" class="output-placeholder"><div class="symbol" aria-hidden="true">∿</div><h3>Ready to test</h3><p>Choose a procedure, enter the data and null value, then click <strong>Compute test</strong>.</p></div>
 <div id="results" class="hidden" aria-live="polite"><div id="stale" class="stale hidden" role="status">Inputs changed. These are the previous results. Click Compute test to update.</div><div class="output-title"><div class="kicker">Hypothesis test output</div><h2 id="testName">Two-Proportion z-Test</h2><p id="hypothesisText">H₀: p₁ − p₂ = 0 · Hₐ: p₁ − p₂ ≠ 0</p></div><div class="outputbody">
-<div class="outputsub">Sample &amp; test statistics</div><table class="output-table" aria-label="Sample statistics and test settings"><tbody id="outputRows"></tbody></table>
+<div class="outputsub">STEP 3 · Test statistic &amp; sample results</div><table class="output-table" aria-label="Sample statistics and test settings"><tbody id="outputRows"></tbody></table>
 <div class="result-cards"><div class="stat-card"><div class="name" id="statName">Test statistic</div><div class="num" id="statValue">—</div></div><div class="stat-card pval"><div class="name">P-value</div><div class="num" id="pValue">—</div></div></div>
-<div class="decision" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
+<div class="decision-step">STEP 5 · Make the Decision</div><div class="decision" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
 <div id="warnings" class="warning hidden" role="note"></div>
-<div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
-<details class="more" id="calculations"><summary>Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
+<div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>STEP 4 · P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>STEP 4 · Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
+<div class="interpret-guide"><strong>STEP 6 · Write the conclusion:</strong> Use the decision to explain whether there is sufficient evidence for the claim about the <em>population</em> proportions, independent means, or mean paired difference. Do not confuse statistical significance with practical importance or causation.</div>
+<details class="more" id="calculations"><summary>🔎 Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
 <div class="actions"><button class="secondary" id="copy" type="button">Copy output</button><span class="hint" id="copyStatus" role="status"></span></div>
 </div></div></section></div>
-<footer class="footer">Statistics Lab · Subtraction order matters: Group 1 minus Group 2 (or Measurement 1 minus Measurement 2). Check conditions and interpret in context.</footer>
+<footer class="footer">Statistics Lab · Technology finds the numbers. You select the test, verify conditions, and interpret the evidence.<div class="footer-rule"></div></footer>
 </main>
 <script>
 (function(){'use strict';
