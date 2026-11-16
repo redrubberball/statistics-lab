@@ -92,6 +92,22 @@ main{max-width:1170px}
 .footer-rule{height:5px;background:#ad14d7;margin:13px 0 0}
 @media(max-width:610px){body{padding:10px}.header{padding:13px}.lesson-intro,.method-guide{font-size:12px}.method-set{width:100%}.method-btn{border-radius:12px;font-size:12px;flex:1}.panelhead{padding:13px}.panelbody{padding:13px}}
 
+
+/* Group-wise numeric input: all three summary statistics stay together. */
+.sample-group{min-width:0;margin:0;padding:10px 11px 12px;border:1px solid var(--lesson-purple-border);border-radius:10px;background:var(--panel-soft)}
+.sample-group legend{font-weight:850;font-size:14px;line-height:1.4;padding:2px 7px;color:var(--lesson-purple-ink);background:var(--panel);border:1px solid var(--lesson-purple-border);border-radius:6px}
+.sample-group.group-two{border-color:var(--lesson-blue-border)}
+.sample-group.group-two legend{color:var(--lesson-blue-ink);border-color:var(--lesson-blue-border)}
+.group-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:11px}
+.group-fields>div{min-width:0}
+.group-fields label{font-size:12px;line-height:1.35;min-height:16px}
+.group-fields .input{width:100%;min-width:0}
+.decision-check{margin-top:10px;padding:12px 13px;border:1px solid var(--lesson-purple-border);background:var(--lesson-purple);border-radius:9px}
+.decision-check p{color:var(--ink);font-size:12px;line-height:1.55;margin-bottom:10px}
+.reveal-btn{border-color:#ad14d7;color:var(--lesson-purple-ink);font-size:13px;font-weight:850}
+#decision{margin-top:9px}
+@media(max-width:400px){#fields:has(.sample-group){grid-template-columns:minmax(0,1fr)}}
+
 </style>
 </head>
 <body><main>
@@ -117,9 +133,14 @@ main{max-width:1170px}
 <div id="results" class="hidden" aria-live="polite"><div id="stale" class="stale hidden" role="status">Inputs changed. These are the previous results. Click Compute test to update.</div><div class="output-title"><div class="kicker">Hypothesis test output</div><h2 id="testName">Two-Proportion z-Test</h2><p id="hypothesisText">H₀: p₁ − p₂ = 0 · Hₐ: p₁ − p₂ ≠ 0</p></div><div class="outputbody">
 <div class="outputsub">STEP 3 · Test statistic &amp; sample results</div><table class="output-table" aria-label="Sample statistics and test settings"><tbody id="outputRows"></tbody></table>
 <div class="result-cards"><div class="stat-card"><div class="name" id="statName">Test statistic</div><div class="num" id="statValue">—</div></div><div class="stat-card pval"><div class="name">P-value</div><div class="num" id="pValue">—</div></div></div>
-<div class="decision-step">STEP 5 · Make the Decision</div><div class="decision" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
 <div id="warnings" class="warning hidden" role="note"></div>
 <div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>STEP 4 · P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>STEP 4 · Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
+<div class="decision-step">STEP 5 · Make the Decision</div>
+<div class="decision-check" id="decisionCheck">
+  <p>Before revealing the decision, compare the <strong>P-value to α</strong> or check whether the observed statistic falls in the shaded rejection region above.</p>
+  <button class="secondary reveal-btn" id="decisionToggle" type="button" aria-expanded="false" aria-controls="decision">Reveal Decision</button>
+</div>
+<div class="decision hidden" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
 <div class="interpret-guide"><strong>STEP 6 · Write the conclusion:</strong> Use the decision to explain whether there is sufficient evidence for the claim about the <em>population</em> proportions, independent means, or mean paired difference. Do not confuse statistical significance with practical importance or causation.</div>
 <details class="more" id="calculations"><summary>🔎 Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
 <div class="actions"><button class="secondary" id="copy" type="button">Copy output</button><span class="hint" id="copyStatus" role="status"></span></div>
@@ -160,7 +181,12 @@ function renderInput(){
   html=raw?
    textArea('raw1','Group 1 numerical observations','Enter one number per observation. Groups may have different sample sizes.')+
    textArea('raw2','Group 2 numerical observations','Paste numbers from your second independent group.'):
-   field('n1','Group 1 sample size n₁')+field('xbar1','Group 1 sample mean x̄₁')+field('s1','Group 1 sample SD s₁')+field('n2','Group 2 sample size n₂')+field('xbar2','Group 2 sample mean x̄₂')+field('s2','Group 2 sample SD s₂');
+   '<fieldset class="sample-group group-one"><legend>Group 1</legend><div class="group-fields">'+
+   field('n1','Sample size n₁')+field('xbar1','Sample mean x̄₁')+field('s1','Sample SD s₁')+
+   '</div></fieldset>'+
+   '<fieldset class="sample-group group-two"><legend>Group 2</legend><div class="group-fields">'+
+   field('n2','Sample size n₂')+field('xbar2','Sample mean x̄₂')+field('s2','Sample SD s₂')+
+   '</div></fieldset>';
   html+=field('delta0','Null mean difference Δ₀','',true);
   $('methodhint').textContent='Two independent means · Welch t-test';
   $('sourceHint').textContent=raw?'Paste the numerical sample values for each independent group.':'Enter n, sample mean, and sample standard deviation for each independent group.';
@@ -185,8 +211,13 @@ $('assumpNote').textContent=mode==='prop2'?'The calculator checks expected count
 $('randomCheck').checked=false;$('indCheck').checked=false;$('shapeCheck').checked=false;$('assumptions').open=false;updateHyp();}
 function hypothesisStrings(){const d=data[mode];const sign=({left:'<',right:'>',two:'≠'})[d.tail],v=mode==='prop1'?'p':mode==='mean1t'||mode==='mean1z'?'μ':mode==='prop2'?'p₁ − p₂':mode==='paired'?'μ_d':'μ₁ − μ₂';const value=mode==='prop1'?d.p0:mode==='mean1t'||mode==='mean1z'?d.mu0:mode==='prop2'?'0':d.delta0;return {h0:`H₀: ${v} = ${value}`,ha:`Hₐ: ${v} ${sign} ${value}`};}
 function updateHyp(){const h=hypothesisStrings();$('nulltext').textContent=h.h0;$('alttext').textContent=h.ha;}
-function markStale(){if(last){$('stale').classList.remove('hidden');$('copy').disabled=true;}}
-function resetOutput(){last=null;$('placeholder').classList.remove('hidden');$('results').classList.add('hidden');$('error').classList.add('hidden');$('copyStatus').textContent='';}
+function hideDecision(){
+ $('decision').classList.add('hidden');
+ $('decisionToggle').setAttribute('aria-expanded','false');
+ $('decisionToggle').textContent='Reveal Decision';
+}
+function markStale(){hideDecision();if(last){$('stale').classList.remove('hidden');$('copy').disabled=true;}}
+function resetOutput(){hideDecision();last=null;$('placeholder').classList.remove('hidden');$('results').classList.add('hidden');$('error').classList.add('hidden');$('copyStatus').textContent='';}
 document.querySelectorAll('[data-method]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.method;resetOutput();renderInput()}));
 document.querySelectorAll('[data-source]').forEach(b=>b.addEventListener('click',()=>{data[mode].source=b.dataset.source;markStale();renderInput()}));
 document.querySelectorAll('[data-tail]').forEach(b=>b.addEventListener('click',()=>{data[mode].tail=b.dataset.tail;document.querySelectorAll('[data-tail]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));updateHyp();markStale();}));
@@ -292,10 +323,17 @@ if(r.mode==='prop2'){intro='The pooled proportion is used under H₀: p₁ = p�
 if(r.mode==='mean2'){intro='Welch’s method does not assume equal population variances; it uses approximate degrees of freedom.';formula=mathBlock(mi('t')+mo('=')+frac(mrow(sub(xbar,mn('1'))+mo('−')+sub(xbar,mn('2'))+mo('−')+sub(mi('Δ'),mn('0'))),sqrt(frac(math('msup',sub(mi('s'),mn('1'))+mn('2')),sub(mi('n'),mn('1')))+mo('+')+frac(math('msup',sub(mi('s'),mn('2'))+mn('2')),sub(mi('n'),mn('2'))))));values=`t = ((${fmt(p.m1,5)} − ${fmt(p.m2,5)}) − ${fmt(p.delta0,5)}) / ${fmt(p.se,6)} = ${fmt(r.stat,5)}; Welch df ≈ ${fmt(r.df,3)}`;}
 if(r.mode==='paired'){intro='A paired t-test is a one-mean t-test of the WITHIN-PAIR differences d = Measurement 1 − Measurement 2. Do not treat these as independent samples.';formula=mathBlock(mi('t')+mo('=')+frac(mrow(math('mover',mi('d')+mo('¯'),'accent="true"')+mo('−')+sub(mi('Δ'),mn('0'))),frac(sub(mi('s'),mi('d')),sqrt(mi('n')))));values=`t = (${fmt(p.dbar,5)} − ${fmt(p.delta0,5)}) / (${fmt(p.sd,5)} / √${p.n}) = ${fmt(r.stat,5)}; df = ${r.df}`;}
 const tailText=r.tail==='two'?`2 × P(${r.dist==='z'?'Z':'T'} ≥ |${fmt(r.stat,3)}|)`:`P(${r.dist==='z'?'Z':'T'} ${r.tail==='left'?'≤':'≥'} ${fmt(r.stat,3)})`;const ctext=r.critical.map(v=>fmt(v,4)).join(', ');return `<p>${intro}</p>${formula}<p class="mono">${escapeHTML(values)}</p><p><strong>P-value:</strong> ${escapeHTML(tailText)} = ${pvfmt(r.p)}. This is the probability of a test statistic at least as extreme as the observed one in the direction specified by Hₐ, assuming H₀ is true.</p><p><strong>Critical value(s):</strong> ${ctext}. The rejection region is set by α = ${fmt(r.alpha,4)} and the alternative hypothesis direction.</p><p><strong>Decision rule:</strong> Reject H₀ when P ≤ α; otherwise fail to reject H₀. The critical-value method gives the same decision.</p>`;}
-function renderResult(r){$('placeholder').classList.add('hidden');$('results').classList.remove('hidden');$('stale').classList.add('hidden');$('copy').disabled=false;$('copyStatus').textContent='';$('testName').textContent=r.title;$('hypothesisText').textContent=r.h.h0+'   ·   '+r.h.ha;
+function renderResult(r){hideDecision();$('placeholder').classList.add('hidden');$('results').classList.remove('hidden');$('stale').classList.add('hidden');$('copy').disabled=false;$('copyStatus').textContent='';$('testName').textContent=r.title;$('hypothesisText').textContent=r.h.h0+'   ·   '+r.h.ha;
 const tbody=$('outputRows');tbody.replaceChildren();for(const [key,val] of r.rows){let tr=document.createElement('tr');const a=document.createElement('td'),b=document.createElement('td');a.textContent=key;b.textContent=val;tr.append(a,b);tbody.append(tr)}$('statName').textContent=(r.dist==='t'?'t-statistic':'z-statistic');$('statValue').textContent=r.statLabel+' = '+fmt(r.stat,3);$('pValue').textContent=pvfmt(r.p);$('pAreaLabel').textContent=r.tail+'-tailed';$('criticalText').textContent=r.critical.map(x=>fmt(x,3)).join(', ');$('decisionTitle').textContent=r.reject?'Reject H₀':'Do not reject H₀';$('decisionReason').textContent=(r.p<0.0001?'P < 0.0001':`P = ${fmt(r.p,4)}`)+(r.reject?' ≤ ':' > ')+`α = ${fmt(r.alpha,4)}. `+(r.reject?'The result is statistically significant at the chosen level.':'The evidence is not sufficiently strong to reject H₀ at the chosen level.');$('warnings').classList.toggle('hidden',r.notes.length===0);$('warnings').textContent=r.notes.join(' ');draw('pGraph',r,'p');draw('cGraph',r,'critical');$('calculationDetails').innerHTML=calculation(r);$('calculations').open=false;}
+$('decisionToggle').addEventListener('click',()=>{
+ if(!last || !$('stale').classList.contains('hidden')) return;
+ const revealed=$('decision').classList.contains('hidden');
+ $('decision').classList.toggle('hidden',!revealed);
+ $('decisionToggle').setAttribute('aria-expanded',String(revealed));
+ $('decisionToggle').textContent=revealed?'Hide Decision':'Reveal Decision';
+});
 $('calculate').addEventListener('click',()=>{try{$('error').classList.add('hidden');const r=test();last=r;renderResult(r);if(matchMedia('(max-width: 850px)').matches){requestAnimationFrame(()=>{$('outputheading').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}}catch(e){$('error').textContent=e.message;$('error').classList.remove('hidden');markStale()}});
-$('copy').addEventListener('click',async()=>{if(!last)return;const r=last,text=[r.title,r.h.h0,r.h.ha,...r.rows.map(x=>x.join(': ')),r.statLabel+' = '+fmt(r.stat,5),'P-value = '+pvfmt(r.p),'Critical value(s) = '+r.critical.map(x=>fmt(x,4)).join(', '),'α = '+fmt(r.alpha,4),r.reject?'Reject H0':'Do not reject H0'].join('\n');try{await navigator.clipboard.writeText(text);$('copyStatus').textContent='Copied.'}catch(e){$('copyStatus').textContent='Copy is not available in this browser.'}});
+$('copy').addEventListener('click',async()=>{if(!last)return;const r=last,text=[r.title,r.h.h0,r.h.ha,...r.rows.map(x=>x.join(': ')),r.statLabel+' = '+fmt(r.stat,5),'P-value = '+pvfmt(r.p),'Critical value(s) = '+r.critical.map(x=>fmt(x,4)).join(', '),'α = '+fmt(r.alpha,4),...($('decision').classList.contains('hidden')?[]:[r.reject?'Reject H0':'Do not reject H0'])].join('\n');try{await navigator.clipboard.writeText(text);$('copyStatus').textContent='Copied.'}catch(e){$('copyStatus').textContent='Copy is not available in this browser.'}});
 // Same appearance preference key and light/dark/auto controls as the CI Calculator.
 const themeKey='statistics-lab-theme',media=matchMedia('(prefers-color-scheme: dark)');let memory='system';function pref(){try{const p=localStorage.getItem(themeKey);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memory}}function renderTheme(){const p=pref(),actual=p==='system'?(media.matches?'dark':'light'):p;document.documentElement.dataset.theme=actual;document.querySelectorAll('[data-sl-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.slTheme===p)));document.querySelector('meta[name="theme-color"]').content=actual==='dark'?'#14151f':'#faf5ff'}document.querySelectorAll('[data-sl-theme]').forEach(b=>b.addEventListener('click',()=>{memory=b.dataset.slTheme;try{localStorage.setItem(themeKey,memory)}catch(e){}renderTheme()}));if(media.addEventListener)media.addEventListener('change',renderTheme);window.addEventListener('storage',e=>{if(e.key===themeKey)renderTheme()});renderTheme();renderInput();
 })();
