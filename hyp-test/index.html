@@ -41,7 +41,7 @@ html[data-theme="dark"]{color-scheme:dark;--bg:#11141e;--ink:#f2eff8;--muted:#b6
 <div id="results" class="hidden" aria-live="polite"><div id="stale" class="stale hidden" role="status">Inputs changed. These are the previous results. Click Compute test to update.</div><div class="output-title"><div class="kicker">Hypothesis test output</div><h2 id="testName">One-Proportion z-Test</h2><p id="hypothesisText">H₀: p = 0.60 · Hₐ: p &gt; 0.60</p></div><div class="outputbody">
 <div class="outputsub">Sample &amp; test statistics</div><table class="output-table" aria-label="Sample statistics and test settings"><tbody id="outputRows"></tbody></table>
 <div class="result-cards"><div class="stat-card"><div class="name" id="statName">Test statistic</div><div class="num" id="statValue">—</div></div><div class="stat-card pval"><div class="name">P-value</div><div class="num" id="pValue">—</div></div></div>
-<div class="decision" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
+<div class="sl-one-decision-bar" style="margin-top:13px"><button type="button" class="secondary" id="slOneDecisionButton" aria-expanded="false" aria-controls="decision">Reveal Decision</button></div><div class="decision hidden" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
 <div id="warnings" class="warning hidden" role="note"></div>
 <div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
 <details class="more" id="calculations"><summary>Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
@@ -81,8 +81,8 @@ $('assumpNote').textContent=mode.startsWith('prop')?'The calculator checks expec
 $('randomCheck').checked=false;$('indCheck').checked=false;$('shapeCheck').checked=false;$('assumptions').open=false;updateHyp();}
 function hypothesisStrings(){const d=data[mode];const sign=({left:'<',right:'>',two:'≠'})[d.tail],v=mode==='prop1'?'p':mode==='mean1t'||mode==='mean1z'?'μ':mode==='prop2'?'p₁ − p₂':'μ₁ − μ₂';const value=mode==='prop1'?d.p0:mode==='mean1t'||mode==='mean1z'?d.mu0:mode==='prop2'?'0':d.delta0;return {h0:`H₀: ${v} = ${value}`,ha:`Hₐ: ${v} ${sign} ${value}`};}
 function updateHyp(){const h=hypothesisStrings();$('nulltext').textContent=h.h0;$('alttext').textContent=h.ha;}
-function markStale(){if(last){$('stale').classList.remove('hidden');$('copy').disabled=true;}}
-function resetOutput(){last=null;$('placeholder').classList.remove('hidden');$('results').classList.add('hidden');$('error').classList.add('hidden');$('copyStatus').textContent='';}
+function markStale(){window.StatsLabExporter?.markStale();$('decision').classList.add('hidden');$('slOneDecisionButton').textContent='Reveal Decision';$('slOneDecisionButton').setAttribute('aria-expanded','false');if(last){$('stale').classList.remove('hidden');$('copy').disabled=true;}}
+function resetOutput(){window.StatsLabExporter?.reset();last=null;$('placeholder').classList.remove('hidden');$('results').classList.add('hidden');$('error').classList.add('hidden');$('copyStatus').textContent='';}
 document.querySelectorAll('[data-method]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.method;resetOutput();renderInput()}));
 document.querySelectorAll('[data-source]').forEach(b=>b.addEventListener('click',()=>{data[mode].source=b.dataset.source;markStale();renderInput()}));
 document.querySelectorAll('[data-tail]').forEach(b=>b.addEventListener('click',()=>{data[mode].tail=b.dataset.tail;document.querySelectorAll('[data-tail]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));updateHyp();markStale();}));
@@ -129,11 +129,225 @@ if(r.mode==='mean1t'||r.mode==='mean1z'){intro=r.mode==='mean1t'?'Use the sample
 if(r.mode==='prop2'){intro='The pooled proportion is used under H₀: p₁ = p₂.';formula=mathBlock(mi('z')+mo('=')+frac(sub(phat,mn('1'))+mo('−')+sub(phat,mn('2')),sqrt(sub(phat,mi('pool'))+mo('(')+mn('1')+mo('−')+sub(phat,mi('pool'))+mo(')')+mo('(')+frac(mn('1'),sub(mi('n'),mn('1')))+mo('+')+frac(mn('1'),sub(mi('n'),mn('2')))+mo(')'))));values=`p̂_pool = (${p.x1} + ${p.x2}) / (${p.n1} + ${p.n2}) = ${fmt(p.pool,5)}; z = (${fmt(p.p1,5)} − ${fmt(p.p2,5)}) / ${fmt(p.se,6)} = ${fmt(r.stat,5)}`;}
 if(r.mode==='mean2'){intro='Welch’s method does not assume equal population variances; it uses approximate degrees of freedom.';formula=mathBlock(mi('t')+mo('=')+frac(mrow(sub(xbar,mn('1'))+mo('−')+sub(xbar,mn('2'))+mo('−')+sub(mi('Δ'),mn('0'))),sqrt(frac(math('msup',sub(mi('s'),mn('1'))+mn('2')),sub(mi('n'),mn('1')))+mo('+')+frac(math('msup',sub(mi('s'),mn('2'))+mn('2')),sub(mi('n'),mn('2'))))));values=`t = ((${fmt(p.m1,5)} − ${fmt(p.m2,5)}) − ${fmt(p.delta0,5)}) / ${fmt(p.se,6)} = ${fmt(r.stat,5)}; Welch df ≈ ${fmt(r.df,3)}`;}
 const tailText=r.tail==='two'?`2 × P(${r.dist==='z'?'Z':'T'} ≥ |${fmt(r.stat,3)}|)`:`P(${r.dist==='z'?'Z':'T'} ${r.tail==='left'?'≤':'≥'} ${fmt(r.stat,3)})`;const ctext=r.critical.map(v=>fmt(v,4)).join(', ');return `<p>${intro}</p>${formula}<p class="mono">${escapeHTML(values)}</p><p><strong>P-value:</strong> ${escapeHTML(tailText)} = ${pvfmt(r.p)}. This is the probability of a test statistic at least as extreme as the observed one in the direction specified by Hₐ, assuming H₀ is true.</p><p><strong>Critical value(s):</strong> ${ctext}. The rejection region is set by α = ${fmt(r.alpha,4)} and the alternative hypothesis direction.</p><p><strong>Decision rule:</strong> Reject H₀ when P ≤ α; otherwise fail to reject H₀. The critical-value method gives the same decision.</p>`;}
-function renderResult(r){$('placeholder').classList.add('hidden');$('results').classList.remove('hidden');$('stale').classList.add('hidden');$('copy').disabled=false;$('copyStatus').textContent='';$('testName').textContent=r.title;$('hypothesisText').textContent=r.h.h0+'   ·   '+r.h.ha;
+function renderResult(r){$('decision').classList.add('hidden');$('slOneDecisionButton').textContent='Reveal Decision';$('slOneDecisionButton').setAttribute('aria-expanded','false');$('placeholder').classList.add('hidden');$('results').classList.remove('hidden');$('stale').classList.add('hidden');$('copy').disabled=false;$('copyStatus').textContent='';$('testName').textContent=r.title;$('hypothesisText').textContent=r.h.h0+'   ·   '+r.h.ha;
 const tbody=$('outputRows');tbody.replaceChildren();for(const [key,val] of r.rows){let tr=document.createElement('tr');const a=document.createElement('td'),b=document.createElement('td');a.textContent=key;b.textContent=val;tr.append(a,b);tbody.append(tr)}$('statName').textContent=(r.dist==='t'?'t-statistic':'z-statistic');$('statValue').textContent=r.statLabel+' = '+fmt(r.stat,3);$('pValue').textContent=pvfmt(r.p);$('pAreaLabel').textContent=r.tail+'-tailed';$('criticalText').textContent=r.critical.map(x=>fmt(x,3)).join(', ');$('decisionTitle').textContent=r.reject?'Reject H₀':'Do not reject H₀';$('decisionReason').textContent=(r.p<0.0001?'P < 0.0001':`P = ${fmt(r.p,4)}`)+(r.reject?' ≤ ':' > ')+`α = ${fmt(r.alpha,4)}. `+(r.reject?'The result is statistically significant at the chosen level.':'The evidence is not sufficiently strong to reject H₀ at the chosen level.');$('warnings').classList.toggle('hidden',r.notes.length===0);$('warnings').textContent=r.notes.join(' ');draw('pGraph',r,'p');draw('cGraph',r,'critical');$('calculationDetails').innerHTML=calculation(r);$('calculations').open=false;}
-$('calculate').addEventListener('click',()=>{try{$('error').classList.add('hidden');const r=test();last=r;renderResult(r);if(matchMedia('(max-width: 850px)').matches){requestAnimationFrame(()=>{$('outputheading').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}}catch(e){$('error').textContent=e.message;$('error').classList.remove('hidden');markStale()}});
+$('calculate').addEventListener('click',()=>{try{$('error').classList.add('hidden');const r=test();last=r;renderResult(r);window.StatsLabExporter?.setResult(r);if(matchMedia('(max-width: 850px)').matches){requestAnimationFrame(()=>{$('outputheading').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}}catch(e){$('error').textContent=e.message;$('error').classList.remove('hidden');markStale()}});
 $('copy').addEventListener('click',async()=>{if(!last)return;const r=last,text=[r.title,r.h.h0,r.h.ha,...r.rows.map(x=>x.join(': ')),r.statLabel+' = '+fmt(r.stat,5),'P-value = '+pvfmt(r.p),'Critical value(s) = '+r.critical.map(x=>fmt(x,4)).join(', '),'α = '+fmt(r.alpha,4),r.reject?'Reject H0':'Do not reject H0'].join('\n');try{await navigator.clipboard.writeText(text);$('copyStatus').textContent='Copied.'}catch(e){$('copyStatus').textContent='Copy is not available in this browser.'}});
 // Same appearance preference key and light/dark/auto controls as the CI Calculator.
 const themeKey='statistics-lab-theme',media=matchMedia('(prefers-color-scheme: dark)');let memory='system';function pref(){try{const p=localStorage.getItem(themeKey);return ['light','dark','system'].includes(p)?p:'system'}catch(e){return memory}}function renderTheme(){const p=pref(),actual=p==='system'?(media.matches?'dark':'light'):p;document.documentElement.dataset.theme=actual;document.querySelectorAll('[data-sl-theme]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.slTheme===p)));document.querySelector('meta[name="theme-color"]').content=actual==='dark'?'#14151f':'#faf5ff'}document.querySelectorAll('[data-sl-theme]').forEach(b=>b.addEventListener('click',()=>{memory=b.dataset.slTheme;try{localStorage.setItem(themeKey,memory)}catch(e){}renderTheme()}));if(media.addEventListener)media.addEventListener('change',renderTheme);window.addEventListener('storage',e=>{if(e.key===themeKey)renderTheme()});renderTheme();renderInput();
 })();
-</script></body></html>
+</script><script>(function(){const btn=document.getElementById('slOneDecisionButton');btn.addEventListener('click',function(){if(document.getElementById('stale').classList.contains('hidden')===false)return;const d=document.getElementById('decision');if(document.getElementById('results').classList.contains('hidden'))return;const show=d.classList.contains('hidden');d.classList.toggle('hidden',!show);btn.textContent=show?'Hide Decision':'Reveal Decision';btn.setAttribute('aria-expanded',String(show));});})();</script>
+<script>window.STATS_LAB_EXPORT_CONFIG={kind:"one"};</script>
+<script>
+/* Statistics Lab — standalone export/report enhancement. No third-party libraries. */
+(function(){'use strict';
+const CFG = window.STATS_LAB_EXPORT_CONFIG || {kind:'one'};
+const kind = CFG.kind;
+const $ = id => document.getElementById(id);
+const cardStyle = `
+#copy,#copyStatus{display:none!important}
+.sl-export-wrap{margin-top:16px;border:1px solid #d9cae9;border-radius:11px;overflow:hidden;background:var(--panel,#fff);color:var(--ink,#263147)}
+.sl-export-head{padding:13px 14px;background:var(--panel-soft,#faf5ff);border-bottom:1px solid var(--line,#eadcf5)}
+.sl-export-head h3{margin:0;font-size:15px;color:var(--heading,#581c87)}
+.sl-export-head p{margin:3px 0 0;font-size:11px;color:var(--muted,#64748b)}
+.sl-export-area{padding:13px 14px}.sl-export-label{display:block;font-size:12px;font-weight:800;margin:0 0 8px;color:var(--heading,#581c87)}
+.sl-export-modes{display:flex;gap:5px;padding:4px;border:1px solid var(--line,#ddd);background:var(--track,#f5f3f9);border-radius:9px;max-width:410px}
+.sl-export-modes button{min-height:36px;flex:1;border:0;background:transparent;color:var(--muted,#64748b);font-weight:760;font-size:12px;border-radius:7px;cursor:pointer}
+.sl-export-modes button[aria-pressed=true]{background:var(--panel,#fff);color:var(--heading,#581c87);box-shadow:0 1px 4px #0002}
+.sl-export-custom{margin:12px 0;padding:10px 11px;border:1px solid var(--line,#e5e7eb);border-radius:8px;background:var(--panel-soft,#faf5ff);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 14px}
+.sl-export-custom[hidden],.sl-export-wrap[hidden]{display:none!important}
+.sl-export-custom label{margin:0;display:flex;gap:7px;align-items:start;font-size:11px;font-weight:570;line-height:1.4;cursor:pointer;color:var(--ink,#263147)}
+.sl-export-custom input{width:15px;height:15px;min-height:0;accent-color:#7131af;flex:none}
+.sl-export-preview{margin:12px 0;border:1px solid #e3e0e9;border-radius:7px;background:#fff;overflow:hidden;max-height:380px;overflow-y:auto;color:#202836}
+.sl-export-preview svg{display:block;width:100%;height:auto;background:#fff}
+.sl-export-buttons,.sl-graph-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.sl-export-buttons button,.sl-graph-actions button{min-height:35px;padding:7px 10px;border-radius:7px;border:1px solid var(--line,#e0d6ed);background:var(--panel,#fff);color:var(--heading,#581c87);font-weight:780;font-size:11px;cursor:pointer}
+.sl-export-buttons button:first-child{background:#7131af;color:#fff;border-color:#7131af}
+.sl-export-buttons button:hover,.sl-graph-actions button:hover{filter:brightness(.94)}
+.sl-export-buttons button:disabled,.sl-graph-actions button:disabled{opacity:.45;cursor:not-allowed}
+.sl-export-foot{font-size:10px;color:var(--muted,#64748b);margin-top:8px;line-height:1.5}
+.sl-export-graphs{margin:13px 0 0;border-top:1px solid var(--line,#e4e4e7);padding-top:12px}
+.sl-graph-row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line2,#eee)}
+.sl-graph-row:last-child{border:0}.sl-graph-row strong{font-size:11px}
+.sl-export-status{font-size:11px;color:var(--muted,#64748b);margin-left:5px;line-height:1.6}
+.sl-export-status[role=alert]{color:#be123c}
+html[data-theme=dark] .sl-export-wrap{border-color:#584767}
+html[data-theme=dark] .sl-export-preview{border-color:#62536b}
+@media(max-width:480px){.sl-export-custom{grid-template-columns:1fr}.sl-export-area{padding:11px}.sl-graph-row{align-items:flex-start}}
+`;
+const st=document.createElement('style');st.textContent=cardStyle;document.head.appendChild(st);
+let result=null, stale=false, mode='standard';
+let custom={sample:true,hypotheses:true,details:false,critical:true,conditions:false,reference:false,decision:false};
+let reportSvg='', reportPlain='';
+const host=(kind==='ci'? $('output'): $('results'));
+if(!host) return;
+const body=(kind==='ci'? host.querySelector('.outputbody') : host.querySelector('.outputbody')) || host;
+const exporter=document.createElement('section'); exporter.className='sl-export-wrap';exporter.hidden=true;exporter.setAttribute('aria-label','Export statistical output');
+exporter.innerHTML=`<div class="sl-export-head"><h3>Export Statistical Output</h3><p>Compact, slide-ready statistical software output. Results only; interpret the evidence yourself.</p></div><div class="sl-export-area">
+  <span class="sl-export-label">Output detail</span><div class="sl-export-modes" role="group" aria-label="Output detail"><button type="button" data-sl-mode="standard" aria-pressed="true">Standard</button><button type="button" data-sl-mode="full" aria-pressed="false">Full</button><button type="button" data-sl-mode="custom" aria-pressed="false">Custom</button></div>
+  <div id="sl-export-custom" class="sl-export-custom" hidden>
+  <label><input type="checkbox" data-sl-option="sample" checked>Sample / group statistics</label>
+  <label class="sl-hypothesis-only"><input type="checkbox" data-sl-option="hypotheses" checked>Hypotheses</label>
+  <label><input type="checkbox" data-sl-option="details">Extra calculation details</label>
+  <label class="sl-hypothesis-only"><input type="checkbox" data-sl-option="critical" checked>Critical value(s)</label>
+  <label><input type="checkbox" data-sl-option="conditions">Conditions reviewed (self-reported)</label>
+  <label class="sl-ci-only"><input type="checkbox" data-sl-option="reference">Reference value (if supplied)</label>
+  <label class="sl-hypothesis-only"><input type="checkbox" data-sl-option="decision">Revealed decision (optional)</label>
+  </div>
+  <div class="sl-export-preview" id="sl-export-preview" aria-label="Statistical output preview"></div>
+  <div class="sl-export-buttons"><button type="button" data-sl-action="copy-image">Copy image</button><button type="button" data-sl-action="png">Download PNG</button><button type="button" data-sl-action="svg">Download SVG</button><button type="button" data-sl-action="text">Copy text</button></div>
+  <p class="sl-export-foot">Values are rounded for display only; calculations use full precision. Exported reports do not include an automatic interpretation. You can paste the PNG into Google Slides.</p>
+  <div class="sl-export-graphs"><span class="sl-export-label">Export Graphs Separately</span><div id="sl-export-graph-rows"></div><p class="sl-export-foot">The confidence-interval curve shows the reference distribution and critical values; hypothesis-test graphs show P-value or rejection-region shading.</p></div>
+  <div id="sl-export-status" class="sl-export-status" role="status" aria-live="polite"></div>
+</div>`;
+body.appendChild(exporter);
+if(kind==='ci')exporter.querySelectorAll('.sl-hypothesis-only').forEach(e=>e.remove());
+else exporter.querySelectorAll('.sl-ci-only').forEach(e=>e.remove());
+const status=(message,error)=>{const el=$('sl-export-status');el.textContent=message;el.setAttribute('role',error?'alert':'status');};
+const options=()=>mode==='standard'?{sample:true,hypotheses:true,details:false,critical:true,conditions:false,reference:false,decision:false}:
+  mode==='full'?{sample:true,hypotheses:true,details:true,critical:true,conditions:true,reference:true,decision:false}:custom;
+function num(n,d=3){if(!Number.isFinite(Number(n)))return '—';let v=Number(n);if(Object.is(v,-0)||Math.abs(v)<Math.pow(10,-(d+3)))v=0;return v.toFixed(d);}
+function trim(n,d=3){return Number.isInteger(Number(n))?String(n):num(n,d);}
+function pformat(p,a){if(p<.0001)return 'P < 0.0001';let digits=4;
+ if(Number.isFinite(a)&&p!==a){while(digits<11&&Number(p.toFixed(digits))===Number(a.toFixed(digits)))digits++;}
+ return num(p,digits);
+}
+function criticalFmt(x,stat){let digits=3;if(Number.isFinite(stat)&&x!==stat){while(digits<9&&Number(x.toFixed(digits))===Number(stat.toFixed(digits)))digits++;}return num(x,digits);}
+function statFmt(r){let d=3;for(const c of r.critical||[]){if(c!==r.stat){while(d<10&&Number(c.toFixed(d))===Number(r.stat.toFixed(d)))d++;}}return num(r.stat,d);}
+function ciFmt(n,prop,ref,edge){let d=prop?4:3;
+ if(Number.isFinite(ref)&&Number.isFinite(edge)&&ref!==edge){while(d<10&&Number(ref.toFixed(d))===Number(edge.toFixed(d)))d++;}
+ return num(n,d);
+}
+function makeReport(r){const o=options(); const sections=[];
+ const add=(title,cols,rows)=>{if(rows&&rows.length)sections.push({title,cols,rows});};
+ const addNote=(title,text)=>sections.push({title,note:text});
+ if(kind==='ci'){
+  const prop=r.method==='prop';const name=prop?'One-Proportion z Interval':r.method==='zmean'?'One-Mean z Interval (σ known)':'One-Mean t Interval';
+  const methodDetail=prop?'Wald (normal-approximation) method':r.method==='zmean'?'Known population standard deviation':'Student t method; σ unknown';
+  if(o.sample){
+    let rows=[['Sample size (n)',trim(r.data.n)],[prop?'Sample proportion (p̂)':'Sample mean (x̄)',prop?num(r.data.p,4):num(r.data.mean,3)]];
+    if(prop)rows.splice(1,0,['Successes (x)',trim(r.data.x,3)]);
+    else rows.push([r.method==='zmean'?'Known population SD (σ)':'Sample SD (s)',num(r.data.s,3)]);
+    add('Sample Statistics',['Statistic','Value'],rows);
+  }
+  add('Confidence Interval',['Confidence','Lower limit','Upper limit'],[[num(r.conf,Number.isInteger(r.conf)?0:1)+'%',ciFmt(r.lower,prop,r.reference,r.lower),ciFmt(r.upper,prop,r.reference,r.upper)]]);
+  add('Interval Summary',['Point estimate','Standard error','Margin of error'],[[num(r.center,prop?4:3),num(r.se,prop?5:4),num(r.E,prop?4:3)]]);
+  if(o.details){add('Calculation Details',['Statistic','Value'],[['Point estimate',num(r.center,prop?4:3)],['Critical value ('+(r.df===null?'z*':'t*')+')',num(r.crit,3)],...(r.df===null?[]:[['Degrees of freedom',trim(r.df)]]),['Standard error',num(r.se,prop?5:4)],['Margin of error',num(r.E,prop?4:3)]]);}
+  if(o.reference && Number.isFinite(r.reference))add('Reference Value',['Reference','Position relative to interval'],[[ciFmt(r.reference,prop,r.reference,r.lower),r.reference>=r.lower&&r.reference<=r.upper?'Inside interval':'Outside interval']]);
+  if(o.conditions)addNote('Student-Reviewed Conditions',`Random sampling / independence: ${r.reviewed?.random?'Marked reviewed':'Not marked reviewed'} · Distribution / counts: ${r.reviewed?.shape?'Marked reviewed':'Not marked reviewed'}. These checks are self-reported, not software-verified.`);
+  return {title:name,subtitle:num(r.conf,Number.isInteger(r.conf)?0:1)+'% confidence interval · '+methodDetail+(r.units?' · Units: '+r.units:''),sections};
+ }
+ const p=r.pieces||{},rows=[];
+ if(r.mode==='prop1')rows.push(['n',trim(p.n)],['Successes (x)',trim(p.phat*p.n)],['p̂',num(p.phat,4)],['Null proportion p₀',num(p.p0,4)]);
+ else if(r.mode==='mean1t'||r.mode==='mean1z')rows.push(['n',trim(p.n)],['x̄',num(p.xbar,3)],[r.mode==='mean1t'?'Sample SD (s)':'Known population SD (σ)',num(p.s,3)],['Null mean μ₀',num(p.mu0,3)]);
+ else if(r.mode==='prop2')rows.push(['Group 1 successes / n',trim(p.x1)+' / '+trim(p.n1)],['Group 1 proportion (p̂₁)',num(p.p1,4)],['Group 2 successes / n',trim(p.x2)+' / '+trim(p.n2)],['Group 2 proportion (p̂₂)',num(p.p2,4)]);
+ else if(r.mode==='mean2')rows.push(['Group 1 n / mean / SD',`${trim(p.n1)} / ${num(p.m1,3)} / ${num(p.s1,3)}`],['Group 2 n / mean / SD',`${trim(p.n2)} / ${num(p.m2,3)} / ${num(p.s2,3)}`],['Null difference Δ₀',num(p.delta0,3)]);
+ else if(r.mode==='paired')rows.push(['Complete pairs (n)',trim(p.n)],['Mean difference (d̄)',num(p.dbar,3)],['SD of differences (sᵈ)',num(p.sd,3)],['Null difference Δ₀',num(p.delta0,3)]);
+ if(o.hypotheses)add('Hypotheses',['Hypothesis','Statement'],[['H₀',r.h.h0.replace(/^H₀:\s*/, '')],['Hₐ',r.h.ha.replace(/^Hₐ:\s*/, '')]]);
+ if(o.sample){
+  if(r.mode==='prop1')add('Sample Statistics',['n','Successes (x)','Sample p̂','Null p₀'],[[trim(p.n),trim(p.phat*p.n),num(p.phat,4),num(p.p0,4)]]);
+  else if(r.mode==='mean1t'||r.mode==='mean1z')add('Sample Statistics',['n','Mean (x̄)',r.mode==='mean1t'?'Sample SD (s)':'Known SD (σ)','Null μ₀'],[[trim(p.n),num(p.xbar,3),num(p.s,3),num(p.mu0,3)]]);
+  else if(r.mode==='prop2')add('Group Statistics',['Group','n','Successes','Sample p̂'],[['Group 1',trim(p.n1),trim(p.x1),num(p.p1,4)],['Group 2',trim(p.n2),trim(p.x2),num(p.p2,4)]]);
+  else if(r.mode==='mean2')add('Group Statistics',['Group','n','Mean (x̄)','SD (s)'],[['Group 1',trim(p.n1),num(p.m1,3),num(p.s1,3)],['Group 2',trim(p.n2),num(p.m2,3),num(p.s2,3)]]);
+  else if(r.mode==='paired')add('Paired Difference Statistics',['Complete pairs','Mean d̄','SD of d','Null Δ₀'],[[trim(p.n),num(p.dbar,3),num(p.sd,3),num(p.delta0,3)]]);
+ }
+ const tail=r.tail==='two'?'Two-tailed':r.tail==='left'?'Left-tailed':'Right-tailed';
+ let res=[['Test statistic',r.statLabel+' = '+statFmt(r)],...(r.df===null?[]:[['df',Number.isInteger(r.df)?trim(r.df):num(r.df,2)]]),['P-value',pformat(r.p,r.alpha)],['Significance level (α)',num(r.alpha,Math.abs(r.alpha)>=.0001?4:7)]];
+ if(o.critical)res.push(['Critical value(s)',r.critical.map(x=>criticalFmt(x,r.stat)).join(', ')]);
+ add('Hypothesis Test Results',['Statistic','Value'],res);
+ if(o.details){let details=[];
+ if(Number.isFinite(p.se))details.push(['Standard error',num(p.se,6)]);
+ if(Number.isFinite(p.pool))details.push(['Pooled proportion (p̂pool)',num(p.pool,5)]);
+ if(Number.isFinite(p.phat))details.push(['Observed proportion (p̂)',num(p.phat,5)]);
+ if(Number.isFinite(p.p1)&&Number.isFinite(p.p2))details.push(['Observed difference (p̂₁ − p̂₂)',num(p.p1-p.p2,5)]);
+ if(Number.isFinite(p.m1)&&Number.isFinite(p.m2))details.push(['Observed difference (x̄₁ − x̄₂)',num(p.m1-p.m2,4)]);
+ if(r.mode==='paired')details.push(['Difference defined as','Measurement 1 − Measurement 2']);
+ if(r.tail==='two')details.push(['Tail direction','Two-tailed (≠)']);
+ else details.push(['Tail direction',r.tail==='left'?'Left-tailed (<)':'Right-tailed (>)']);
+ add('Additional Details',['Statistic','Value'],details);
+ }
+ if(o.conditions)addNote('Student-Reviewed Conditions',`Random sampling: ${r.checks?.random?'Marked reviewed':'Not marked reviewed'} · Independence: ${r.checks?.ind?'Marked reviewed':'Not marked reviewed'} · Shape / expected counts: ${r.checks?.shape?'Marked reviewed':'Not marked reviewed'}. Self-reported only; verify assumptions from the data and context.`);
+ if(o.decision){const decisionEl=$('decision');const shown=decisionEl&&!decisionEl.classList.contains('hidden');
+ if(shown)add('Decision (Student-Requested)',['At α = '+num(r.alpha,4),'Decision'],[['P '+(r.reject?'≤':'>')+' α',r.reject?'Reject H₀':'Fail to reject H₀']]);
+ else addNote('Decision Not Revealed','Use the calculator’s Reveal Decision button first if you want to include this check.');
+ }
+ return {title:r.title,subtitle:tail+' · α = '+num(r.alpha,4)+(r.mode==='paired'?' · Differences: Measurement 1 − Measurement 2':r.mode==='mean2'?' · Welch unequal-variance method':''),sections};
+}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
+function wrapText(text,maxChars){let out=[],line='';for(const word of String(text).split(/\s+/)){if(!word)continue;if((line+' '+word).trim().length>maxChars&&line){out.push(line);line=word;}else line=(line+' '+word).trim();}if(line)out.push(line);return out.length?out:[''];}
+function textAt(x,y,content,size=14,weight=400,fill='#303243',anchor='start'){
+ return `<text x="${x}" y="${y}" fill="${fill}" font-family="Lato,Segoe UI,Arial,sans-serif" font-size="${size}" font-weight="${weight}" text-anchor="${anchor}">${esc(content)}</text>`;
+}
+function svgReport(report){const W=680,L=34,R=646;let y=0,s=[];
+ s.push(`<rect x="0" y="0" width="${W}" height="100%" fill="#ffffff"/>`);
+ s.push('<rect x="0" y="0" width="680" height="7" fill="#ad14d7"/>');
+ s.push(textAt(L,37,'STATISTICS LAB  /  STATISTICAL OUTPUT',11,800,'#7b359f'));
+ s.push(textAt(L,71,report.title,23,750,'#35194d'));
+ let subtitleLines=wrapText(report.subtitle,87);
+ subtitleLines.forEach((l,i)=>s.push(textAt(L,95+i*17,l,12,500,'#657184')));
+ y=112+Math.max(0,subtitleLines.length-1)*17;
+ for(const section of report.sections){y+=12;
+  s.push(`<rect x="${L}" y="${y}" width="${R-L}" height="26" rx="3" fill="#f6f2fa"/>`);
+  s.push(textAt(L+12,y+18,section.title.toUpperCase(),12,750,'#522976'));y+=30;
+  if(section.note){const ll=wrapText(section.note,99);for(const l of ll){s.push(textAt(L+9,y+18,l,11,400,'#5e6779'));y+=18;}y+=3;continue;}
+  const cols=section.cols||['Statistic','Value'];const multi=cols.length>2;
+  const xBounds=multi?cols.map((_,i)=>L+i*(R-L)/cols.length):[L,L+245];
+  const widths=multi?cols.map(()=> (R-L)/cols.length):[245,(R-L)-245];
+  s.push(`<rect x="${L}" y="${y}" width="${R-L}" height="27" fill="#f8f9fb"/>`);
+  cols.forEach((c,i)=>s.push(textAt(xBounds[i]+9,y+18,c,11,750,'#69738a')));y+=27;
+  for(const row of section.rows){const cellLines=row.map((x,i)=>wrapText(x,Math.floor(widths[i]/(i===0?7.5:7.1))));
+   const lines=Math.max(1,...cellLines.map(x=>x.length)),height=Math.max(29,lines*16+10);
+   s.push(`<rect x="${L}" y="${y+height-1}" width="${R-L}" height="1" fill="#ececf1"/>`);
+   for(let i=0;i<row.length;i++)cellLines[i].forEach((txt,j)=>s.push(textAt(xBounds[i]+9,y+20+j*16,txt,12,i===row.length-1?660:450,i===row.length-1?'#3d2455':'#404856')));
+   y+=height;
+  }
+ }
+ y+=26;s.push(`<rect x="${L}" y="${y}" width="${R-L}" height="1" fill="#e9ddeb"/>`);
+ s.push(textAt(L,y+20,'Calculated from user-entered data · Rounded for display · Interpret results in context',10,400,'#8791a0'));
+ y+=45;
+ // Replace the full-height background with an exact height for reliable standalone SVG rasterization.
+ s[0]=`<rect x="0" y="0" width="${W}" height="${y}" fill="#ffffff"/>`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${y}" viewBox="0 0 ${W} ${y}" role="img" aria-label="${esc(report.title)} statistical output">${s.join('')}</svg>`;
+}
+function toText(report){let lines=['Statistics Lab — '+report.title,report.subtitle];for(const s of report.sections){lines.push('',s.title);if(s.note)lines.push(s.note);else{lines.push(s.cols.join('\t'));s.rows.forEach(r=>lines.push(r.join('\t')));}}lines.push('','Display values rounded; calculations used full precision.');return lines.join('\n');}
+function setMode(m){mode=m;exporter.querySelectorAll('[data-sl-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.slMode===m)));$('sl-export-custom').hidden=m!=='custom';renderExport();}
+function renderExport(){if(!result||stale){exporter.hidden=true;return;}exporter.hidden=false;
+ const r=makeReport(result);reportSvg=svgReport(r);reportPlain=toText(r);$('sl-export-preview').innerHTML=reportSvg;renderGraphs();}
+const graphNames=kind==='ci'?[['curve','CI reference distribution']]:[['pGraph','P-value graph'],['cGraph','Critical-value graph']];
+function renderGraphs(){const cont=$('sl-export-graph-rows');cont.replaceChildren();for(const [id,title] of graphNames){if(!$(id))continue;const row=document.createElement('div');row.className='sl-graph-row';const name=document.createElement('strong');name.textContent=title;const btns=document.createElement('div');btns.className='sl-graph-actions';for(const [action,label] of [['copy','Copy'],['png','PNG'],['svg','SVG']]){const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.addEventListener('click',()=>exportGraph(id,action));btns.append(btn);}row.append(name,btns);cont.append(row);}}
+function makeGraphSVG(id){const origin=$(id);if(!origin)throw Error('Graph not found');const rect=origin.viewBox.baseVal;
+ const width=rect&&rect.width?rect.width:520,height=rect&&rect.height?rect.height:180;
+ const title=id==='curve'?'Confidence Interval Reference Distribution':id==='pGraph'?'P-Value Area':'Critical-Value Rejection Region';
+ const clone=origin.cloneNode(true);
+ // Resolve CSS variable colors before serializing into an independent file.
+ const originals=[origin,...origin.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];
+ originals.forEach((node,i)=>{const c=copies[i],sty=getComputedStyle(node);['stroke','fill'].forEach(attr=>{const current=c.getAttribute(attr);if(current&&current.includes('var('))c.setAttribute(attr,sty.getPropertyValue(attr))});if(c.tagName.toLowerCase()==='text'&&!c.getAttribute('font-family'))c.setAttribute('font-family','Arial, sans-serif');});
+ clone.setAttribute('xmlns','http://www.w3.org/2000/svg');clone.setAttribute('x','0');clone.setAttribute('y','43');clone.setAttribute('width',String(width));clone.setAttribute('height',String(height));
+ clone.removeAttribute('style');
+ const legend=id==='curve'?'Central confidence area and standardized critical values':id==='pGraph'?'Blue: P-value area   ·   Purple: observed statistic':'Teal: rejection region   ·   Purple: observed statistic';
+ const h=height+85;
+ return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${h}" viewBox="0 0 ${width} ${h}"><rect x="0" y="0" width="${width}" height="${h}" fill="#ffffff"/>${textAt(13,26,title,15,750,'#581c87')}${new XMLSerializer().serializeToString(clone)}${textAt(13,height+68,legend,10,450,'#596374')}</svg>`;
+}
+function fileName(label,ext){return 'StatisticsLab_'+label+'_'+(kind==='ci'?'CI':kind==='one'?'OneSampleHT':'TwoSampleHT')+'.'+ext;}
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function svgBlob(source){return new Blob([source],{type:'image/svg+xml;charset=utf-8'});}
+function raster(source,scale=2){return new Promise((resolve,reject)=>{const b=svgBlob(source),url=URL.createObjectURL(b);const im=new Image();im.onload=()=>{try{const canvas=document.createElement('canvas');canvas.width=Math.round(im.naturalWidth*scale);canvas.height=Math.round(im.naturalHeight*scale);const ctx=canvas.getContext('2d');if(!ctx)throw Error('Canvas is unavailable.');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(im,0,0,canvas.width,canvas.height);canvas.toBlob(blob=>{URL.revokeObjectURL(url);if(blob)resolve(blob);else reject(Error('Could not convert SVG to PNG.'))},'image/png');}catch(err){URL.revokeObjectURL(url);reject(err);}};im.onerror=()=>{URL.revokeObjectURL(url);reject(Error('Graph could not be rasterized.'))};im.src=url;});}
+async function copyBlob(blob){if(!navigator.clipboard||!window.ClipboardItem)throw Error('Image clipboard is not supported in this browser. Use Download PNG instead.');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);}
+async function exportGraph(id,action){try{if(stale||!result)throw Error('Recompute first to export up-to-date results.');const source=makeGraphSVG(id);const label=id==='curve'?'CI_Graph':id==='pGraph'?'PValue_Graph':'CriticalValue_Graph';if(action==='svg'){download(svgBlob(source),fileName(label,'svg'));status('Graph SVG downloaded.');return;}const png=await raster(source);if(action==='png'){download(png,fileName(label,'png'));status('Graph PNG downloaded.');}else{await copyBlob(png);status('Graph image copied. Paste it into Google Slides.');}}
+catch(e){status(e.message,true);}}
+exporter.querySelectorAll('[data-sl-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.slMode)));
+exporter.querySelectorAll('[data-sl-option]').forEach(c=>c.addEventListener('change',()=>{custom[c.dataset.slOption]=c.checked;renderExport();}));
+exporter.querySelectorAll('[data-sl-action]').forEach(b=>b.addEventListener('click',async()=>{try{if(!result||stale)throw Error('Recompute before exporting.');const action=b.dataset.slAction;
+ if(action==='text'){await navigator.clipboard.writeText(reportPlain);status('Statistical output copied as text.');}
+ else if(action==='svg'){download(svgBlob(reportSvg),fileName('Statistical_Output','svg'));status('Statistical output SVG downloaded.');}
+ else{const png=await raster(reportSvg);if(action==='png'){download(png,fileName('Statistical_Output','png'));status('Statistical output PNG downloaded.');}else{await copyBlob(png);status('Statistical output image copied. Paste it into Google Slides.');}}
+ }catch(e){status(e.message,true);}}));
+window.StatsLabExporter={
+ setResult(r){result=r;stale=false;status('');renderExport();},
+ markStale(){stale=true;exporter.hidden=true;status('Inputs changed. Compute again to export updated results.');},
+ reset(){result=null;stale=false;exporter.hidden=true;status('');}
+};
+})();
+
+</script>
+</body></html>
