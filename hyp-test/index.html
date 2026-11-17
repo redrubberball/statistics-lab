@@ -59,7 +59,7 @@ html[data-theme="dark"]{color-scheme:dark;--bg:#11141e;--ink:#f2eff8;--muted:#b6
 <label>P-value shading<input type="color" data-graph-color="pArea" value="#2b72da" aria-label="P-value shading color"></label>
 <label>Rejection regions<input type="color" data-graph-color="rejection" value="#129c96" aria-label="Rejection region color"></label>
 <label>Test statistic line<input type="color" data-graph-color="stat" value="#b21f9f" aria-label="Test statistic line color"></label>
-</div><div class="actions"><button type="button" class="secondary" id="surpriseColors">🎲 Surprise me!</button><button type="button" class="secondary" id="resetGraphColors">Reset colors</button></div><p class="hint">Choose any colors. Changes appear immediately and are included in copied or downloaded graphs.</p></div></details>
+</div><div class="actions"><button type="button" class="secondary" id="surpriseColors">🎲 Surprise me!</button><button type="button" class="secondary" id="resetGraphColors">Reset colors</button></div><p class="hint">Choose any colors. The export previews update immediately; the calculator graphs stay unchanged.</p></div></details>
 <div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 210" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend">Shading: P-value <span style="margin-left:10px">Dotted: observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 210" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend">Shading: rejection region <span style="margin-left:10px">Dotted: observed statistic</span></div></div></div>
 <details class="more" id="calculations"><summary>Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
 <div class="actions"><button class="secondary" id="copy" type="button">Copy output</button><span class="hint" id="copyStatus" role="status"></span></div>
@@ -134,14 +134,17 @@ function pvfmt(p){return p<0.0001?'P < 0.0001':fmt(p,4)}
 function svgEl(tag,attrs={},txt){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(txt!==undefined)e.textContent=txt;return e;}
 const defaultGraphColors={curve:'#ad14d7',pArea:'#2b72da',rejection:'#129c96',stat:'#b21f9f'};
 let graphColors={...defaultGraphColors};
-function redrawGraphs(){if(!last||!$('stale').classList.contains('hidden'))return;draw('pGraph',last,'p');draw('cGraph',last,'critical');}
+function redrawGraphs(){window.StatsLabRefreshGraphExports?.();}
 function setGraphColors(colors){graphColors={...colors};document.querySelectorAll('[data-graph-color]').forEach(el=>{el.value=graphColors[el.dataset.graphColor]});redrawGraphs();}
 document.querySelectorAll('[data-graph-color]').forEach(el=>el.addEventListener('input',()=>{graphColors[el.dataset.graphColor]=el.value;redrawGraphs()}));
+window.StatsLabGetGraphColors=()=>({...graphColors});
 $('resetGraphColors').addEventListener('click',()=>setGraphColors(defaultGraphColors));
 function hueColor(h,s,l){const h0=((h%360)+360)%360;const a=s*Math.min(l,100-l)/10000;const f=n=>{const k=(n+h0/30)%12;return Math.round(255*(l/100-a*Math.max(-1,Math.min(k-3,9-k,1))))};return '#'+[f(0),f(8),f(4)].map(v=>v.toString(16).padStart(2,'0')).join('');}
 // Coordinate hues across the four series, while keeping enough contrast on white.
 $('surpriseColors').addEventListener('click',()=>{const h=Math.random()*360;const offsets=[0,115,225,300];const shuffled=offsets.map(x=>x+Math.round((Math.random()-.5)*30));setGraphColors({curve:hueColor(h+shuffled[0],69,38),pArea:hueColor(h+shuffled[1],71,39),rejection:hueColor(h+shuffled[2],66,37),stat:hueColor(h+shuffled[3],78,32)});});
 function draw(id,r,kind){
+ // Keep the teaching graphs consistent; custom colors are applied to exports.
+ const graphColors=defaultGraphColors;
  const svg=$(id);svg.replaceChildren();
  const left=24,right=496,baseline=164,center=260,width=right-left;
  const ext=Math.max(3.6,Math.abs(r.stat)*1.15,...r.critical.map(x=>Math.abs(x)*1.18));
@@ -170,7 +173,9 @@ function draw(id,r,kind){
   zones.forEach(([a,b,label])=>{const mid=(a+b)/2;if(b-a<42)return;const size=b-a<105?9:11;svg.append(svgEl('text',{x:mid,y:17,'font-size':size,'font-weight':800,fill:label.startsWith('Reject')?graphColors.rejection:'#536076','text-anchor':'middle'},label));});
  }else{
   const tails=r.tail==='two'?[[left,toX(-Math.abs(r.stat))],[toX(Math.abs(r.stat)),right]]:r.tail==='right'?[[toX(r.stat),right]]:[[left,toX(r.stat)]];
-  tails.forEach(([a,b])=>{if(b-a>28)svg.append(svgEl('text',{x:(a+b)/2,y:105,'font-size':11,'font-weight':800,fill:graphColors.pArea,'text-anchor':'middle'},`P-value = ${r.p<0.0001?'< 0.0001':fmt(r.p,4)}`));});
+  // Label the total P-value only once above the graph. In a two-tailed test,
+  // both shaded tails contribute to that total; repeating it in each tail
+  // would incorrectly suggest that each tail has the full P-value.
   const variable=r.dist==='z'?'Z':'T',value=fmt(r.stat,3);
   const expression=r.tail==='right'?`P(${variable} > ${value})`:r.tail==='left'?`P(${variable} < ${value})`:`2P(${variable} > |${value}|)`;
   const answer=r.p<0.0001?'< 0.0001':'= '+fmt(r.p,4);
@@ -227,6 +232,7 @@ const cardStyle = `
 .sl-graph-row:last-child{border:0}.sl-graph-row strong{font-size:11px}
 .sl-export-status{font-size:11px;color:var(--muted,#64748b);margin-left:5px;line-height:1.6}
 .sl-export-status[role=alert]{color:#be123c}
+.sl-export-graphs>summary{cursor:pointer;color:var(--heading,#581c87);padding:5px 0 10px}.sl-export-graphs .graph-customizer{margin:0 0 12px}.sl-graph-preview-card{border:1px solid var(--line,#e4e4e7);border-radius:9px;margin:10px 0;padding:8px;background:var(--panel,#fff)}.sl-graph-preview-card .sl-graph-row{padding:2px 0 8px}.sl-graph-export-preview{background:#fff;border:1px solid #e4e4e7;border-radius:6px;overflow:hidden;max-width:520px;margin:auto}.sl-graph-export-preview svg{display:block;width:100%;height:auto}
 html[data-theme=dark] .sl-export-wrap{border-color:#584767}
 html[data-theme=dark] .sl-export-preview{border-color:#62536b}
 @media(max-width:480px){.sl-export-custom{grid-template-columns:1fr}.sl-export-area{padding:11px}.sl-graph-row{align-items:flex-start}}
@@ -253,10 +259,13 @@ exporter.innerHTML=`<div class="sl-export-head"><h3>Export Statistical Output</h
   <div class="sl-export-preview" id="sl-export-preview" aria-label="Statistical output preview"></div>
   <div class="sl-export-buttons"><button type="button" data-sl-action="copy-image">Copy image</button><button type="button" data-sl-action="png">Download PNG</button><button type="button" data-sl-action="svg">Download SVG</button><button type="button" data-sl-action="text">Copy text</button></div>
   <p class="sl-export-foot">Values are rounded for display only; calculations use full precision. Exported reports do not include an automatic interpretation. You can paste the PNG into Google Slides.</p>
-  <div class="sl-export-graphs"><span class="sl-export-label">Export Graphs Separately</span><div id="sl-export-graph-rows"></div><p class="sl-export-foot">The confidence-interval curve shows the reference distribution and critical values; hypothesis-test graphs show P-value or rejection-region shading.</p></div>
+  <details class="sl-export-graphs" id="sl-export-graphs"><summary class="sl-export-label">🎨 Customize &amp; Download Graphs</summary><div id="sl-export-graph-rows"></div><p class="sl-export-foot">Preview your selected colors below, then copy or download each graph separately.</p></details>
   <div id="sl-export-status" class="sl-export-status" role="status" aria-live="polite"></div>
 </div>`;
 body.appendChild(exporter);
+// Keep the color controls with graph exports, not with the teaching graphs.
+const graphColorControls=$('graphCustomizer');
+if(graphColorControls&&kind!=='ci'){$('sl-export-graphs').insertBefore(graphColorControls,$('sl-export-graph-rows'));graphColorControls.open=true;graphColorControls.querySelector('summary').textContent='Choose export colors';}
 if(kind==='ci')exporter.querySelectorAll('.sl-hypothesis-only').forEach(e=>e.remove());
 else exporter.querySelectorAll('.sl-ci-only').forEach(e=>e.remove());
 const status=(message,error)=>{const el=$('sl-export-status');el.textContent=message;el.setAttribute('role',error?'alert':'status');};
@@ -362,8 +371,7 @@ function compactSvgReport(report){
   sample.forEach(([k,v],i)=>line(12,118+i*18,`${k}: ${v}`,12,600,'#334155'));y=sample.length===2?144:126;
  }
  s.push(`<rect x="12" y="${y+3}" width="${W-24}" height="29" rx="5" fill="#f6f0fb"/>`);
- line(22,y+23,'Test statistic',12,700,'#5a3677');
- line(W-126,y+23,`${r.statLabel} = ${statFmt(r)}`,16,800,'#42205d');
+ line(22,y+23,`Test statistic:   ${r.statLabel} = ${statFmt(r)}`,15,800,'#42205d');
  const H=y+38;s[0]=`<rect width="${W}" height="${H}" fill="#fff"/>`;
  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(report.title)} compact statistical output">${s.join('')}</svg>`;
 }
@@ -403,17 +411,21 @@ function setMode(m){mode=m;exporter.querySelectorAll('[data-sl-mode]').forEach(b
 function renderExport(){if(!result||stale){exporter.hidden=true;return;}exporter.hidden=false;
  const r=makeReport(result);reportSvg=svgReport(r);reportPlain=toText(r);$('sl-export-preview').innerHTML=reportSvg;renderGraphs();}
 const graphNames=kind==='ci'?[['curve','CI reference distribution']]:[['pGraph','P-value graph'],['cGraph','Critical-value graph']];
-function renderGraphs(){const cont=$('sl-export-graph-rows');cont.replaceChildren();for(const [id,title] of graphNames){if(!$(id))continue;const row=document.createElement('div');row.className='sl-graph-row';const name=document.createElement('strong');name.textContent=title;const btns=document.createElement('div');btns.className='sl-graph-actions';for(const [action,label] of [['copy','Copy'],['png','PNG'],['svg','SVG']]){const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.addEventListener('click',()=>exportGraph(id,action));btns.append(btn);}row.append(name,btns);cont.append(row);}}
+function renderGraphs(){const cont=$('sl-export-graph-rows');cont.replaceChildren();for(const [id,title] of graphNames){if(!$(id))continue;const wrap=document.createElement('section');wrap.className='sl-graph-preview-card';const row=document.createElement('div');row.className='sl-graph-row';const name=document.createElement('strong');name.textContent=title;const btns=document.createElement('div');btns.className='sl-graph-actions';for(const [action,label] of [['copy','Copy'],['png','PNG'],['svg','SVG']]){const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.addEventListener('click',()=>exportGraph(id,action));btns.append(btn);}row.append(name,btns);const preview=document.createElement('div');preview.className='sl-graph-export-preview';preview.innerHTML=makeGraphSVG(id);wrap.append(row,preview);cont.append(wrap);}}
+window.StatsLabRefreshGraphExports=()=>{if(result&&!stale)renderGraphs();};
 function makeGraphSVG(id){const origin=$(id);if(!origin)throw Error('Graph not found');const rect=origin.viewBox.baseVal;
  const width=rect&&rect.width?rect.width:520,height=rect&&rect.height?rect.height:180;
  const title=id==='curve'?'Confidence Interval Reference Distribution':id==='pGraph'?'P-Value Area':'Critical-Value Rejection Region';
  const clone=origin.cloneNode(true);
+ const defaults={curve:'#ad14d7',pArea:'#2b72da',rejection:'#129c96',stat:'#b21f9f'};
+ const chosen=window.StatsLabGetGraphColors?.()||defaults;
+ const replacements=Object.fromEntries(Object.keys(defaults).map(k=>[defaults[k],chosen[k]]));
  // Resolve CSS variable colors before serializing into an independent file.
  const originals=[origin,...origin.querySelectorAll('*')],copies=[clone,...clone.querySelectorAll('*')];
- originals.forEach((node,i)=>{const c=copies[i],sty=getComputedStyle(node);['stroke','fill'].forEach(attr=>{const current=c.getAttribute(attr);if(current&&current.includes('var('))c.setAttribute(attr,sty.getPropertyValue(attr))});if(c.tagName.toLowerCase()==='text'&&!c.getAttribute('font-family'))c.setAttribute('font-family','Arial, sans-serif');});
+ originals.forEach((node,i)=>{const c=copies[i],sty=getComputedStyle(node);['stroke','fill'].forEach(attr=>{let current=c.getAttribute(attr);if(current&&current.includes('var('))current=sty.getPropertyValue(attr).trim();if(current){c.setAttribute(attr,replacements[current.toLowerCase()]||current)}});if(c.tagName.toLowerCase()==='text'&&!c.getAttribute('font-family'))c.setAttribute('font-family','Arial, sans-serif');});
  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');clone.setAttribute('x','0');clone.setAttribute('y','43');clone.setAttribute('width',String(width));clone.setAttribute('height',String(height));
  clone.removeAttribute('style');
- const legend=id==='curve'?'Central confidence area and standardized critical values':id==='pGraph'?'Blue: P-value area   ·   Purple: observed statistic':'Teal: rejection region   ·   Purple: observed statistic';
+ const legend=id==='curve'?'Central confidence area and standardized critical values':id==='pGraph'?'Shaded: P-value area   ·   Dotted: observed statistic':'Shaded: rejection region   ·   Dotted: observed statistic';
  const h=height+85;
  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${h}" viewBox="0 0 ${width} ${h}"><rect x="0" y="0" width="${width}" height="${h}" fill="#ffffff"/>${textAt(13,26,title,15,750,'#581c87')}${new XMLSerializer().serializeToString(clone)}${textAt(13,height+68,legend,10,450,'#596374')}</svg>`;
 }
