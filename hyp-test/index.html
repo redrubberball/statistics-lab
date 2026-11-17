@@ -37,13 +37,13 @@ html[data-theme="dark"]{color-scheme:dark;--bg:#11141e;--ink:#f2eff8;--muted:#b6
 <div class="actions"><button class="primary" id="calculate" type="button">Compute test</button><button class="secondary" id="reset" type="button">Reset example</button></div><div class="error hidden" role="alert" id="error"></div>
 </div></section>
 <section class="panel" aria-labelledby="outputheading"><div class="panelhead"><div><h2 id="outputheading">Statistical output</h2><p class="caption">Results appear after you click Compute.</p></div><span class="badge">OUTPUT</span></div>
-<div id="placeholder" class="output-placeholder"><div class="symbol" aria-hidden="true">∿</div><h3>Ready to test</h3><p>Choose a procedure, enter the data and null value, then click <strong>Compute test</strong>.</p></div>
+<div id="placeholder" class="output-placeholder"><div class="symbol" aria-hidden="true">∿</div><h3>Ready to test</h3><p>Choose a test, enter your sample information and the value stated in the claim, then click <strong>Compute test</strong>.</p></div>
 <div id="results" class="hidden" aria-live="polite"><div id="stale" class="stale hidden" role="status">Inputs changed. These are the previous results. Click Compute test to update.</div><div class="output-title"><div class="kicker">Hypothesis test output</div><h2 id="testName">One-Proportion z-Test</h2><p id="hypothesisText">H₀: p = 0.60 · Hₐ: p &gt; 0.60</p></div><div class="outputbody">
 <div class="outputsub">Sample &amp; test statistics</div><table class="output-table" aria-label="Sample statistics and test settings"><tbody id="outputRows"></tbody></table>
 <div class="result-cards"><div class="stat-card"><div class="name" id="statName">Test statistic</div><div class="num" id="statValue">—</div></div><div class="stat-card pval"><div class="name">P-value</div><div class="num" id="pValue">—</div></div></div>
 <div class="sl-one-decision-bar" style="margin-top:13px"><button type="button" class="secondary" id="slOneDecisionButton" aria-expanded="false" aria-controls="decision">Reveal Decision</button></div><div class="decision hidden" id="decision"><strong id="decisionTitle">—</strong><div class="why" id="decisionReason"></div></div>
 <div id="warnings" class="warning hidden" role="note"></div>
-<div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 178" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
+<div class="chart-stack"><div class="chartbox"><div class="charttitle"><span>P-value approach</span><span class="method-label" id="pAreaLabel">P-value area</span></div><svg id="pGraph" viewBox="0 0 520 210" role="img" aria-label="Reference distribution with P-value area shaded"></svg><div class="legend"><span class="dot blue"></span>Blue: P-value area <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div><div class="chartbox"><div class="charttitle"><span>Critical-value approach</span><span class="method-label" id="criticalText">Critical value(s)</span></div><svg id="cGraph" viewBox="0 0 520 210" role="img" aria-label="Reference distribution with rejection region shaded"></svg><div class="legend"><span class="dot teal"></span>Teal: rejection region <span style="margin-left:10px"><span class="dot purple"></span>Observed statistic</span></div></div></div>
 <details class="more" id="calculations"><summary>Show calculations &amp; interpretation</summary><div class="morebody" id="calculationDetails"></div></details>
 <div class="actions"><button class="secondary" id="copy" type="button">Copy output</button><span class="hint" id="copyStatus" role="status"></span></div>
 </div></div></section></div>
@@ -67,9 +67,9 @@ function isMean(){return ['mean1t','mean1z','mean2'].includes(mode)}
 function source(){return data[mode].source||'summary'}
 function renderInput(){document.querySelectorAll('[data-method]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.method===mode)));$('dataSource').classList.toggle('hidden',!isMean());document.querySelectorAll('[data-source]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.source===source())));
 const d=data[mode];let html='';const raw=source()==='raw';
-if(mode==='prop1'){html=field('x','Number of successes x')+field('n','Sample size n')+field('p0','Null proportion p₀','min="0" max="1"',true);$('methodhint').textContent='One population proportion · z-test';}
-if(mode==='mean1t'){html=raw?textArea('raw','Sample observations'):field('n','Sample size n')+field('xbar','Sample mean x̄')+field('s','Sample standard deviation s','min="0"',true);html+=field('mu0','Null mean μ₀','',true);$('methodhint').textContent='One population mean · t-test · σ unknown';}
-if(mode==='mean1z'){html=raw?textArea('raw','Sample observations')+field('sigma','Known population SD σ','min="0"',true):field('n','Sample size n')+field('xbar','Sample mean x̄')+field('sigma','Known population SD σ','min="0"',true);html+=field('mu0','Null mean μ₀','',true);$('methodhint').textContent='One population mean · z-test · σ known';}
+if(mode==='prop1'){html=field('x','Number of successes x')+field('n','Sample size n')+field('p0','Claimed population proportion (p₀)','min="0" max="1"',true);$('methodhint').textContent='One population proportion · z-test';}
+if(mode==='mean1t'){html=raw?textArea('raw','Sample observations'):field('n','Sample size n')+field('xbar','Sample mean x̄')+field('s','Sample standard deviation s','min="0"',true);html+=field('mu0','Claimed population mean (μ₀)','',true);$('methodhint').textContent='One population mean · t-test · σ unknown';}
+if(mode==='mean1z'){html=raw?textArea('raw','Sample observations')+field('sigma','Known population SD σ','min="0"',true):field('n','Sample size n')+field('xbar','Sample mean x̄')+field('sigma','Known population SD σ','min="0"',true);html+=field('mu0','Claimed population mean (μ₀)','',true);$('methodhint').textContent='One population mean · z-test · σ known';}
 if(mode==='prop2'){html=field('x1','Group 1 successes x₁')+field('n1','Group 1 sample size n₁')+field('x2','Group 2 successes x₂')+field('n2','Group 2 sample size n₂')+'<p class="hint wide">Tests H₀: p₁ − p₂ = 0, using the pooled proportion.</p>';$('methodhint').textContent='Two independent proportions · pooled z-test';}
 if(mode==='mean2'){html=raw?textArea('raw1','Group 1 observations')+textArea('raw2','Group 2 observations'):field('n1','Group 1 sample size n₁')+field('xbar1','Group 1 sample mean x̄₁')+field('s1','Group 1 sample SD s₁')+field('n2','Group 2 sample size n₂')+field('xbar2','Group 2 sample mean x̄₂')+field('s2','Group 2 sample SD s₂');html+=field('delta0','Null mean difference Δ₀','',true);$('methodhint').textContent='Two independent means · Welch t-test';}
 $('fields').innerHTML=html;
@@ -79,7 +79,7 @@ $('alpha').value=d.alpha;document.querySelectorAll('[data-alpha]').forEach(b=>b.
 $('shapeLabel').textContent=mode==='prop1'?'Under H₀, expected successes and failures are at least 10.':mode==='prop2'?'Each group has at least 10 expected successes and 10 expected failures under H₀.':'Population is approximately Normal, or samples are sufficiently large without severe skew or outliers.';
 $('assumpNote').textContent=mode.startsWith('prop')?'The calculator checks expected counts. Randomness, independence, and population sizes require context.':mode==='mean1z'?'Use a z-test only when the population standard deviation σ is known. The calculator cannot verify normality or sampling.':'The calculator cannot verify random sampling, outliers, population shape, or independence. Two groups must be independent for Welch t.';
 $('randomCheck').checked=false;$('indCheck').checked=false;$('shapeCheck').checked=false;$('assumptions').open=false;updateHyp();}
-function hypothesisStrings(){const d=data[mode];const sign=({left:'<',right:'>',two:'≠'})[d.tail],v=mode==='prop1'?'p':mode==='mean1t'||mode==='mean1z'?'μ':mode==='prop2'?'p₁ − p₂':'μ₁ − μ₂';const value=mode==='prop1'?d.p0:mode==='mean1t'||mode==='mean1z'?d.mu0:mode==='prop2'?'0':d.delta0;return {h0:`H₀: ${v} = ${value}`,ha:`Hₐ: ${v} ${sign} ${value}`};}
+function hypothesisStrings(){const d=data[mode];const sign=({left:'<',right:'>',two:'≠'})[d.tail],v=mode==='prop1'?'p':mode==='mean1t'||mode==='mean1z'?'μ':mode==='prop2'?'p₁ − p₂':'μ₁ − μ₂';const value=mode==='prop1'?d.p0:mode==='mean1t'||mode==='mean1z'?d.mu0:mode==='prop2'?'0':d.delta0;const complement=d.tail==='right'?'≤':d.tail==='left'?'≥':null;return {h0:`H₀: ${v} = ${value}${complement?' ('+v+' '+complement+' '+value+')':''}`,ha:`Hₐ: ${v} ${sign} ${value}`};}
 function updateHyp(){const h=hypothesisStrings();$('nulltext').textContent=h.h0;$('alttext').textContent=h.ha;}
 function markStale(){window.StatsLabExporter?.markStale();$('decision').classList.add('hidden');$('slOneDecisionButton').textContent='Reveal Decision';$('slOneDecisionButton').setAttribute('aria-expanded','false');if(last){$('stale').classList.remove('hidden');$('copy').disabled=true;}}
 function resetOutput(){window.StatsLabExporter?.reset();last=null;$('placeholder').classList.remove('hidden');$('results').classList.add('hidden');$('error').classList.add('hidden');$('copyStatus').textContent='';}
@@ -114,15 +114,42 @@ if(!Number.isFinite(r.stat))throw Error('This data produced an invalid test stat
 function fmt(n,d=3){if(Math.abs(n)<1e-12)n=0;return Number(n).toLocaleString('en-US',{maximumFractionDigits:d,minimumFractionDigits:d,useGrouping:false})}
 function pvfmt(p){return p<0.0001?'P < 0.0001':fmt(p,4)}
 function svgEl(tag,attrs={},txt){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(txt!==undefined)e.textContent=txt;return e;}
-function draw(id,r,kind){const svg=$(id);svg.replaceChildren();const ns='http://www.w3.org/2000/svg',left=25,right=495,baseline=136,center=260,width=right-left;const ext=Math.max(3.6,Math.abs(r.stat)*1.17,...r.critical.map(x=>Math.abs(x)*1.22));const scale=width/(2*ext),toX=x=>center+x*scale,toY=x=>baseline-104*(r.dist==='z'?Math.exp(-x*x/2):Math.pow(1+x*x/r.df,-(r.df+1)/2));const poly=[],n=640;for(let i=0;i<=n;i++){const x=-ext+2*ext*i/n;poly.push({x,y:toY(x),px:toX(x)});}svg.append(svgEl('line',{x1:left,y1:baseline,x2:right,y2:baseline,stroke:'var(--muted)','stroke-width':1,opacity:.75}));
-function shaded(x){if(kind==='p'){const z=r.stat;return r.tail==='right'?x>=z:r.tail==='left'?x<=z:Math.abs(x)>=Math.abs(z);}const c=r.critical;return r.tail==='right'?x>=c[0]:r.tail==='left'?x<=c[0]:x<=c[0]||x>=c[1];}
-// Draw area in narrow trapezoids so boundaries stay precise for any tail direction.
-const fill=kind==='p'?'#2b72da':'#129c96';for(let i=0;i<n;i++){const a=poly[i],b=poly[i+1],mid=(a.x+b.x)/2;if(shaded(mid)){svg.append(svgEl('path',{d:`M${a.px.toFixed(2)},${baseline} L${a.px.toFixed(2)},${a.y.toFixed(2)} L${b.px.toFixed(2)},${b.y.toFixed(2)} L${b.px.toFixed(2)},${baseline} Z`,fill,opacity:'.34'}));}}
-let d='';for(let i=0;i<=n;i++){const q=poly[i];d+=(i?' L':'M')+q.px.toFixed(2)+' '+q.y.toFixed(2)}svg.append(svgEl('path',{d,fill:'none',stroke:'var(--purple)','stroke-width':'2.8','stroke-linejoin':'round'}));const nums=[-Math.floor(ext),0,Math.floor(ext)];for(const num of nums){const px=toX(num);svg.append(svgEl('line',{x1:px,x2:px,y1:baseline,y2:baseline+4,stroke:'var(--muted)'}));svg.append(svgEl('text',{x:px,y:158,'font-size':11,fill:'var(--muted)','text-anchor':'middle'},String(num)))}
-const markerX=toX(r.stat);svg.append(svgEl('line',{x1:markerX,x2:markerX,y1:Math.max(11,toY(r.stat)-14),y2:baseline,stroke:'#d443c3','stroke-width':2.4,'stroke-dasharray':'4 4'}));svg.append(svgEl('circle',{cx:markerX,cy:baseline,r:3.3,fill:'#d443c3'}));const labelX=Math.max(40,Math.min(480,markerX));svg.append(svgEl('text',{x:labelX,y:11,'font-size':12,'font-weight':800,fill:'var(--purple)','text-anchor':'middle'},`${r.statLabel} = ${fmt(r.stat,3)}`));
-if(kind==='critical'){for(const v of r.critical){const x=toX(v);svg.append(svgEl('line',{x1:x,x2:x,y1:Math.max(15,toY(v)-12),y2:baseline,stroke:'#129c96','stroke-width':2.2}));svg.append(svgEl('text',{x:Math.max(25,Math.min(495,x)),y:173,'font-size':11,'font-weight':780,fill:'var(--teal)','text-anchor':'middle'},fmt(v,3)));}}
-let desc=kind==='p'?`The ${r.dist==='z'?'Normal':'t'} distribution. The blue shaded area is the ${r.tail}-tailed P-value of ${pvfmt(r.p)} for observed ${r.statLabel} ${fmt(r.stat,3)}.`:`The ${r.dist==='z'?'Normal':'t'} distribution. Teal regions mark the ${r.tail}-tailed rejection region at alpha ${fmt(r.alpha,4)}. Critical ${r.statLabel} values: ${r.critical.map(v=>fmt(v,3)).join(' and ')}.`;
-svg.insertBefore(svgEl('title',{},kind==='p'?'P-value graph':'Critical-value graph'),svg.firstChild);svg.insertBefore(svgEl('desc',{},desc),svg.childNodes[1]);}
+function draw(id,r,kind){
+ const svg=$(id);svg.replaceChildren();
+ const left=24,right=496,baseline=164,center=260,width=right-left;
+ const ext=Math.max(3.6,Math.abs(r.stat)*1.15,...r.critical.map(x=>Math.abs(x)*1.18));
+ const scale=width/(2*ext),toX=x=>center+x*scale;
+ const toY=x=>baseline-102*(r.dist==='z'?Math.exp(-x*x/2):Math.pow(1+x*x/r.df,-(r.df+1)/2));
+ const n=640,poly=[];for(let i=0;i<=n;i++){const x=-ext+2*ext*i/n;poly.push({x,y:toY(x),px:toX(x)});}
+ const critical=kind==='critical';
+ const shaded=x=>critical?(r.tail==='right'?x>=r.critical[0]:r.tail==='left'?x<=r.critical[0]:x<=r.critical[0]||x>=r.critical[1]):(r.tail==='right'?x>=r.stat:r.tail==='left'?x<=r.stat:Math.abs(x)>=Math.abs(r.stat));
+ svg.append(svgEl('line',{x1:left,y1:baseline,x2:right,y2:baseline,stroke:'var(--muted)','stroke-width':1}));
+ for(let i=0;i<n;i++){const a=poly[i],b=poly[i+1];if(shaded((a.x+b.x)/2))svg.append(svgEl('path',{d:`M${a.px.toFixed(2)},${baseline} L${a.px.toFixed(2)},${a.y.toFixed(2)} L${b.px.toFixed(2)},${b.y.toFixed(2)} L${b.px.toFixed(2)},${baseline} Z`,fill:critical?'#129c96':'#2b72da',opacity:'.42'}));}
+ let d='';for(let i=0;i<=n;i++){const q=poly[i];d+=(i?' L':'M')+q.px.toFixed(2)+' '+q.y.toFixed(2);}
+ svg.append(svgEl('path',{d,fill:'none',stroke:'var(--purple)','stroke-width':2.6}));
+ for(const num of [-Math.floor(ext),0,Math.floor(ext)]){const x=toX(num);svg.append(svgEl('text',{x,y:184,'font-size':10,fill:'var(--muted)','text-anchor':'middle'},String(num)));}
+ const markerX=toX(r.stat);
+ svg.append(svgEl('line',{x1:markerX,x2:markerX,y1:47,y2:baseline,stroke:'#b21f9f','stroke-width':2,'stroke-dasharray':'5 4'}));
+ svg.append(svgEl('circle',{cx:markerX,cy:baseline,r:3,fill:'#b21f9f'}));
+ const statLabel=`${r.statLabel} = ${fmt(r.stat,3)}`;
+ const labelX=Math.max(62,Math.min(458,markerX));
+ svg.append(svgEl('rect',{x:labelX-53,y:30,width:106,height:19,rx:5,fill:'#fff',stroke:'#eed5eb'}));
+ svg.append(svgEl('text',{x:labelX,y:43,'font-size':12,'font-weight':800,fill:'#9a168d','text-anchor':'middle'},statLabel));
+ if(critical){
+  for(const c of r.critical){const x=toX(c);
+   svg.append(svgEl('line',{x1:x,x2:x,y1:60,y2:baseline,stroke:'#07857f','stroke-width':2.2,'stroke-dasharray':'3 4'}));
+   svg.append(svgEl('text',{x,y:200,'font-size':11,'font-weight':800,fill:'#07857f','text-anchor':'middle'},`critical = ${fmt(c,3)}`));
+  }
+  const zones=r.tail==='two'?[[left,toX(r.critical[0]),'Reject H₀'],[toX(r.critical[0]),toX(r.critical[1]),'Fail to reject H₀'],[toX(r.critical[1]),right,'Reject H₀']]:r.tail==='right'?[[left,toX(r.critical[0]),'Fail to reject H₀'],[toX(r.critical[0]),right,'Reject H₀']]:[[left,toX(r.critical[0]),'Reject H₀'],[toX(r.critical[0]),right,'Fail to reject H₀']];
+  zones.forEach(([a,b,label])=>{const mid=(a+b)/2;if(b-a<42)return;const size=b-a<105?9:11;svg.append(svgEl('text',{x:mid,y:17,'font-size':size,'font-weight':800,fill:label.startsWith('Reject')?'#07857f':'#536076','text-anchor':'middle'},label));});
+ }else{
+  const tails=r.tail==='two'?[[left,toX(-Math.abs(r.stat))],[toX(Math.abs(r.stat)),right]]:r.tail==='right'?[[toX(r.stat),right]]:[[left,toX(r.stat)]];
+  tails.forEach(([a,b])=>{if(b-a>28)svg.append(svgEl('text',{x:(a+b)/2,y:105,'font-size':12,'font-weight':800,fill:'#155bbb','text-anchor':'middle'},'P-value area'));});
+  svg.append(svgEl('text',{x:260,y:17,'font-size':12,'font-weight':800,fill:'#155bbb','text-anchor':'middle'},`Shaded P-value = ${pvfmt(r.p)}`));
+ }
+ svg.insertBefore(svgEl('title',{},critical?'Critical-value and rejection-region graph':'P-value graph'),svg.firstChild);
+ svg.insertBefore(svgEl('desc',{},critical?'Teal shaded regions: reject H0. Unshaded region: fail to reject H0. Dotted lines mark critical values and the observed test statistic.':'Blue shaded area gives the P-value. Dotted purple line marks the observed statistic.'),svg.childNodes[1]);
+}
 function math(tag,children,attrs=''){return '<'+tag+(attrs?' '+attrs:'')+'>'+children+'</'+tag+'>'}const mn=x=>math('mn',escapeHTML(String(x))),mi=x=>math('mi',escapeHTML(x)),mo=x=>math('mo',escapeHTML(x)),mrow=x=>math('mrow',x),frac=(a,b)=>math('mfrac',a+b),sqrt=x=>math('msqrt',x),sub=(a,b)=>math('msub',a+b);const xbar=math('mover',mi('x')+mo('¯'),'accent="true"'),phat=math('mover',mi('p')+mo('ˆ'),'accent="true"');function mathBlock(body){return `<div class="formula"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">${mrow(body)}</math></div>`}
 function calculation(r){const p=r.pieces;let formula='',values='',intro='';if(r.mode==='prop1'){intro='The null standard error uses p₀, not p̂.';formula=mathBlock(mi('z')+mo('=')+frac(phat+mo('−')+sub(mi('p'),mn('0')),sqrt(frac(sub(mi('p'),mn('0'))+mo('(')+mn('1')+mo('−')+sub(mi('p'),mn('0'))+mo(')'),mi('n')))));values=`z = (${fmt(p.phat,5)} − ${fmt(p.p0,5)}) / √(${fmt(p.p0,5)} × ${fmt(1-p.p0,5)} / ${p.n}) = ${fmt(r.stat,5)}`;}
 if(r.mode==='mean1t'||r.mode==='mean1z'){intro=r.mode==='mean1t'?'Use the sample standard deviation s and t with df = n − 1.':'Use the known population standard deviation σ and the Normal distribution.';const sd=r.mode==='mean1t'?mi('s'):mi('σ');formula=mathBlock((r.mode==='mean1t'?mi('t'):mi('z'))+mo('=')+frac(xbar+mo('−')+sub(mi('μ'),mn('0')),frac(sd,sqrt(mi('n')))));values=`${r.statLabel} = (${fmt(p.xbar,5)} − ${fmt(p.mu0,5)}) / (${fmt(p.s,5)} / √${p.n}) = ${fmt(r.stat,5)}`;}
@@ -177,7 +204,7 @@ html[data-theme=dark] .sl-export-preview{border-color:#62536b}
 `;
 const st=document.createElement('style');st.textContent=cardStyle;document.head.appendChild(st);
 let result=null, stale=false, mode='standard';
-let custom={sample:true,hypotheses:true,details:false,critical:true,conditions:false,reference:false,decision:false};
+let custom={sample:true,hypotheses:true,details:false,critical:false,conditions:false,reference:false,decision:false};
 let reportSvg='', reportPlain='';
 const host=(kind==='ci'? $('output'): $('results'));
 if(!host) return;
@@ -204,7 +231,7 @@ body.appendChild(exporter);
 if(kind==='ci')exporter.querySelectorAll('.sl-hypothesis-only').forEach(e=>e.remove());
 else exporter.querySelectorAll('.sl-ci-only').forEach(e=>e.remove());
 const status=(message,error)=>{const el=$('sl-export-status');el.textContent=message;el.setAttribute('role',error?'alert':'status');};
-const options=()=>mode==='standard'?{sample:true,hypotheses:true,details:false,critical:true,conditions:false,reference:false,decision:false}:
+const options=()=>mode==='standard'?{sample:true,hypotheses:true,details:false,critical:false,conditions:false,reference:false,decision:false}:
   mode==='full'?{sample:true,hypotheses:true,details:true,critical:true,conditions:true,reference:true,decision:false}:custom;
 function num(n,d=3){if(!Number.isFinite(Number(n)))return '—';let v=Number(n);if(Object.is(v,-0)||Math.abs(v)<Math.pow(10,-(d+3)))v=0;return v.toFixed(d);}
 function trim(n,d=3){return Number.isInteger(Number(n))?String(n):num(n,d);}
@@ -252,7 +279,7 @@ function makeReport(r){const o=options(); const sections=[];
   else if(r.mode==='paired')add('Paired Difference Statistics',['Complete pairs','Mean d̄','SD of d','Null Δ₀'],[[trim(p.n),num(p.dbar,3),num(p.sd,3),num(p.delta0,3)]]);
  }
  const tail=r.tail==='two'?'Two-tailed':r.tail==='left'?'Left-tailed':'Right-tailed';
- let res=[['Test statistic',r.statLabel+' = '+statFmt(r)],...(r.df===null?[]:[['df',Number.isInteger(r.df)?trim(r.df):num(r.df,2)]]),['P-value',pformat(r.p,r.alpha)],['Significance level (α)',num(r.alpha,Math.abs(r.alpha)>=.0001?4:7)]];
+ let res=[['Test statistic',r.statLabel+' = '+statFmt(r)],...(mode==='standard'?[]:[...(r.df===null?[]:[['df',Number.isInteger(r.df)?trim(r.df):num(r.df,2)]]),['P-value',pformat(r.p,r.alpha)]])];
  if(o.critical)res.push(['Critical value(s)',r.critical.map(x=>criticalFmt(x,r.stat)).join(', ')]);
  add('Hypothesis Test Results',['Statistic','Value'],res);
  if(o.details){let details=[];
@@ -271,7 +298,7 @@ function makeReport(r){const o=options(); const sections=[];
  if(shown)add('Decision (Student-Requested)',['At α = '+num(r.alpha,4),'Decision'],[['P '+(r.reject?'≤':'>')+' α',r.reject?'Reject H₀':'Fail to reject H₀']]);
  else addNote('Decision Not Revealed','Use the calculator’s Reveal Decision button first if you want to include this check.');
  }
- return {title:r.title,subtitle:tail+' · α = '+num(r.alpha,4)+(r.mode==='paired'?' · Differences: Measurement 1 − Measurement 2':r.mode==='mean2'?' · Welch unequal-variance method':''),sections};
+ return {title:r.title,subtitle:tail+' · Significance level α = '+num(r.alpha,4)+(r.mode==='paired'?' · Differences: Measurement 1 − Measurement 2':r.mode==='mean2'?' · Welch unequal-variance method':''),sections,compact:mode==='standard'};
 }
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
 function wrapText(text,maxChars){let out=[],line='';for(const word of String(text).split(/\s+/)){if(!word)continue;if((line+' '+word).trim().length>maxChars&&line){out.push(line);line=word;}else line=(line+' '+word).trim();}if(line)out.push(line);return out.length?out:[''];}
