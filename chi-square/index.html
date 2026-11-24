@@ -1,0 +1,1386 @@
+<div style="max-width: 13in; width: 100%; font-family: Lato,'Lato Extended',sans-serif; line-height: 1.55; color: #111827;">
+<div class="enhanceable_content tabs" style="max-width: 100%;">
+<ul style="display: flex; flex-wrap: wrap; gap: .45rem; padding: .45rem;">
+<li><a href="#start">Start Here</a></li>
+<li><a href="#a">Exploration A</a></li>
+<li><a href="#b">Exploration B</a></li>
+<li><a href="#c">Exploration C</a></li>
+<li><a href="#d">Exploration D</a></li>
+<li><a href="#excel">Excel</a></li>
+<li><a href="#statcrunch">StatCrunch</a></li>
+</ul>
+<div id="start">
+<h2>🚲 Guided Practice: Conditional Probability &amp; Independence</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p>Use the Orange Blossom College Bike Share dataset to review probability and explore whether two categorical variables appear related.</p>
+<p><strong>Nothing needs to be submitted.</strong> Try the work first, then use the hints and answer toggles to check yourself.</p>
+<table style="border-collapse: collapse; width: 78%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Exploration</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Variables</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Focus Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">A</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Campus Affiliation &times; Bike Type</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Electric</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">B</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Day Type &times; Bike Type</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Electric</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">C</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Rider Type &times; Checkout Method</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student ID</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">D</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Campus Affiliation &times; Checkout Method</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student ID</td>
+</tr>
+</tbody>
+</table>
+<details style="margin: 0.7rem auto 1rem; max-width: 78%; border-radius: 8px; overflow: hidden; border: 1px solid #d8b4fe;">
+<summary style="cursor: pointer; padding: .65rem .85rem; background-color: #faf5ff; color: #581c87;"><strong>📌 How to Use This Guided Practice</strong></summary>
+<div style="padding: .8rem 1rem;">
+<ul>
+<li>In class, complete the Exploration your group is assigned.</li>
+<li>If you are working online or on your own, use the Exploration your instructor indicates.</li>
+<li>You may use technology for calculations.</li>
+<li>Give fractions exactly, round decimals to <strong>3 places</strong>, and percentages to <strong>1 decimal place</strong>.</li>
+<li>Open the <strong>Excel</strong> or <strong>StatCrunch</strong> tab when you want to see how the tables and graphs are created from the raw dataset.</li>
+</ul>
+<p style="margin-bottom: 0;"><strong>Remember:</strong> each row of the Bike Share dataset represents one completed trip, so describe results in terms of sampled trips rather than unique participants.</p>
+</div>
+</details>
+<div style="max-width: 78%; margin: 1rem auto; background-color: #f0f9ff; border-left: 5px solid #0284c7; border-radius: 8px; padding: .8rem 1rem;"><strong>⭐ The Big Connection</strong><br />Raw data &rarr; two-way table &rarr; probability &amp; conditional probability &rarr; conditional distributions &rarr; 100% stacked graph &rarr; independence / association.<br />Later, this same type of categorical relationship can lead to a <strong>Chi-Square Test of Independence</strong> in your project.</div>
+<p style="text-align: center;"><em>The completed two-way tables are provided here so you can focus first on the probability ideas.</em></p>
+</div>
+<div id="a">
+<h2>Exploration A &mdash; Campus Affiliation &amp; Bike Type</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p><strong>Research Question:</strong> Does bike type appear to be associated with campus affiliation?</p>
+<table style="border-collapse: collapse; width: 62%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Campus Affiliation</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Classic</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Electric</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">11</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">4</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">15</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">30</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">29</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">59</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">10</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">12</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">22</td>
+</tr>
+<tr style="background-color: #f3e8ff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">TOTAL</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">51</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">45</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">96</td>
+</tr>
+</tbody>
+</table>
+<details style="margin: 0.55rem auto 1rem; max-width: 72%; border-radius: 8px; overflow: hidden; border: 1px solid #fde68a;">
+<summary style="cursor: pointer; padding: .55rem .75rem; background-color: #fefce8; color: #92400e;"><strong>💡 Quick Table Tip</strong></summary>
+<div style="padding: .7rem .9rem;">Interior cells show combinations of categories. Row and column totals help you choose the correct denominator.</div>
+</details>
+<h3 style="color: #581c87;">Part 2 &mdash; Probability Review: Follow the Denominator</h3>
+<p>Try each row first. Leave your work on paper or in your notes, then open the check toggle.</p>
+<table style="border-collapse: collapse; width: 88%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student AND Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Faculty/Staff)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Faculty/Staff &rarr; Faculty/Staff row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Student &rarr; Student row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Visitor)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Visitor &rarr; Visitor row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student | Classic)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Classic &rarr; Classic column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 88%; margin: .55rem auto; background-color: #faf5ff; border-left: 4px solid #ad14d7; padding: .55rem .75rem;"><strong>Tip:</strong> No &ldquo;given&rdquo; usually means use the grand total. If a condition is given, the category after the bar tells you which row or column becomes the denominator.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 88%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check Part 2</strong></summary>
+<div style="padding: .8rem .9rem;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">59/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.615</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">61.5%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">45/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.469</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">46.9%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student AND Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">29/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.302</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">30.2%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Faculty/Staff)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Faculty/Staff &rarr; Faculty/Staff row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">4/15</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.267</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">26.7%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Student &rarr; Student row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">29/59</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.492</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">49.2%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Visitor)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Visitor &rarr; Visitor row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">12/22</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.545</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">54.5%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student | Classic)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Classic &rarr; Classic column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">30/51</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.588</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">58.8%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretations:</strong></p>
+<ul>
+<li><strong>P(Student):</strong> About 61.5% of the sampled trips were made by Student riders.</li>
+<li><strong>P(Electric):</strong> About 46.9% of the sampled trips used an Electric bike. This is the overall probability used as the baseline in Part 3.</li>
+<li><strong>P(Student AND Electric):</strong> About 30.2% of all sampled trips were Student trips using an Electric bike.</li>
+<li><strong>P(Electric | Faculty/Staff):</strong> Of the Faculty/Staff trips, about 26.7% used an Electric bike.</li>
+<li><strong>P(Electric | Student):</strong> Of the Student trips, about 49.2% used an Electric bike.</li>
+<li><strong>P(Electric | Visitor):</strong> Of the Visitor trips, about 54.5% used an Electric bike.</li>
+<li><strong>P(Student | Classic):</strong> Of the trips using a Classic bike, about 58.8% were made by Student riders.</li>
+</ul>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 3 &mdash; Check for Independence</h3>
+<p><strong>Overall probability &mdash; our baseline:</strong></p>
+<p style="font-size: 1.15rem; text-align: center;"><strong>P(Electric) = 45/96 = 0.469 = 46.9%</strong></p>
+<p style="text-align: center;">Compare each conditional probability below with <strong>46.9%</strong>.</p>
+<table style="border-collapse: collapse; width: 82%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Group</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Conditional Probability</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Compared with 46.9%</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Faculty/Staff)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Visitor)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 82%; margin: .55rem auto; background-color: #fefce8; border-left: 4px solid #eab308; padding: .55rem .75rem;"><strong>Tip:</strong> Independence is about whether knowing the group appears to change the probability. Compare each conditional probability to the same overall baseline.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 82%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Probabilities</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p><strong>P(Electric | Faculty/Staff) = 4/15 = 0.267 = 26.7%</strong> &mdash; lower than 46.9%.</p>
+<p><strong>P(Electric | Student) = 29/59 = 0.492 = 49.2%</strong> &mdash; about the same as 46.9%.</p>
+<p><strong>P(Electric | Visitor) = 12/22 = 0.545 = 54.5%</strong> &mdash; higher than 46.9%.</p>
+<p style="margin-bottom: 0;">Because the conditional probabilities are not all about the same as the overall probability, <strong>Bike Type and Campus Affiliation appear associated / not independent in this sample.</strong></p>
+</div>
+</details>
+<h4 style="color: #581c87;">Put the Results Into Words</h4>
+<p>Overall, _______% of the sampled trips had the focus outcome (Electric bike).</p>
+<p>Among Faculty/Staff trips, _______% had the focus outcome; among Student trips, _______%; and among Visitor trips, _______%.</p>
+<p>The highest conditional percentage occurred for __________________ at _______%.</p>
+<p>The lowest conditional percentage occurred for __________________ at _______%.</p>
+<p>Based on this sample, the variables appear: <strong>approximately independent / associated</strong>.</p>
+<details style="margin: 0.6rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Interpretation</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p style="margin-bottom: 0;">Overall, <strong>46.9%</strong> of the sampled trips used an Electric bike. Among Faculty/Staff trips, <strong>26.7%</strong> used an Electric bike, compared with <strong>49.2%</strong> of Student trips and <strong>54.5%</strong> of Visitor trips. The highest conditional Electric percentage occurred for <strong>Visitors at 54.5%</strong>, while the lowest occurred for <strong>Faculty/Staff at 26.7%</strong>. Based on this sample, Bike Type and Campus Affiliation appear <strong>associated / not independent</strong>.</p>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 4 &mdash; Conditional Distributions &amp; Graph</h3>
+<p>Complete the conditional distribution for each group. Each row should total 100%.</p>
+<table style="border-collapse: collapse; width: 68%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Campus Affiliation</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Classic %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Electric %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 74%; margin: .55rem auto; background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: .55rem .75rem;"><strong>How is this calculated?</strong>
+<div>P(Classic | Faculty/Staff) = 11/15 = <strong>73.3%</strong></div>
+<div>P(Electric | Faculty/Staff) = 4/15 = <strong>26.7%</strong></div>
+<div style="margin-top: .25rem;">All percentages within the same given group should add to <strong>100%</strong>.</div>
+</div>
+<details style="margin: 0.7rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Distribution &amp; Graph</strong></summary>
+<div style="padding: .8rem .9rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start;">
+<div style="flex: 1 1 340px;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Campus Affiliation</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Classic %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Electric %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">73.3%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">26.7%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">50.8%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">49.2%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">45.5%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">54.5%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex: 1 1 360px; border-radius: 8px; padding: 1rem; text-align: center; color: #64748b; min-height: 170px; border: 2px dashed #86efac;"><strong>[ADD EXPLORATION A 100% STACKED BAR GRAPH HERE]</strong></div>
+</div>
+<p style="margin: .7rem .2rem 0;">Each bar represents <strong>100% of one group</strong>. The sections show the conditional distribution within that group.</p>
+</details>
+<p><strong>Do the conditional distributions look fairly similar?</strong> &nbsp; YES / NOT REALLY</p>
+<details style="margin: 0.35rem 0px 0.8rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;"><strong>Not really.</strong> The Electric percentages range from 26.7% for Faculty/Staff to 54.5% for Visitors, so the conditional distributions are noticeably different.</div>
+</details>
+<p><strong>Why does that matter for independence?</strong></p>
+<details style="margin: 0.35rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;">If the variables were approximately independent, we would expect the conditional distributions to look fairly similar across the groups. Noticeable differences suggest an association.</div>
+</details></div>
+<div id="b">
+<h2>Exploration B &mdash; Day Type &amp; Bike Type</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p><strong>Research Question:</strong> Does bike type appear to be associated with whether the trip occurred on a weekday or weekend?</p>
+<table style="border-collapse: collapse; width: 62%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Day Type</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Classic</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Electric</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekday</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">47</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">38</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">85</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekend</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">4</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">11</td>
+</tr>
+<tr style="background-color: #f3e8ff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">TOTAL</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">51</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">45</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">96</td>
+</tr>
+</tbody>
+</table>
+<details style="margin: 0.55rem auto 1rem; max-width: 72%; border-radius: 8px; overflow: hidden; border: 1px solid #fde68a;">
+<summary style="cursor: pointer; padding: .55rem .75rem; background-color: #fefce8; color: #92400e;"><strong>💡 Quick Table Tip</strong></summary>
+<div style="padding: .7rem .9rem;">Interior cells show combinations of categories. Row and column totals help you choose the correct denominator.</div>
+</details>
+<h3 style="color: #581c87;">Part 2 &mdash; Probability Review: Follow the Denominator</h3>
+<p>Try each row first. Leave your work on paper or in your notes, then open the check toggle.</p>
+<table style="border-collapse: collapse; width: 88%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Weekend)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Weekend AND Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Weekday)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Weekday &rarr; Weekday row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Weekend)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Weekend &rarr; Weekend row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Weekend | Classic)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Classic &rarr; Classic column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 88%; margin: .55rem auto; background-color: #faf5ff; border-left: 4px solid #ad14d7; padding: .55rem .75rem;"><strong>Tip:</strong> No &ldquo;given&rdquo; usually means use the grand total. If a condition is given, the category after the bar tells you which row or column becomes the denominator.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 88%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check Part 2</strong></summary>
+<div style="padding: .8rem .9rem;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Weekend)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">11/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.115</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">11.5%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">45/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.469</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">46.9%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Weekend AND Electric)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.073</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7.3%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Weekday)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Weekday &rarr; Weekday row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">38/85</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.447</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">44.7%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Weekend)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Weekend &rarr; Weekend row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7/11</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.636</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">63.6%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Weekend | Classic)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Classic &rarr; Classic column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">4/51</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.078</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7.8%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretations:</strong></p>
+<ul>
+<li><strong>P(Weekend):</strong> About 11.5% of the sampled trips occurred on a Weekend.</li>
+<li><strong>P(Electric):</strong> About 46.9% of the sampled trips used an Electric bike. This is the overall probability used as the baseline in Part 3.</li>
+<li><strong>P(Weekend AND Electric):</strong> About 7.3% of all sampled trips were Weekend trips using an Electric bike.</li>
+<li><strong>P(Electric | Weekday):</strong> Of the Weekday trips, about 44.7% used an Electric bike.</li>
+<li><strong>P(Electric | Weekend):</strong> Of the Weekend trips, about 63.6% used an Electric bike.</li>
+<li><strong>P(Weekend | Classic):</strong> Of the trips using a Classic bike, about 7.8% occurred on a Weekend.</li>
+</ul>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 3 &mdash; Check for Independence</h3>
+<p><strong>Overall probability &mdash; our baseline:</strong></p>
+<p style="font-size: 1.15rem; text-align: center;"><strong>P(Electric) = 45/96 = 0.469 = 46.9%</strong></p>
+<p style="text-align: center;">Compare each conditional probability below with <strong>46.9%</strong>.</p>
+<table style="border-collapse: collapse; width: 82%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Group</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Conditional Probability</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Compared with 46.9%</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekday</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Weekday)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekend</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Electric | Weekend)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 82%; margin: .55rem auto; background-color: #fefce8; border-left: 4px solid #eab308; padding: .55rem .75rem;"><strong>Tip:</strong> Independence is about whether knowing the group appears to change the probability. Compare each conditional probability to the same overall baseline.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 82%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Probabilities</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p><strong>P(Electric | Weekday) = 38/85 = 0.447 = 44.7%</strong> &mdash; about the same as 46.9%.</p>
+<p><strong>P(Electric | Weekend) = 7/11 = 0.636 = 63.6%</strong> &mdash; higher than 46.9%.</p>
+<p style="margin-bottom: 0;">Because the conditional probabilities are not all about the same as the overall probability, <strong>Day Type and Bike Type appear associated / not independent in this sample.</strong></p>
+</div>
+</details>
+<h4 style="color: #581c87;">Put the Results Into Words</h4>
+<p>Overall, _______% of the sampled trips had the focus outcome (Electric bike).</p>
+<p>Among Weekday trips, _______% had the focus outcome, compared with _______% of Weekend trips.</p>
+<p>The highest conditional percentage occurred for __________________ at _______%.</p>
+<p>The lowest conditional percentage occurred for __________________ at _______%.</p>
+<p>Based on this sample, the variables appear: <strong>approximately independent / associated</strong>.</p>
+<details style="margin: 0.6rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Interpretation</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p style="margin-bottom: 0;">Overall, <strong>46.9%</strong> of the sampled trips used an Electric bike. Among Weekday trips, <strong>44.7%</strong> used an Electric bike, compared with <strong>63.6%</strong> of Weekend trips. The higher conditional Electric percentage occurred for <strong>Weekend trips at 63.6%</strong>, while the lower occurred for <strong>Weekday trips at 44.7%</strong>. Based on this sample, Day Type and Bike Type appear <strong>associated / not independent</strong>.</p>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 4 &mdash; Conditional Distributions &amp; Graph</h3>
+<p>Complete the conditional distribution for each group. Each row should total 100%.</p>
+<table style="border-collapse: collapse; width: 68%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Day Type</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Classic %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Electric %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekday</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekend</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 74%; margin: .55rem auto; background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: .55rem .75rem;"><strong>How is this calculated?</strong>
+<div>P(Classic | Weekday) = 47/85 = <strong>55.3%</strong></div>
+<div>P(Electric | Weekday) = 38/85 = <strong>44.7%</strong></div>
+<div style="margin-top: .25rem;">All percentages within the same given group should add to <strong>100%</strong>.</div>
+</div>
+<details style="margin: 0.7rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Distribution &amp; Graph</strong></summary>
+<div style="padding: .8rem .9rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start;">
+<div style="flex: 1 1 340px;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Day Type</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Classic %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Electric %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekday</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">55.3%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">44.7%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Weekend</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">36.4%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">63.6%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex: 1 1 360px; border-radius: 8px; padding: 1rem; text-align: center; color: #64748b; min-height: 170px; border: 2px dashed #86efac;"><strong>[ADD EXPLORATION B 100% STACKED BAR GRAPH HERE]</strong></div>
+</div>
+<p style="margin: .7rem .2rem 0;">Each bar represents <strong>100% of one group</strong>. The sections show the conditional distribution within that group.</p>
+</details>
+<p><strong>Do the conditional distributions look fairly similar?</strong> &nbsp; YES / NOT REALLY</p>
+<details style="margin: 0.35rem 0px 0.8rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;"><strong>Not really.</strong> About 44.7% of Weekday trips used an Electric bike compared with 63.6% of Weekend trips, so the conditional distributions are noticeably different.</div>
+</details>
+<p><strong>Why does that matter for independence?</strong></p>
+<details style="margin: 0.35rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;">If the variables were approximately independent, we would expect the conditional distributions to look fairly similar across the groups. Noticeable differences suggest an association.</div>
+</details></div>
+<div id="c">
+<h2>Exploration C &mdash; Rider Type &amp; Checkout Method</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p><strong>Research Question:</strong> Does checkout method appear to be associated with rider type?</p>
+<table style="border-collapse: collapse; width: 68%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Rider Type</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">App</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Kiosk</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Student ID</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Day Pass</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">19</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">39</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Member</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">27</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">57</td>
+</tr>
+<tr style="background-color: #f3e8ff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">TOTAL</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">46</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">27</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">96</td>
+</tr>
+</tbody>
+</table>
+<details style="margin: 0.55rem auto 1rem; max-width: 72%; border-radius: 8px; overflow: hidden; border: 1px solid #fde68a;">
+<summary style="cursor: pointer; padding: .55rem .75rem; background-color: #fefce8; color: #92400e;"><strong>💡 Quick Table Tip</strong></summary>
+<div style="padding: .7rem .9rem;">Interior cells show combinations of categories. Row and column totals help you choose the correct denominator.</div>
+</details>
+<h3 style="color: #581c87;">Part 2 &mdash; Probability Review: Follow the Denominator</h3>
+<p>Try each row first. Leave your work on paper or in your notes, then open the check toggle.</p>
+<table style="border-collapse: collapse; width: 88%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Member)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Member AND Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Day Pass)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Day Pass &rarr; Day Pass row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Member)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Member &rarr; Member row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Member | App)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given App &rarr; App column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 88%; margin: .55rem auto; background-color: #faf5ff; border-left: 4px solid #ad14d7; padding: .55rem .75rem;"><strong>Tip:</strong> No &ldquo;given&rdquo; usually means use the grand total. If a condition is given, the category after the bar tells you which row or column becomes the denominator.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 88%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check Part 2</strong></summary>
+<div style="padding: .8rem .9rem;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Member)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">57/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.594</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">59.4%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.240</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">24.0%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Member AND Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.240</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">24.0%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Day Pass)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Day Pass &rarr; Day Pass row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0/39</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.000</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.0%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Member)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Member &rarr; Member row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23/57</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.404</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">40.4%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Member | App)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given App &rarr; App column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">27/46</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.587</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">58.7%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretations:</strong></p>
+<ul>
+<li><strong>P(Member):</strong> About 59.4% of the sampled trips were made by Member riders.</li>
+<li><strong>P(Student ID):</strong> About 24.0% of the sampled trips used Student ID checkout. This is the overall probability used as the baseline in Part 3.</li>
+<li><strong>P(Member AND Student ID):</strong> About 24.0% of all sampled trips were Member trips using Student ID checkout.</li>
+<li><strong>P(Student ID | Day Pass):</strong> Of the Day Pass trips, 0.0% used Student ID checkout.</li>
+<li><strong>P(Student ID | Member):</strong> Of the Member trips, about 40.4% used Student ID checkout.</li>
+<li><strong>P(Member | App):</strong> Of the trips using App checkout, about 58.7% were made by Member riders.</li>
+</ul>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 3 &mdash; Check for Independence</h3>
+<p><strong>Overall probability &mdash; our baseline:</strong></p>
+<p style="font-size: 1.15rem; text-align: center;"><strong>P(Student ID) = 23/96 = 0.240 = 24.0%</strong></p>
+<p style="text-align: center;">Compare each conditional probability below with <strong>24.0%</strong>.</p>
+<table style="border-collapse: collapse; width: 82%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Group</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Conditional Probability</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Compared with 24.0%</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Day Pass</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Day Pass)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Member</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Member)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 82%; margin: .55rem auto; background-color: #fefce8; border-left: 4px solid #eab308; padding: .55rem .75rem;"><strong>Tip:</strong> Independence is about whether knowing the group appears to change the probability. Compare each conditional probability to the same overall baseline.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 82%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Probabilities</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p><strong>P(Student ID | Day Pass) = 0/39 = 0.000 = 0.0%</strong> &mdash; lower than 24.0%.</p>
+<p><strong>P(Student ID | Member) = 23/57 = 0.404 = 40.4%</strong> &mdash; higher than 24.0%.</p>
+<p style="margin-bottom: 0;">Because the conditional probabilities are not all about the same as the overall probability, <strong>Rider Type and Checkout Method appear associated / not independent in this sample.</strong></p>
+</div>
+</details>
+<h4 style="color: #581c87;">Put the Results Into Words</h4>
+<p>Overall, _______% of the sampled trips had the focus outcome (Student ID checkout).</p>
+<p>Among Day Pass trips, _______% had the focus outcome, compared with _______% of Member trips.</p>
+<p>The highest conditional percentage occurred for __________________ at _______%.</p>
+<p>The lowest conditional percentage occurred for __________________ at _______%.</p>
+<p>Based on this sample, the variables appear: <strong>approximately independent / associated</strong>.</p>
+<details style="margin: 0.6rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Interpretation</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p style="margin-bottom: 0;">Overall, <strong>24.0%</strong> of the sampled trips used Student ID checkout. Among Day Pass trips, <strong>0.0%</strong> used Student ID checkout, compared with <strong>40.4%</strong> of Member trips. The higher conditional Student ID percentage occurred for <strong>Members at 40.4%</strong>, while the lower occurred for <strong>Day Pass riders at 0.0%</strong>. Based on this sample, Rider Type and Checkout Method appear <strong>associated / not independent</strong>.</p>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 4 &mdash; Conditional Distributions &amp; Graph</h3>
+<p>Complete the conditional distribution for each group. Each row should total 100%.</p>
+<table style="border-collapse: collapse; width: 74%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Rider Type</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">App %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Kiosk %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Student ID %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Day Pass</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Member</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 74%; margin: .55rem auto; background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: .55rem .75rem;"><strong>How is this calculated?</strong>
+<div>P(App | Day Pass) = 19/39 = <strong>48.7%</strong></div>
+<div>P(Kiosk | Day Pass) = 20/39 = <strong>51.3%</strong></div>
+<div>P(Student ID | Day Pass) = 0/39 = <strong>0.0%</strong></div>
+<div style="margin-top: .25rem;">All percentages within the same given group should add to <strong>100%</strong>.</div>
+</div>
+<details style="margin: 0.7rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Distribution &amp; Graph</strong></summary>
+<div style="padding: .8rem .9rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start;">
+<div style="flex: 1 1 340px;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Rider Type</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">App %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Kiosk %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Student ID %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Day Pass</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">48.7%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">51.3%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.0%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Member</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">47.4%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">12.3%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">40.4%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex: 1 1 360px; border-radius: 8px; padding: 1rem; text-align: center; color: #64748b; min-height: 170px; border: 2px dashed #86efac;"><strong>[ADD EXPLORATION C 100% STACKED BAR GRAPH HERE]</strong></div>
+</div>
+<p style="margin: .7rem .2rem 0;">Each bar represents <strong>100% of one group</strong>. The sections show the conditional distribution within that group.</p>
+</details>
+<p><strong>Do the conditional distributions look fairly similar?</strong> &nbsp; YES / NOT REALLY</p>
+<details style="margin: 0.35rem 0px 0.8rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;"><strong>Not really.</strong> The Student ID portion is 0.0% for Day Pass trips but 40.4% for Member trips, and the Kiosk percentages also differ substantially.</div>
+</details>
+<p><strong>Why does that matter for independence?</strong></p>
+<details style="margin: 0.35rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;">If the variables were approximately independent, we would expect the conditional distributions to look fairly similar across the groups. Noticeable differences suggest an association.</div>
+</details></div>
+<div id="d">
+<h2>Exploration D &mdash; Campus Affiliation &amp; Checkout Method</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p><strong>Research Question:</strong> Does checkout method appear to be associated with campus affiliation?</p>
+<table style="border-collapse: collapse; width: 68%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Campus Affiliation</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">App</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Kiosk</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Student ID</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">7</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">5</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">3</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">15</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">29</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">10</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">59</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">10</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">12</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">22</td>
+</tr>
+<tr style="background-color: #f3e8ff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">TOTAL</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">46</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">27</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">96</td>
+</tr>
+</tbody>
+</table>
+<details style="margin: 0.55rem auto 1rem; max-width: 72%; border-radius: 8px; overflow: hidden; border: 1px solid #fde68a;">
+<summary style="cursor: pointer; padding: .55rem .75rem; background-color: #fefce8; color: #92400e;"><strong>💡 Quick Table Tip</strong></summary>
+<div style="padding: .7rem .9rem;">Interior cells show combinations of categories. Row and column totals help you choose the correct denominator.</div>
+</details>
+<h3 style="color: #581c87;">Part 2 &mdash; Probability Review: Follow the Denominator</h3>
+<p>Try each row first. Leave your work on paper or in your notes, then open the check toggle.</p>
+<table style="border-collapse: collapse; width: 88%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student AND Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Faculty/Staff)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Faculty/Staff &rarr; Faculty/Staff row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Student &rarr; Student row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Visitor)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Visitor &rarr; Visitor row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student | App)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given App &rarr; App column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 88%; margin: .55rem auto; background-color: #faf5ff; border-left: 4px solid #ad14d7; padding: .55rem .75rem;"><strong>Tip:</strong> No &ldquo;given&rdquo; usually means use the grand total. If a condition is given, the category after the bar tells you which row or column becomes the denominator.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 88%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check Part 2</strong></summary>
+<div style="padding: .8rem .9rem;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">If ONE trip is selected, find...</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Think / Denominator</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Fraction</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Decimal<br />(3 places)</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage<br />(1 place)</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">59/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.615</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">61.5%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">All trips &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">23/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.240</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">24.0%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student AND Student ID)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Intersection cell &rarr; grand total</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20/96</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.208</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20.8%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Faculty/Staff)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Faculty/Staff &rarr; Faculty/Staff row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">3/15</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.200</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20.0%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Student &rarr; Student row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20/59</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.339</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">33.9%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Visitor)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given Visitor &rarr; Visitor row</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0/22</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.000</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.0%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student | App)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Given App &rarr; App column</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">29/46</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.630</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">63.0%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretations:</strong></p>
+<ul>
+<li><strong>P(Student):</strong> About 61.5% of the sampled trips were made by Student riders.</li>
+<li><strong>P(Student ID):</strong> About 24.0% of the sampled trips used Student ID checkout. This is the overall probability used as the baseline in Part 3.</li>
+<li><strong>P(Student AND Student ID):</strong> About 20.8% of all sampled trips were Student trips using Student ID checkout.</li>
+<li><strong>P(Student ID | Faculty/Staff):</strong> Of the Faculty/Staff trips, 20.0% used Student ID checkout.</li>
+<li><strong>P(Student ID | Student):</strong> Of the Student trips, about 33.9% used Student ID checkout.</li>
+<li><strong>P(Student ID | Visitor):</strong> Of the Visitor trips, 0.0% used Student ID checkout.</li>
+<li><strong>P(Student | App):</strong> Of the trips using App checkout, about 63.0% were made by Student riders.</li>
+</ul>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 3 &mdash; Check for Independence</h3>
+<p><strong>Overall probability &mdash; our baseline:</strong></p>
+<p style="font-size: 1.15rem; text-align: center;"><strong>P(Student ID) = 23/96 = 0.240 = 24.0%</strong></p>
+<p style="text-align: center;">Compare each conditional probability below with <strong>24.0%</strong>.</p>
+<table style="border-collapse: collapse; width: 82%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Group</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Conditional Probability</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Percentage</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Compared with 24.0%</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Faculty/Staff)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Student)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"><strong>P(Student ID | Visitor)</strong></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Lower / About the Same / Higher</td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 82%; margin: .55rem auto; background-color: #fefce8; border-left: 4px solid #eab308; padding: .55rem .75rem;"><strong>Tip:</strong> Independence is about whether knowing the group appears to change the probability. Compare each conditional probability to the same overall baseline.</div>
+<details style="margin: 0.7rem auto 1rem; max-width: 82%; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Probabilities</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p><strong>P(Student ID | Faculty/Staff) = 3/15 = 0.200 = 20.0%</strong> &mdash; about the same as 24.0%.</p>
+<p><strong>P(Student ID | Student) = 20/59 = 0.339 = 33.9%</strong> &mdash; higher than 24.0%.</p>
+<p><strong>P(Student ID | Visitor) = 0/22 = 0.000 = 0.0%</strong> &mdash; lower than 24.0%.</p>
+<p style="margin-bottom: 0;">Because the conditional probabilities are not all about the same as the overall probability, <strong>Campus Affiliation and Checkout Method appear associated / not independent in this sample.</strong></p>
+</div>
+</details>
+<h4 style="color: #581c87;">Put the Results Into Words</h4>
+<p>Overall, _______% of the sampled trips had the focus outcome (Student ID checkout).</p>
+<p>Among Faculty/Staff trips, _______% had the focus outcome; among Student trips, _______%; and among Visitor trips, _______%.</p>
+<p>The highest conditional percentage occurred for __________________ at _______%.</p>
+<p>The lowest conditional percentage occurred for __________________ at _______%.</p>
+<p>Based on this sample, the variables appear: <strong>approximately independent / associated</strong>.</p>
+<details style="margin: 0.6rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Interpretation</strong></summary>
+<div style="padding: .8rem .9rem;">
+<p style="margin-bottom: 0;">Overall, <strong>24.0%</strong> of the sampled trips used Student ID checkout. Among Faculty/Staff trips, <strong>20.0%</strong> used Student ID checkout, compared with <strong>33.9%</strong> of Student trips and <strong>0.0%</strong> of Visitor trips. The highest conditional Student ID percentage occurred for <strong>Students at 33.9%</strong>, while the lowest occurred for <strong>Visitors at 0.0%</strong>. Based on this sample, Campus Affiliation and Checkout Method appear <strong>associated / not independent</strong>.</p>
+</div>
+</details>
+<h3 style="color: #581c87;">Part 4 &mdash; Conditional Distributions &amp; Graph</h3>
+<p>Complete the conditional distribution for each group. Each row should total 100%.</p>
+<table style="border-collapse: collapse; width: 74%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Campus Affiliation</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">App %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Kiosk %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Student ID %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;"></td>
+</tr>
+</tbody>
+</table>
+<div style="max-width: 74%; margin: .55rem auto; background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: .55rem .75rem;"><strong>How is this calculated?</strong>
+<div>P(App | Faculty/Staff) = 7/15 = <strong>46.7%</strong></div>
+<div>P(Kiosk | Faculty/Staff) = 5/15 = <strong>33.3%</strong></div>
+<div>P(Student ID | Faculty/Staff) = 3/15 = <strong>20.0%</strong></div>
+<div style="margin-top: .25rem;">All percentages within the same given group should add to <strong>100%</strong>.</div>
+</div>
+<details style="margin: 0.7rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .6rem .8rem; background-color: #f0fdf4; color: #166534;"><strong>✅ Check the Conditional Distribution &amp; Graph</strong></summary>
+<div style="padding: .8rem .9rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start;">
+<div style="flex: 1 1 340px;">
+<table style="border-collapse: collapse; width: 100%; margin: .75rem auto; text-align: center;">
+<thead>
+<tr style="background-color: #075985; color: white;">
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Campus Affiliation</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">App %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Kiosk %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Student ID %</th>
+<th style="padding: 0.5rem 0.6rem; border: 1px solid #bae6fd;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Faculty/Staff</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">46.7%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">33.3%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">20.0%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Student</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">49.2%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">16.9%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">33.9%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+<tr style="background-color: #ffffff;">
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">Visitor</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">45.5%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">54.5%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">0.0%</td>
+<td style="padding: 0.45rem 0.6rem; border: 1px solid #d1d5db;">100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="flex: 1 1 360px; border-radius: 8px; padding: 1rem; text-align: center; color: #64748b; min-height: 170px; border: 2px dashed #86efac;"><strong>[ADD EXPLORATION D 100% STACKED BAR GRAPH HERE]</strong></div>
+</div>
+<p style="margin: .7rem .2rem 0;">Each bar represents <strong>100% of one group</strong>. The sections show the conditional distribution within that group.</p>
+</details>
+<p><strong>Do the conditional distributions look fairly similar?</strong> &nbsp; YES / NOT REALLY</p>
+<details style="margin: 0.35rem 0px 0.8rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;"><strong>Not really.</strong> Student ID checkout ranges from 0.0% for Visitors to 33.9% for Students, and Kiosk use also differs across the groups.</div>
+</details>
+<p><strong>Why does that matter for independence?</strong></p>
+<details style="margin: 0.35rem 0px 1rem; border-radius: 8px; overflow: hidden; border: 1px solid #bbf7d0;">
+<summary style="cursor: pointer; padding: .5rem .7rem; background-color: #f0fdf4; color: #166534;">✅ Check Answer</summary>
+<div style="padding: .65rem .8rem;">If the variables were approximately independent, we would expect the conditional distributions to look fairly similar across the groups. Noticeable differences suggest an association.</div>
+</details></div>
+<div id="excel">
+<h2>Excel &mdash; Create the Tables &amp; Graphs</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p>Use this tab when you want to see how the Guided Practice tables and graphs can be created from the raw Bike Share dataset.</p>
+<p><strong>Files:</strong> <a class="instructure_file_link instructure_scribd_file inline_disabled" title="BikeShareDataset.xlsx" href="https://online.valenciacollege.edu/courses/261574/files/74887719?wrap=1" target="_blank" data-canvas-previewable="false" data-api-endpoint="https://online.valenciacollege.edu/api/v1/courses/261574/files/74887719" data-api-returntype="File" rel="noopener">BikeShareDataset.xlsx</a> &nbsp; | &nbsp; [ADD WORKED EXCEL EXAMPLE LINK]</p>
+<details style="margin: 0.7rem 0px; border-radius: 8px; overflow: hidden; border: 1px solid #d8b4fe;">
+<summary style="cursor: pointer; padding: .65rem .85rem; background-color: #faf5ff; color: #581c87;"><strong>1. Create the Count PivotTable</strong></summary>
+<div style="padding: .8rem 1rem;">
+<ol>
+<li>Click anywhere inside the dataset.</li>
+<li>Go to <strong>Insert &rarr; PivotTable</strong>.</li>
+<li>Choose where you want the PivotTable placed.</li>
+<li>Drag the grouping variable to <strong>Rows</strong>.</li>
+<li>Drag the other categorical variable to <strong>Columns</strong>.</li>
+<li>Drag that same variable to <strong>Values</strong>.</li>
+<li>Make sure Values displays <strong>Count of...</strong>, not Sum.</li>
+</ol>
+<p style="margin-bottom: 0;"><strong>Example A:</strong> Campus_Affiliation &rarr; Rows; Bike_Type &rarr; Columns; Bike_Type &rarr; Values.</p>
+</div>
+</details><details style="margin: 0.7rem 0px; border-radius: 8px; overflow: hidden; border: 1px solid #d8b4fe;">
+<summary style="cursor: pointer; padding: .65rem .85rem; background-color: #faf5ff; color: #581c87;"><strong>2. Create the Row-Percentage Table</strong></summary>
+<div style="padding: .8rem 1rem;">
+<ol>
+<li>Copy the count PivotTable and paste a second copy nearby.</li>
+<li>Right-click a value in the copied PivotTable.</li>
+<li>Choose <strong>Show Values As &rarr; % of Row Total</strong>.</li>
+</ol>
+<p style="margin-bottom: 0;"><strong>Check:</strong> each row should total 100%.</p>
+</div>
+</details><details style="margin: 0.7rem 0px; border-radius: 8px; overflow: hidden; border: 1px solid #d8b4fe;">
+<summary style="cursor: pointer; padding: .65rem .85rem; background-color: #faf5ff; color: #581c87;"><strong>3. Create the Graphs</strong></summary>
+<div style="padding: .8rem 1rem;">
+<p><strong>Count graph:</strong> click inside the count PivotTable &rarr; Insert &rarr; PivotChart &rarr; Stacked Bar.</p>
+<p><strong>Conditional-distribution graph:</strong> click inside the percentage PivotTable &rarr; Insert &rarr; PivotChart &rarr; 100% Stacked Bar.</p>
+<p><strong>Add all labels quickly:</strong> click the chart &rarr; green <strong>+</strong> button &rarr; check <strong>Data Labels</strong>.</p>
+<p style="margin-bottom: 0;">Excel may display horizontal bar categories from bottom to top. That is okay&mdash;the graph still represents the same conditional distributions.</p>
+</div>
+</details></div>
+<div id="statcrunch">
+<h2>StatCrunch &mdash; Create the Tables &amp; Graphs</h2>
+<hr style="border-color: #ad14d7; border-width: 5px; width: 100%;" />
+<p>Use this tab if you are working in StatCrunch instead of Excel.</p>
+<p><strong>Dataset:</strong> [ADD BIKE SHARE DATASET / STATCRUNCH LINK HERE]</p>
+<details style="margin: 0.7rem 0px; border-radius: 8px; overflow: hidden; border: 1px solid #bae6fd;">
+<summary style="cursor: pointer; padding: .65rem .85rem; background-color: #f0f9ff; color: #075985;"><strong>1. Create the Contingency Table</strong></summary>
+<div style="padding: .8rem 1rem;">
+<ol>
+<li>Open the Bike Share dataset in StatCrunch.</li>
+<li>Go to <strong>Stat &rarr; Tables &rarr; Contingency &rarr; With data</strong>.</li>
+<li>Choose the grouping variable for <strong>Rows</strong>.</li>
+<li>Choose the other categorical variable for <strong>Columns</strong>.</li>
+<li>Select <strong>Counts</strong>.</li>
+<li>Select <strong>Row percent</strong> when you want the conditional distributions.</li>
+<li>Click <strong>Compute</strong>.</li>
+</ol>
+<p style="margin-bottom: 0;"><strong>Tip:</strong> Row percentages answer &ldquo;Within this row group, what percentage falls into each category?&rdquo;</p>
+</div>
+</details><details style="margin: 0.7rem 0px; border-radius: 8px; overflow: hidden; border: 1px solid #bae6fd;">
+<summary style="cursor: pointer; padding: .65rem .85rem; background-color: #f0f9ff; color: #075985;"><strong>2. Create the Graph</strong></summary>
+<div style="padding: .8rem 1rem;">
+<p>From the contingency-table output, use the graph options to create a bar chart that compares the row percentages / conditional distributions.</p>
+<p style="margin-bottom: 0;">The goal is the same as the Excel 100% stacked bar graph: compare the distribution within each group rather than just the raw counts.</p>
+</div>
+</details></div>
+</div>
+</div>
